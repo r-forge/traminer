@@ -13,6 +13,8 @@
       \item
       \code{seqformat()} with \code{from="SPELL"}, provides info about number of sequences truncated, empty sequences because of spell occurring before birth year, empty because of missing start time. A new attribute \code{issues} contains
       the indexes of sequences with issues.
+      \item
+      \code{seqdef()} now prints, when applicable, the number of empty sequences and lists the first 9 empty sequences only.
     }
   }
 

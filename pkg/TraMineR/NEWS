@@ -12,7 +12,9 @@ Changes in existing functions:
     number of sequences truncated, empty sequences because 
     of spell occurring before birth year, empty because
     of missing start time. A new attribute 'issues' contains
-    the indexes of sequences with issues. 
+    the indexes of sequences with issues.
+  - seqdef() now prints, when applicable, the number of 
+    empty sequences and lists the first 9 empty sequences only. 
 
 Bug fixes:
   - seqdiff() negative values in cmprange caused an error.
