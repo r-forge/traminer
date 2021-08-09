@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-3 [2021-07-13] (Development version)
+Version 2.3-3 [2021-08-09] (Development version)
 
 Changes in existing functions:
   - plot.stslist.modst() new attribute 'info' to control
@@ -8,6 +8,11 @@ Changes in existing functions:
   - plot.ststlist.meant() now uses an internal function
     to draw error bars to avoid issues with dependence
     on Hmisc.
+  - seqformat() with from="SPELL", provides info about
+    number of sequences truncated, empty sequences because 
+    of spell occurring before birth year, empty because
+    of missing start time. A new attribute 'issues' contains
+    the indexes of sequences with issues. 
 
 Bug fixes:
   - seqdiff() negative values in cmprange caused an error.
@@ -15,7 +20,7 @@ Bug fixes:
     norm='auto' in default seqdist.args value.
 
 Misc.
-  - Dependence on boot and RColorBrewer replaced by importFrom 
+  - Dependence on boot and RColorBrewer replaced by importFrom
     of functions boot and brewer.pal.
 
 
