@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-3 [2021-08-09] (Development version)}{
+\section{Changes in version 2.3-3 [2021-08-24] (Development version)}{
 
   \subsection{Changes in existing functions}{
     \itemize{
@@ -10,6 +10,10 @@
       \item
       \code{plot.ststlist.meant()} now uses an internal function
       to draw error bars to avoid issues with dependence on Hmisc.
+      \item
+      \code{plot.ststlist.meant()} new arguments \code{bar.labels},
+      \code{cex.barlab}, and \code{offset.barlab} to display and control bar labels.
+
       \item
       \code{seqformat()} with \code{from="SPELL"}, provides info about number of sequences truncated, empty sequences because of spell occurring before birth year, empty because of missing start time. A new attribute \code{issues} contains
       the indexes of sequences with issues.

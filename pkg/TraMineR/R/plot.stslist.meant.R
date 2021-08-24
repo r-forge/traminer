@@ -1,5 +1,6 @@
 plot.stslist.meant <- function(x, cpal = NULL, ylab = NULL, yaxis = TRUE,
-  xaxis = TRUE, cex.axis = 1, ylim = NULL, cex.plot, ...) {
+  xaxis = TRUE, cex.axis = 1, ylim = NULL, bar.labels = NULL,
+  cex.barlab = cex.axis, offset.barlab = .1, cex.plot, ...) {
 
   TraMineR.check.depr.args(alist(cex.axis = cex.plot))
 
@@ -21,7 +22,7 @@ plot.stslist.meant <- function(x, cpal = NULL, ylab = NULL, yaxis = TRUE,
     cpal <- attr(x,"cpal")
 
   mt <- as.vector(x[,"Mean"])
-  barplot(mt,
+  mp <- barplot(mt,
           ## mgp=c(2.5,0.6,0),
           names.arg=if (xaxis) rownames(x) else NULL,
           cex.names=cex.axis,
@@ -49,6 +50,11 @@ plot.stslist.meant <- function(x, cpal = NULL, ylab = NULL, yaxis = TRUE,
     else {
        	warning(paste("Error bars not displayed because df =", df, "too small"))
     }
+  }
+
+  if (!is.null(bar.labels)) {
+    text(mp, mt + offset.barlab*ylim[2], format(bar.labels), xpd = TRUE, cex = cex.barlab)
+
   }
 
 }

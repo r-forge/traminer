@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-3 [2021-08-09] (Development version)
+Version 2.3-3 [2021-08-24] (Development version)
 
 Changes in existing functions:
   - plot.stslist.modst() new attribute 'info' to control
@@ -8,13 +8,16 @@ Changes in existing functions:
   - plot.ststlist.meant() now uses an internal function
     to draw error bars to avoid issues with dependence
     on Hmisc.
+  - plot.ststlist.meant() new arguments 'bar.labels',
+    'cex.barlab', and 'offset.barlab' to display and
+    control bar labels.
   - seqformat() with from="SPELL", provides info about
-    number of sequences truncated, empty sequences because 
+    number of sequences truncated, empty sequences because
     of spell occurring before birth year, empty because
     of missing start time. A new attribute 'issues' contains
     the indexes of sequences with issues.
-  - seqdef() now prints, when applicable, the number of 
-    empty sequences and lists the first 9 empty sequences only. 
+  - seqdef() now prints, when applicable, the number of
+    empty sequences and lists the first 9 empty sequences only.
 
 Bug fixes:
   - seqdiff() negative values in cmprange caused an error.
