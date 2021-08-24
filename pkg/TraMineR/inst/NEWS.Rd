@@ -13,7 +13,9 @@
       \item
       \code{plot.ststlist.meant()} new arguments \code{bar.labels},
       \code{cex.barlab}, and \code{offset.barlab} to display and control bar labels.
-
+      \item
+      \code{seqmtplot()} (\code{seqplot(..,type="mt", ..)}) adapted for
+       handling bar labels with groups. See details in \code{seqplot} help page.
       \item
       \code{seqformat()} with \code{from="SPELL"}, provides info about number of sequences truncated, empty sequences because of spell occurring before birth year, empty because of missing start time. A new attribute \code{issues} contains
       the indexes of sequences with issues.

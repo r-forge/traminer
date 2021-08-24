@@ -11,6 +11,9 @@ Changes in existing functions:
   - plot.ststlist.meant() new arguments 'bar.labels',
     'cex.barlab', and 'offset.barlab' to display and
     control bar labels.
+  - seqmtplot() (seqplot(..,type="mt",..)) adapted for
+    handling bar labels with groups. See details in
+    seqplot help page.
   - seqformat() with from="SPELL", provides info about
     number of sequences truncated, empty sequences because
     of spell occurring before birth year, empty because
