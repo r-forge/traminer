@@ -2,12 +2,12 @@
 
 seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
 	with.missing=FALSE, full.matrix=TRUE, link="sum", cval=2, miss.cost=2, cweight=NULL,
-  what="diss") {
+  what="diss", ch.sep = "@@@@TraMineRSep@@@@") {
 
 	## Checking arguments
   whatlist <- c("diss","sm","seqmc")
   if (!(what %in% whatlist)){
-    msg.stop("what should be one of ",whatlist)
+    msg.stop("what should be one of ",paste0("'",whatlist,"'", collapse=","))
   }
 
 	nchannels <- length(channels)
@@ -17,6 +17,10 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
 	if (is.null(cweight)) {
 		cweight <- rep(1, nchannels)
 	}
+  for (i in 1:nchannels){
+    if (length(grep(ch.sep, alphabet(channels[[i]], with.missing=TRUE), fixed=TRUE))>0)
+      stop(" [!] ch.sep symbol (",ch.sep,") occurs in a channel alphabet")
+  }
 	numseq <- sapply(channels,nrow)
 	if(any(numseq!=numseq[1])) {
 		stop(" [!] sequence objects have different numbers of rows")
@@ -136,9 +140,11 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
 	## ================================
 	message(" [>] building combined sequences...", appendLF=F)
 	## Complex separator to ensure (hahem) unicity
-	sep <- "@@@@TraMineRSep@@@@"
+	##sep <- "@@@@TraMineRSep@@@@"
+  sep <- ch.sep
 	maxlength=max(maxlength_list)
 	newseqdata <- matrix("", nrow=numseq, ncol=maxlength)
+  rownames(newseqdata) <- rownames(channels[[1]])
 	newseqdataNA <- matrix(TRUE, nrow=numseq, ncol=maxlength)
 	for (i in 1:nchannels) {
 		seqchan <- channels[[i]]
@@ -163,7 +169,7 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
 				newseqdata[,j] <- newCol
 			}
 		}
-    }
+  }
 	## Setting void states back to NA  (nr will be considered as a distinct state)
 	newseqdata[newseqdataNA] <- NA
 
@@ -187,10 +193,10 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
   	if (!timeVarying) {
   		newsm <- matrix(0, nrow=alphabet_size, ncol=alphabet_size)
   		for (i in 1:(alphabet_size-1)) {
-  			statelisti <- strsplit(alphabet[i], sep)[[1]]
+  			statelisti <- strsplit(alphabet[i], sep, fixed=TRUE)[[1]]
   			for (j in (i+1):alphabet_size) {
   				cost <- 0
-  				statelistj <- strsplit(alphabet[j], sep)[[1]]
+  				statelistj <- strsplit(alphabet[j], sep, fixed=TRUE)[[1]]
   				for (chan in 1:nchannels) {
   					ipos <- match(statelisti[chan], alphabet_list[[chan]])
   					jpos <- match(statelistj[chan], alphabet_list[[chan]])
@@ -205,10 +211,10 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
   		newsm <- array(0, dim=c(alphabet_size, alphabet_size, maxlength))
   		for (t in 1:maxlength) {
   			for (i in 1:(alphabet_size-1)) {
-  				statelisti <- strsplit(alphabet[i], sep)[[1]]
+  				statelisti <- strsplit(alphabet[i], sep, fixed=TRUE)[[1]]
   				for (j in (i+1):alphabet_size) {
   					cost <- 0
-  					statelistj <- strsplit(alphabet[j], sep)[[1]]
+  					statelistj <- strsplit(alphabet[j], sep, fixed=TRUE)[[1]]
   					for (chan in 1:nchannels) {
   						ipos <- match(statelisti[chan], alphabet_list[[chan]])
   						jpos <- match(statelistj[chan], alphabet_list[[chan]])
@@ -220,6 +226,7 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
   			}
   		}
   	}
+    rownames(newsm) <- colnames(newsm) <- alphabet  ## labels are too long
   	message(" OK")
   	## Indel as sum
   	newindel <- sum(indel_list*cweight)

@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-3 [2021-08-24] (Development version)}{
+\section{Changes in version 2.3-3 [2021-08-30] (Development version)}{
 
   \subsection{Changes in existing functions}{
     \itemize{
@@ -21,6 +21,11 @@
       the indexes of sequences with issues.
       \item
       \code{seqdef()} now prints, when applicable, the number of empty sequences and lists the first 9 empty sequences only.
+      \item
+      \code{seqdistmc()} gains an argument \code{ch.sep} to control the separator symbol for building state names of the expanded alphabet.
+      \item
+      \code{seqdistmc()} Rows and columns of the returned distance matrix and the mc sequences are now labelled with rownames of the
+      first channel. Rows and columns of the returned mc substitution cost matrix are labelled with the expanded alphabet.
     }
   }
 
@@ -225,7 +230,7 @@
       \item
       \code{seqdist()}, normalization now also possible for OMspell, OMslen, OMstran, OMloc, and TWED.
       \item
-      \code{seqdist()} now uses \code{hcl.colors} (grDevices) instead of
+      \code{seqdef()} now uses \code{hcl.colors} (grDevices) instead of
       \code{qualitative_hcl} (colorspace) to set default colors when n>13.
       (Transparent to the user.)
     }

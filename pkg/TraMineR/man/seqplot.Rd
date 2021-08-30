@@ -229,7 +229,7 @@ seqplot(actcal.seq, type="d", group=actcal$sex)
 seqplot(biofam.seq, type="Ht", group=biofam$sex)
 
 ## ===============
-## Meant time plot
+## Mean time plot
 ## ===============
 
 ## actcal data set, grouped by sex

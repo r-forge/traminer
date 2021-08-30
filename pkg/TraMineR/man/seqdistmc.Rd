@@ -9,7 +9,7 @@ Hamming distance (HAM), and Dynamic Hamming distance (DHD).}
 \usage{
 seqdistmc(channels, method, norm="none", indel=1, sm=NULL,
      with.missing=FALSE, full.matrix=TRUE, link="sum", cval=2,
-     miss.cost=2, cweight=NULL, what="diss") }
+     miss.cost=2, cweight=NULL, what="diss", ch.sep="@@@@TraMineRSep@@@@") }
 
 \arguments{
  \item{channels}{A list of state sequence objects defined
@@ -46,8 +46,10 @@ seqdistmc(channels, method, norm="none", indel=1, sm=NULL,
  \item{miss.cost}{Missing values substitution cost, see \code{\link{seqsubm}}.}
 
  \item{cweight}{A vector of channel weights. Default is 1 (same weight for each channel).}
- 
+
  \item{what}{Character string. What output should be returned? One of \code{"diss", "sm", "seqmc"}.}
+ 
+ \item{ch.sep}{Character string. Separator used for building state names of the expanded alphabet.}
 }
 
 \details{The \code{seqdistmc} function builds a state sequence by combining the channels, derives the multichannel indel and substitution costs from the indel and substitution costs of each channel (following the strategy proposed by \cite{Pollock, 2007}), and computes the multichannel distances using the multichannel distances. The available metrics (see 'method' option) are optimal matching (\code{"OM"}), longest common subsequence (\code{"LCS"}), Hamming distance (\code{"HAM"}), and Dynamic Hamming Distance (\code{"DHD"}). See \code{\link{seqdist}} for more information about distances between sequences.
@@ -56,7 +58,7 @@ Normalization may be useful when dealing with sequences that are not all of the 
 
 \value{When \code{what="diss"}, a matrix of pairwise distances between multichannel sequences.\cr
 When \code{what="sm"}, the matrix of substitution costs with three attributes: \code{indel} the indel, \code{alphabet} the alphabet of the combined state sequences, and \code{cweight} the channel weight used.\cr
-When \code{seqmc}, the combined state sequence object.
+When \code{what="seqmc"}, the combined state sequence object.
 }
 
 \seealso{ \code{\link{seqsubm}}, \code{\link{seqdef}}, \code{\link{seqdist}}. }
@@ -86,7 +88,18 @@ smatrix[[1]] <- seqsubm(child.seq, method="CONSTANT")
 smatrix[[2]] <- seqsubm(marr.seq, method="CONSTANT")
 smatrix[[3]] <- seqsubm(left.seq, method="TRATE")
 mcdist2 <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
-	method="OM", sm =smatrix, cweight=c(2,1,1)) }
+	method="OM", sm =smatrix, cweight=c(2,1,1)) 
+
+## Retrieving the multichannel sequences
+mcseq <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
+	method="OM", sm =smatrix, cweight=c(2,1,1), what="seqmc", ch.sep="+")
+alphabet(mcseq)
+
+## Retrieving the multichannel substitution costs
+mcsm <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
+	method="OM", sm =smatrix, cweight=c(2,1,1), what="sm", ch.sep="+")
+}
+
 
 \author{Matthias Studer (with Gilbert Ritschard for the help page)}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
