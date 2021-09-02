@@ -26,11 +26,12 @@ seqdistmc(channels, method, norm="none", indel=1, sm=NULL,
     The normalization method to use. See \code{\link{seqdist}}.
     }
 
- \item{indel}{A vector with an insertion/deletion cost for each channel (OM method).}
+ \item{indel}{Double, vector of doubles, or list with an insertion/deletion cost or a vector of state dependent indel costs for each channel. Can also be \code{"auto"}, in which case indel is automatically set in accordance with the \code{sm} argument. See \code{indel} argument of \code{\link{seqdist}}.
+     }
 
  \item{sm}{A list with a substitution-cost matrix for each channel (OM, HAM and DHD
    method) or a list of method names for generating the substitution-costs
-   (see \code{\link{seqsubm}}).}
+   (see \code{\link{seqcost}}).}
 
  \item{with.missing}{Must be set to \code{TRUE} when sequences contain non deleted
    gaps (missing values) or when channels are of different length. See details.}
@@ -48,7 +49,7 @@ seqdistmc(channels, method, norm="none", indel=1, sm=NULL,
  \item{cweight}{A vector of channel weights. Default is 1 (same weight for each channel).}
 
  \item{what}{Character string. What output should be returned? One of \code{"diss", "sm", "seqmc"}.}
- 
+
  \item{ch.sep}{Character string. Separator used for building state names of the expanded alphabet.}
 }
 
@@ -88,7 +89,7 @@ smatrix[[1]] <- seqsubm(child.seq, method="CONSTANT")
 smatrix[[2]] <- seqsubm(marr.seq, method="CONSTANT")
 smatrix[[3]] <- seqsubm(left.seq, method="TRATE")
 mcdist2 <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
-	method="OM", sm =smatrix, cweight=c(2,1,1)) 
+	method="OM", sm =smatrix, cweight=c(2,1,1))
 
 ## Retrieving the multichannel sequences
 mcseq <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
@@ -101,7 +102,7 @@ mcsm <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
 }
 
 
-\author{Matthias Studer (with Gilbert Ritschard for the help page)}
+\author{Matthias Studer and Gilbert Ritschard}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{Dissimilarity measures}

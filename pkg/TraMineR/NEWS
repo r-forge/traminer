@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-3 [2021-08-30] (Development version)
+Version 2.3-3 [2021-09-02] (Development version)
 
 Changes in existing functions:
   - plot.stslist.modst() new attribute 'info' to control
@@ -21,13 +21,17 @@ Changes in existing functions:
     the indexes of sequences with issues.
   - seqdef() now prints, when applicable, the number of
     empty sequences and lists the first 9 empty sequences only.
-  - seqdistmc() gains an argument 'ch.sep' to control 
-    the separator symbol for building state names of  
+  - seqdistmc() gains an argument 'ch.sep' to control
+    the separator symbol for building state names of
     of the expanded alphabet.
   - seqdistmc() Rows and columns of the returned distance matrix
     and the mc sequences are now labelled with rownames of the
     first channel. Rows and columns of the mc substitution
     cost matrix are labelled with the expanded alphabet.
+  - seqdistmc() indel argument can now be "auto" to 
+    automatically set the indel values.
+  - seqdistmc() now also supports "INDELS" and "INDELSLOG"
+    values for the sm argument. 
 
 Bug fixes:
   - seqdiff() negative values in cmprange caused an error.

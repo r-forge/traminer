@@ -10,6 +10,9 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
     msg.stop("what should be one of ",paste0("'",whatlist,"'", collapse=","))
   }
 
+  if(length(indel) > 1 & any(indel=="auto"))
+    stop(" [!] 'auto' not allowed in vector or list indel")
+
 	nchannels <- length(channels)
 	if (nchannels < 2) {
 		stop("[!] please specify at least two channels")
@@ -19,8 +22,10 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
 	}
   for (i in 1:nchannels){
     if (length(grep(ch.sep, alphabet(channels[[i]], with.missing=TRUE), fixed=TRUE))>0)
-      stop(" [!] ch.sep symbol (",ch.sep,") occurs in a channel alphabet")
+      stop(" [!] ch.sep symbol (",ch.sep,") occurs in alphabet of at least one channel")
   }
+  if (is.list(indel) & length(indel) != nchannels)
+		stop("[!] when a list, indel must be of length equal to number of channels")
 	numseq <- sapply(channels,nrow)
 	if(any(numseq!=numseq[1])) {
 		stop(" [!] sequence objects have different numbers of rows")
@@ -51,11 +56,12 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
 		}
 		sm <- rep(costmethod, nchannels)
 	}
-	else if (length(sm)==1 && sm %in% c("CONSTANT", "TRATE")){
+	else if (length(sm)==1 && sm %in% c("CONSTANT", "TRATE", "INDELS", "INDELSLOG")){
 		sm <- rep(sm, nchannels)
 	}
+
 	if (length(indel)==1) {
-		indel <- rep(indel, nchannels)
+	   	indel <- rep(indel, nchannels)
 	}
 	## Checking correct numbers of info per channel
 	if ((length(indel)!= nchannels) ||
@@ -64,7 +70,10 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
 		stop(" [!] you should supply one weight, one substitution matrix and one indel per channel")
 	}
 	## indels
-	indel_list <- numeric(length=nchannels)
+	if (!is.list(indel))
+    indel_list <- numeric(length=nchannels)
+  if (any(indel == "auto") & any(sm %in% c("INDELSLOG","INDELS")))
+    indel_list <- list()
 	## subsitution matrix
 	substmat_list <- list()
 	## alphabet for each channel
@@ -95,19 +104,41 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
   			}
   		}
   		alphsize_list[[i]] <- length(alphabet_list[[i]])
+      if(is.list(indel)){
+        if (length(indel[[i]])==1)
+          indel[[i]] <- rep(indel[[i]],alphsize_list[[i]])
+        if (length(indel[[i]]) != alphsize_list[[i]])
+  				stop(" [!] indel length does not much size of alphabet for at least one channel")
+      }
+      else if (!any(indel=="auto") & !is.list(indel_list)) {
+  		  indel_list[i] <- indel[i]
+      }
+
   		## Storing number of columns
   		maxlength_list[i] <- ncol(channels[[i]])
-  		indel_list[i] <- indel[i]
   		## Substitution matrix generation method is given
   		if	(is.character(sm[[i]])) {
   			message(" [>] computing substitution cost matrix for channel ", i)
-  			substmat_list[[i]] <- seqsubm(channels[[i]], sm[[i]], with.missing=with.missing,
+  			costs <- seqcost(channels[[i]], sm[[i]], with.missing=with.missing,
   				time.varying=timeVarying, cval=cval, miss.cost=miss.cost)
+        substmat_list[[i]] <- costs$sm
+        if (any(indel=="auto")) {
+          if (is.list(indel_list))
+            indel_list[[i]] <- costs$indel
+          else
+            indel_list[i] <- costs$indel
+        }
   		}
   		## Checking correct dimension cost matrix
   		else {
   			if (method=="OM") {
-  				checkcost(sm[[i]], channels[[i]], with.missing = with.missing, indel = indel[i])
+          if (any(indel[i] == "auto"))
+              indel_list[i] <- max(sm[[i]])/2
+          else
+              indel_list[i] <- indel[i]
+          cat("\n indel_list[i] ",indel_list[i], "\n")
+          print(sm[[i]])
+  				checkcost(sm[[i]], channels[[i]], with.missing = with.missing, indel = indel_list[i])
   			} else {
   				checkcost(sm[[i]], channels[[i]], with.missing = with.missing)
   			}
@@ -117,6 +148,7 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
   		## Mutliply by channel weight
   		substmat_list[[i]] <- cweight[i]* substmat_list[[i]]
   	}
+    if (any(indel=="auto")) indel <- indel_list
   } else {
       for (i in 1:nchannels) {
   		  maxlength_list[i] <- ncol(channels[[i]])
@@ -140,7 +172,7 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
 	## ================================
 	message(" [>] building combined sequences...", appendLF=F)
 	## Complex separator to ensure (hahem) unicity
-	##sep <- "@@@@TraMineRSep@@@@"
+	##sep <- "@@@@TraMineRSep@@@@"  ## now argument ch.sep
   sep <- ch.sep
 	maxlength=max(maxlength_list)
 	newseqdata <- matrix("", nrow=numseq, ncol=maxlength)
@@ -189,11 +221,26 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
   	## Build subsitution matrix and new alphabet
   	alphabet <- attr(newseqdata,"alphabet")
   	alphabet_size <- length(alphabet)
+    newindel <- NULL
   	## Recomputing the subsitution matrix
   	if (!timeVarying) {
   		newsm <- matrix(0, nrow=alphabet_size, ncol=alphabet_size)
+      if (is.list(indel)){
+        newindel <- rep(0,alphabet_size)
+        statelisti <- strsplit(alphabet[alphabet_size], sep, fixed=TRUE)[[1]]
+        for (chan in 1:nchannels){
+					 ipos <- match(statelisti[chan], alphabet_list[[chan]])
+           newindel[alphabet_size] <- newindel[alphabet_size] + indel[[chan]][ipos]*cweight[chan]
+        }
+      }
   		for (i in 1:(alphabet_size-1)) {
   			statelisti <- strsplit(alphabet[i], sep, fixed=TRUE)[[1]]
+        if (is.list(indel)){
+          for (chan in 1:nchannels){
+  					 ipos <- match(statelisti[chan], alphabet_list[[chan]])
+             newindel[i] <- newindel[i] + indel[[chan]][ipos]*cweight[chan]
+          }
+        }
   			for (j in (i+1):alphabet_size) {
   				cost <- 0
   				statelistj <- strsplit(alphabet[j], sep, fixed=TRUE)[[1]]
@@ -229,7 +276,9 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
     rownames(newsm) <- colnames(newsm) <- alphabet  ## labels are too long
   	message(" OK")
   	## Indel as sum
-  	newindel <- sum(indel_list*cweight)
+    if (is.null(newindel) & !is.list(indel_list)) {
+  	   newindel <- sum(indel*cweight)
+    }
   	## If we want the mean of cost..
   	if (link=="mean") {
   		newindel <- newindel / sum(cweight)

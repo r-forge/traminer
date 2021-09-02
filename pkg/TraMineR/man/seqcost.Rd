@@ -95,7 +95,7 @@ seqsubm(...)
 \value{
   For \code{seqcost}, a list of two elements, \code{indel} and \code{sm} or \code{prox}:
     \item{indel}{
-      The indel cost. Either a scalar or a vector of size \eqn{ns}. When \code{time.varying=TRUE}
+      The indel cost. Either a scalar or a vector of size \eqn{ns}. When \code{time.varying=TRUE} and \code{method} is one of \code{"INDELS"} or \code{"INDELSLOG"}, a matrix with indels per time point in columns.
     }
     \item{sm}{
       The substitution-cost matrix (or array) when \code{proximities = FALSE} (default).
@@ -104,7 +104,7 @@ seqsubm(...)
       The state proximity matrix when \code{proximities = TRUE}.
     }
     \code{sm} and \code{prox} are, when \code{time.varying = FALSE}, a matrix of size \eqn{ns * ns}, where \eqn{ns}
-    is the number of states in the alphabet of the sequence object. When \code{time.varying = TRUE}, they are a three dimensional array of size \eqn{ns * ns * L}, where \eqn{L} is the maximum sequence length. 
+    is the number of states in the alphabet of the sequence object. When \code{time.varying = TRUE}, they are a three dimensional array of size \eqn{ns * ns * L}, where \eqn{L} is the maximum sequence length.
 
   For \code{seqsubm}, only one element, the matrix (or array) \code{sm}.
 }
