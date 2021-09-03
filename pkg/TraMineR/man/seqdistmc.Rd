@@ -33,8 +33,8 @@ seqdistmc(channels, method, norm="none", indel=1, sm=NULL,
    method) or a list of method names for generating the substitution-costs
    (see \code{\link{seqcost}}).}
 
- \item{with.missing}{Must be set to \code{TRUE} when sequences contain non deleted
-   gaps (missing values) or when channels are of different length. See details.}
+ \item{with.missing}{Logical or vector of logical. Must be \code{TRUE} for channels with non deleted
+   gaps (missing values). See details.}
 
  \item{full.matrix}{If \code{TRUE} (default), the full distance matrix is returned.
    If \code{FALSE}, an object of class \code{\link{dist}} is returned.}
@@ -53,7 +53,7 @@ seqdistmc(channels, method, norm="none", indel=1, sm=NULL,
  \item{ch.sep}{Character string. Separator used for building state names of the expanded alphabet.}
 }
 
-\details{The \code{seqdistmc} function builds a state sequence by combining the channels, derives the multichannel indel and substitution costs from the indel and substitution costs of each channel (following the strategy proposed by \cite{Pollock, 2007}), and computes the multichannel distances using the multichannel distances. The available metrics (see 'method' option) are optimal matching (\code{"OM"}), longest common subsequence (\code{"LCS"}), Hamming distance (\code{"HAM"}), and Dynamic Hamming Distance (\code{"DHD"}). See \code{\link{seqdist}} for more information about distances between sequences.
+\details{The \code{seqdistmc} function builds a state sequence by combining the channels, derives the multichannel indel and substitution costs from the indel and substitution costs of each channel (following the strategy proposed by \cite{Pollock, 2007}), and computes the multichannel distances using the multichannel distances. The available metrics (see 'method' option) are optimal matching (\code{"OM"}), longest common subsequence (\code{"LCS"}), Hamming distance (\code{"HAM"}), and Dynamic Hamming Distance (\code{"DHD"}). For other edit distances, extract the combined state sequence object (by setting \code{what="seqmc"}) and the multichannel substitution and indel costs (by setting \code{what="sm"}). Then use these outcomes as input in a call to \code{seqdist}.  See \code{\link{seqdist}} for more information about available distances measures.
 
 Normalization may be useful when dealing with sequences that are not all of the same length. For details on the applied normalization, see \code{\link{seqdist}}. }
 

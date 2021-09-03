@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-3 [2021-09-02] (Development version)
+Version 2.3-3 [2021-09-03] (Development version)
 
 Changes in existing functions:
   - plot.stslist.modst() new attribute 'info' to control
@@ -29,7 +29,10 @@ Changes in existing functions:
     first channel. Rows and columns of the mc substitution
     cost matrix are labelled with the expanded alphabet.
   - seqdistmc() indel argument can now be "auto" to 
-    automatically set the indel values.
+    automatically set the indel values. In addition, state 
+    dependent indels are now supported.
+  - seqdistmc()} \code{with.missing} can now be a vector 
+    to provide different values for each channel.
   - seqdistmc() now also supports "INDELS" and "INDELSLOG"
     values for the sm argument. 
 
