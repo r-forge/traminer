@@ -1,6 +1,6 @@
 ## multichannel distances
 
-seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
+seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
 	with.missing=FALSE, full.matrix=TRUE, link="sum", cval=2, miss.cost=2, cweight=NULL,
   what="diss", ch.sep = "@@@@TraMineRSep@@@@") {
 
@@ -197,15 +197,17 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
   				time.varying=timeVarying, cval=cval, miss.cost=miss.cost)
         substmat_list[[i]] <- costs$sm
         if (any(indel=="auto")) {
-          if (is.list(indel_list))
+          if (is.list(indel_list)){
+            if (length(costs$indel)==1) costs$indel <- rep(costs$indel,alphsize_list[[i]])
             indel_list[[i]] <- costs$indel
+          }
           else
             indel_list[i] <- costs$indel
         }
   		}
   		## Checking correct dimension cost matrix
   		else {
-        cat("   channel ",i,"\n")
+        message(" [>]   channel ",i)
 
   			if (method=="OM") {
           if (any(indel[i] == "auto"))
@@ -242,17 +244,21 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
       if (is.list(indel)){
         newindel <- rep(0,alphabet_size)
         statelisti <- strsplit(alphabet[alphabet_size], sep, fixed=TRUE)[[1]]
+        ##cat("\n last state statelisti ",statelisti, "\n")
         for (chan in 1:nchannels){
 					 ipos <- match(statelisti[chan], alphabet_list[[chan]])
            newindel[alphabet_size] <- newindel[alphabet_size] + indel[[chan]][ipos]*cweight[chan]
+           ##cat("ipos ",ipos,"\n indel chan ",chan,": ",indel[[chan]],"\n newindel = ",newindel,"\n" )
         }
       }
   		for (i in 1:(alphabet_size-1)) {
   			statelisti <- strsplit(alphabet[i], sep, fixed=TRUE)[[1]]
+        ##cat("state ",i," statelisti ",statelisti, "\n")
         if (is.list(indel)){
           for (chan in 1:nchannels){
   					 ipos <- match(statelisti[chan], alphabet_list[[chan]])
              newindel[i] <- newindel[i] + indel[[chan]][ipos]*cweight[chan]
+           ##cat("ipos ",ipos,"\n indel chan ",chan,": ",indel[[chan]],"\n newindel = ",newindel,"\n" )
           }
         }
   			for (j in (i+1):alphabet_size) {
@@ -307,6 +313,7 @@ seqdistmc <- function(channels, method, norm="none", indel=1, sm=NULL,
   }
   if (what == "diss") {
 	   message(" [>] computing distances ...")
+      ##cat(" newindel = ",newindel,"\n")
 	   ## Calling seqdist
 	   return(seqdist(newseqdata, method=method, norm=norm, indel=newindel,
 		        sm=newsm, with.missing=FALSE, full.matrix=full.matrix))
