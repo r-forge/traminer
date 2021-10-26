@@ -32,6 +32,7 @@ export(
     seqedplot,
     createdatadiscrete,
 	seqcta,
+	seqsha,
     seqerulesdisc,
     seqstart,
     ##seqeordplot,
