@@ -12,6 +12,7 @@ importFrom("gtools","permute")
 importFrom("doParallel","registerDoParallel")
 importFrom("parallel","makePSOCKcluster","stopCluster")
 importFrom("foreach","foreach","%dopar%")
+importFrom("stats", "ave")
 
 export(
     group.p,
@@ -30,6 +31,7 @@ export(
     seqedist,
     seqedplot,
     createdatadiscrete,
+	seqcta,
     seqerulesdisc,
     seqstart,
     ##seqeordplot,
