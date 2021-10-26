@@ -36,7 +36,7 @@ seqcta <- function(seqdata, subseq=5, time=NULL, event=NULL, initial.state=NULL,
 	srs$event <- event[srs$id]
 	timelimit <- timevent[srs$id]+subseq
 	srs$event <- srs$event & srs$idx==timelimit
-	srs <- subset(srs, idx<=timelimit)
+	srs <- subset(srs, srs$idx<=timelimit)
 	colnames(srs) <- c("id", "time", paste0("T", 1:subseq), "event")
 	srs[!srs$event, c(-1, -2, -ncol(srs))] <- NA
 	srs$time <- srs$time - subseq+1

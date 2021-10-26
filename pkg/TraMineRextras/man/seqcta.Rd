@@ -36,7 +36,7 @@ A data frame with the following variables
 
 }
 \references{
-M. Studer, A. C. Liefbroer and J. E. Mooyaart, 2018. Understanding trends in family formation trajectories: An application of Competing Trajectories Analysis (CTA), \emph{Advances in Life Course Research} 36, pp 1-12. \url{https://doi.org/10.1016/j.alcr.2018.02.003}
+M. Studer, A. C. Liefbroer and J. E. Mooyaart, 2018. Understanding trends in family formation trajectories: An application of Competing Trajectories Analysis (CTA), \emph{Advances in Life Course Research} 36, pp 1-12.  \doi{10.1016/j.alcr.2018.02.003}
 }
 \author{
 Matthias Studer
