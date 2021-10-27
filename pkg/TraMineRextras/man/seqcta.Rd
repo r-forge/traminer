@@ -24,6 +24,8 @@ Competing Trajectory Analysis (CTA) works as follows. First, the sequence follow
 
 The \code{seqcta} function reorganizes the data to run CTA. More precisely, it provides a person-period data frame until the occurrence of the event. When the event occurs, the trajectory following it is also stored. Covariates specified using the \code{covar} arguments are also stored. 
 
+The example section below provides a step by step example of the whole procedure. 
+
 }
 \value{
 A data frame with the following variables
