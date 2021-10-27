@@ -31,7 +31,7 @@ A data frame with the following variables:
 \item{id}{Numeric. The ID of the observation as the row number in the original \code{seqdata}.}
 \item{time}{Numeric. The time unit from the beginning of the original sequence until the occurence of the event.}
 \item{event}{Logical. Whether the event occured within this time unit.}
-\item{T1 until T...}{The state sequence coding the previous trajectory (the names of these columns depends on \code{seqdata} and \code{aligne.end}).}
+\item{T1 until T...}{The state sequence coding the previous trajectory. Columns names depends on \code{seqdata} and \code{aligne.end}.}
 \item{Optional covariate list}{The covariates provided with the \code{covar} argument.}
 }
 \references{
@@ -48,14 +48,14 @@ data(biofam)
 ## Reduce the biofam data to accelerate example
 biofam <- biofam[100:300,]
 bf.shortlab <- c("P","L","M","LM","C","LC", "LMC", "D")
-bf.seq <- seqdef(biofam[,10:25], states=bf.shortlab, labels=bf.shortlab)
+bf.seq <- seqdef(biofam[,10:25], states=bf.shortlab)
 
 ## We focus on the occurrence the start of a LMC spell
 ## The code below aims to find when this event occurred (and whether it occurred).
 bf.seq2 <- seqrecode(bf.seq, recodes=list(LMC="LMC"), otherwise = "Other")
 dss <- seqdss(bf.seq2)
 ## Time until LMC spell
-time <- pmax(2, ifelse(dss[, 1]=="LMC", 1, seqdur(bf.seq2)[, 1]))
+time <- ifelse(dss[, 1]=="LMC", 1, seqdur(bf.seq2)[, 1])
 ## Whether the event (start of LMC spell) started or not
 event <- dss[, 1]=="LMC"|dss[, 2]=="LMC"
 
@@ -73,6 +73,7 @@ seqdplot(previousTraj)
 ## Ensure high sensitivity to ordering of the states
 diss <- seqdist(seqdss(previousTraj), method="LCS")
 ##Clustering with pam
+library(cluster)
 pclust <- pam(diss, diss=TRUE, k=4, cluster.only=TRUE)
 #Naming the clusters
 sha$pclustname <- factor(paste("Type", pclust))

@@ -17,10 +17,8 @@ seqcta <- function(seqdata, subseq=5, time=NULL, event=NULL, initial.state=NULL,
 		if(is.null(initial.state)||!(initial.state %in% alphabet(seqdata))){
 			stop(" [!] If time and event are not provided, initial.state should be specified and be one state of the alphabet of seqdata.")
 		}
-		dss <- seqdss(seqdata)
-		dur <- seqdur(seqdata)
-		timevent <- dur[, 1]
-		timevent[dss[, 1]!=initial.state] <- 0
+		timevent <- seqdur(seqdata)[, 1]
+		timevent[seqdata[, 1]!=initial.state] <- 0
 		event <- timevent < sl
 	}
 	## Now we adjust censoring time

@@ -45,24 +45,40 @@ Matthias Studer
 ## Create seq object for biofam data.
 data(biofam)
 bf.shortlab <- c("P","L","M","LM","C","LC", "LMC", "D")
-bf.seq <- seqdef(biofam[,10:25], states=bf.shortlab, labels=bf.shortlab)
+bf.seq <- seqdef(biofam[,10:25], states=bf.shortlab)
 
-
-## We focus on the occurence of ending the "P" spell and the trajectory that follows
+## We focus on the occurrence of ending the "P" spell and the trajectory that follows
 ## For the next subseq=5 years
-## Transform the data to person-period until the end of the first "P" spell 
 ## We also store the covariate sex and birthyr
+## seqcta will transform the data to person-period until the end of the first "P" spell 
+## and store the following trajectory
 
 cta <- seqcta(bf.seq, subseq=5, initial.state="P", covar=biofam[, c("sex", "birthyr")])
 summary(cta)
+
+## If the studied event is not a first state of the trajectory
+## One can also provide the event using the time and event arguments
+## Here we compute the time spent in "P" ourselves before providing it to seqcta
+
+dur <- seqdur(bf.seq)
+## If "P" is the first state, we use the time in this state (dur[, 1])
+## Otherwise we use 0 (started immediatly at the beginning)
+timeP <- ifelse(bf.seq[, 1]=="P", dur[, 1], 0)
+## The event occured if timeP is inferior to the length of the sequence
+## Otherwise they never left their parents. 
+eventP <- timeP < 16
+
+cta2 <- seqcta(bf.seq, subseq=5, time=timeP, event=eventP, covar=biofam[, c("sex", "birthyr")])
+##Identical results
+summary(cta2) 
 
 
 ## Not run to save computation time
 \dontrun{
 library(survival)
 
-## To plot a survival curve, we only need the last observation for each indiviudal.
-## Kaplan meier curve for the occurence of the event
+## To plot a survival curve, we only need the last observation for each individual.
+## Kaplan Meier curve for the occurrence of the event
 ss <- survfit(Surv(time, event)~sex, data=cta, subset=lastobs)
 plot(ss, col=1:2)
 
@@ -72,6 +88,7 @@ clusterTraj <- seqdef(cta[cta$event, 5:9])
 ##Compute distances
 diss <- seqdist(clusterTraj, method="HAM")
 ##Clustering with pam
+library(cluster)
 pclust <- pam(diss, diss=TRUE, k=5, cluster.only=TRUE)
 #Naming the clusters
 pclustname <- paste("Type", pclust)
@@ -81,7 +98,8 @@ seqdplot(clusterTraj, pclustname)
 ##Now we store back the clustering in the original person-period data
 ## We start by adding a variable storing "no event" for all lines
 cta$traj.event <- "No event"
-##Now we store the clustering back
+## Then we store the type of following trajectory 
+## only for those having experienced the event
 cta$traj.event[cta$event] <- pclustname
 
 
@@ -93,9 +111,20 @@ summary(cta)
 ## Here we use multinomial model on the person period.
 
 library(mlogit)
-summary(mlogit(traj.event~1|time+sex, data=cta, shape="wide"))
+summary(mlogit(traj.event~1|time+sex, data=cta, shape="wide", reflevel="No event"))
 library(nnet)
 summary(multinom(traj.event~time+sex+scale(birthyr), data=cta))
+
+## The model can also be estimated with cox regression
+## However, we need to estimate one model for each competing risk
+## ie. the type of following trajectory in our case. 
+
+## Compute the event variable for "Type 1"
+
+cta$eventType1 <- cta$traj.event=="Type 1"
+summary(coxph(Surv(time, eventType1)~sex+scale(birthyr), data=cta, subset=lastobs))
+
+
 }
 }
 
