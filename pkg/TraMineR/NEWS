@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-3 [2021-09-04] (Development version)
+Version 2.3-3 [2021-11-02] (Development version)
 
 Changes in existing functions:
   - plot.stslist.modst() new attribute 'info' to control
@@ -29,17 +29,18 @@ Changes in existing functions:
     first channel. Rows and columns of the mc substitution
     cost matrix are labelled with the expanded alphabet.
   - seqdistmc() indel argument can now be "auto" (new default)
-    to automatically set indel values. In addition, state 
+    to automatically set indel values. In addition, state
     dependent indels are now supported.
-  - seqdistmc()} \code{with.missing} can now be a vector 
+  - seqdistmc()} \code{with.missing} can now be a vector
     to provide different values for each channel.
   - seqdistmc() now also supports "INDELS" and "INDELSLOG"
-    values for the sm argument. 
+    values for the sm argument.
 
 Bug fixes:
   - seqdiff() negative values in cmprange caused an error.
   - seqdiff() Changed deprecated norm=TRUE into
     norm='auto' in default seqdist.args value.
+  - seqecreate() NAs introduced by coercion with character id. 
 
 Misc.
   - Dependence on boot and RColorBrewer replaced by importFrom

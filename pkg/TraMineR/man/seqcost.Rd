@@ -7,7 +7,7 @@
 
 \description{
 The function \code{seqcost} proposes different ways to generate substitution costs
-(supposed to reflect state dissimilarities) and possibly indel costs. Proposed methods are:
+(supposed to represent state dissimilarities) and possibly indel costs. Proposed methods are:
 \code{"CONSTANT"} (same cost for all substitutions), \code{"TRATE"} (derived from the observed transition rates), \code{"FUTURE"} (Chi-squared distance between conditional state distributions \code{lag} positions ahead), \code{"FEATURES"} (Gower distance between state features), \code{"INDELS"}, \code{"INDELSLOG"} (based on estimated indel costs).
 The substitution-cost matrix is intended to serve as \code{sm} argument in the \code{\link{seqdist}} function that computes distances between sequences. \code{seqsubm} is an alias that returns only the substitution cost matrix, i.e., no indel.
  }
@@ -16,7 +16,7 @@ The substitution-cost matrix is intended to serve as \code{sm} argument in the \
 The substitution-cost matrix has dimension \eqn{ns*ns}, where
 \eqn{ns} is the number of states in the \link{alphabet} of the
 sequence object. The element \eqn{(i,j)} of the matrix is the cost of
-substituting state \eqn{i} with state \eqn{j}. It defines the dissimilarity between the states \eqn{i} and \eqn{j}.
+substituting state \eqn{i} with state \eqn{j}. It represents the dissimilarity between the states \eqn{i} and \eqn{j}. The indel cost of the cost of inserting or deleting a state.
 
 With method \code{CONSTANT}, the substitution costs are all set equal to the \code{cval} value, the default value being 2.
 

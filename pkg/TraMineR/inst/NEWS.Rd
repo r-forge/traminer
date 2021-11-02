@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-3 [2021-09-04] (Development version)}{
+\section{Changes in version 2.3-3 [2021-11-02] (Development version)}{
 
   \subsection{Changes in existing functions}{
     \itemize{
@@ -41,6 +41,9 @@
       \code{seqdiff()} Negative values in \code{cmprange} caused an error.
       \item
       \code{seqdiff()} Changed deprecated \code{norm=TRUE} into \code{norm='auto'} in default \code{seqdist.args} value.
+      \item
+      \code{seqecreate()} \code{NA}s introduced by coercion with character \code{id}.
+
     }
   }
 

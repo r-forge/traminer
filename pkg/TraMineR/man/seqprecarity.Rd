@@ -11,7 +11,7 @@
 \alias{print.seqprec}
 %\alias{print.seqprecorr}
 
-\title{Degradation, Precarity and Insecurity indexes}
+\title{Degradation, Precarity, and Insecurity indexes}
 
 \description{
 The degradation index returned by \code{seqidegrad} is a normalized transformation of the difference between the proportion of downward and upward state changes (transitions).
@@ -132,11 +132,11 @@ and as additional attributes: \code{tr} the used transition weights; \code{signs
 }
 
 \references{
-Ritschard, G. (2021), "Measuring the nature of individual sequences", \emph{Sociological Methods and Research}, forthcoming.
+Ritschard, G. (2021), "Measuring the nature of individual sequences", \emph{Sociological Methods and Research}, \doi{10.1177/00491241211036156}.
 
 Ritschard, G., Bussi, M., and O'Reilly, J. (2018), "An index of precarity for
 measuring early employment insecurity", in G. Ritschard, and M. Studer, \emph{Sequence Analysis and Related Approaches: Innovative Methods and Applications}, Series Life Course Research and Social
-Policies, Vol. 10, pp 279-295. Cham: Springer.
+Policies, Vol. 10, pp 279-295. Cham: Springer, \doi{10.1007/978-3-319-95420-2_16}.
 
 Gabadinho, A., Ritschard, G., Studer, M. and Müller, N.S. (2010), "Indice de complexité pour le tri et la comparaison de séquences catégorielles", In Extraction et gestion des connaissances (EGC 2010), \emph{Revue des nouvelles technologies de l'information RNTI}. Vol. E-19, pp. 61-66.
 
