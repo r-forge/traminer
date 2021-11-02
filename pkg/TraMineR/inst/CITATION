@@ -89,7 +89,7 @@ citEntry(entry="article",
   doi = "10.1177/00491241211036156",
   note = "(first published online)",
 
-  textVersion="Ritschard, G. (2021), Measuring the nature of individual sequences, Sociological Methods and Research. (first published online)", DOI https://doi.org/10.1177/00491241211036156"
+  textVersion="Ritschard, G. (2021), Measuring the nature of individual sequences, Sociological Methods and Research. (first published online), DOI https://doi.org/10.1177/00491241211036156",
   header="For longitudinal characteristics (complexity, badness, precarity, ...):"
 )
 citEntry(entry="article",
