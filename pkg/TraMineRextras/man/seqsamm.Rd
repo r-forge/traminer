@@ -49,10 +49,10 @@ The function \code{seqsammseq} returns a sequence object (see \code{\link{seqdef
 
 The function \code{seqsammeha} returns a \code{data.frame} storing the person period data of a specific ending \code{spell) (see \code{spell} argument} considering the given \code{typology} as competing risks (see \code{typology} argument}. Several variables are added to the SAMM objects (see above):
 \item{SAMMtypology}{factor. The events ending the specified spell using \code{"None"} when not event occurs.}
-\item{SAMM...}{Logical. A logical vector specifiying whether the current observation end the spell with the following \code{...} type of trajectory.}
+\item{SAMM...}{Logical. A logical vector specifying whether the current observation end the spell with the following \code{...} type of trajectory.}
 }
 \references{
-Studer, M., Struffolino, E., & Fasang, A. E. (2018). Estimating the Relationship between Time-varying Covariates and Trajectories: The Sequence Analysis Multistate Model Procedure. \emph{Sociological Methodology}, 48(1), 103–135. \doi{https://doi.org/10.1177/0081175017747122}
+Studer, M., Struffolino, E., & Fasang, A. E. (2018). Estimating the Relationship between Time-varying Covariates and Trajectories: The Sequence Analysis Multistate Model Procedure. \emph{Sociological Methodology}, 48(1), 103–135. \doi{10.1177/0081175017747122}
 }
 \author{
 Matthias Studer
