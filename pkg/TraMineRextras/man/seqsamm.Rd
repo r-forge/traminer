@@ -43,11 +43,12 @@ The \code{seqsamm} function returns a SAMM object, storing the reorganized data 
 \item{transition}{Logical. Whether a transition out of the current spell occurred within this time unit.}
 \item{s.1 until s.\code{sublength}...}{The state sequence following the current observation starting from 1 (current state) until \code{sublength} time units after the current observation.}
 \item{lastobs}{Logical. Whether this is the last observation of the current spell, censored or not. This is useful when one want only one row per individual, for instance to plot survival curves (see example).}
+\item{x}{object of class \code{SAMM} as produced by \code{seqsamm}}
 \item{Optional covariate list}{The covariates provided with the \code{covar} argument.}
 
 The function \code{seqsammseq} returns a sequence object (see \code{\link{seqdef}}) of the trajectories following an ending spell.
 
-The function \code{seqsammeha} returns a \code{data.frame} storing the person period data of a specific ending \code{spell) (see \code{spell} argument} considering the given \code{typology} as competing risks (see \code{typology} argument}. Several variables are added to the SAMM objects (see above):
+The function \code{seqsammeha} returns a \code{data.frame} storing the person period data of a specific ending \code{spell) (see \code{spell} argument) considering the given \code{typology} as competing risks (see \code{typology} argument}. Several variables are added to the SAMM objects (see above):
 \item{SAMMtypology}{factor. The events ending the specified spell using \code{"None"} when not event occurs.}
 \item{SAMM...}{Logical. A logical vector specifying whether the current observation end the spell with the following \code{...} type of trajectory.}
 }

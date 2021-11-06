@@ -108,7 +108,7 @@ seqsammeha <- function(samm, spell, typology, persper=TRUE){
 	ppdata <- cbind(ppdata, ret)
 
 	if(!persper){
-		return(subset(ppdata, lastobs))
+		return(subset(ppdata, ppdata$lastobs))
 	}
 	return(ppdata)
 }
