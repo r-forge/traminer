@@ -33,6 +33,9 @@ export(
     createdatadiscrete,
 	seqcta,
 	seqsha,
+	seqsamm,
+	seqsammseq,
+	seqsammeha,
     seqerulesdisc,
     seqstart,
     ##seqeordplot,
@@ -72,6 +75,9 @@ S3method(plot, stslist.surv)
 ## dynin methods
 S3method(plot, dynin)
 S3method(print, dynin)
+
+## SAMM metehods
+S3method(plot, SAMM)
 
 
 useDynLib(TraMineRextras,

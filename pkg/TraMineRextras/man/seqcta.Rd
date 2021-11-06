@@ -34,7 +34,7 @@ A data frame with the following variables
 \item{event}{Logical. Whether the event occured within this time unit.}
 \item{lastobs}{Logical. Whether this is the last observation for an individual observation, censored or not. This is useful when one want only one row per individual, for instance to plot survival curves (see example).}
 \item{T1 until T...}{The state sequence following the event starting from 1 (time unit after the event) until \code{subseq} time units after the event. Only available for the rows where \code{event=TRUE}.}
-\item{Optional covariate list}{The covariates provided with the \code{covar} arguement.}
+\item{Optional covariate list}{The covariates provided with the \code{covar} argument.}
 
 }
 \references{
