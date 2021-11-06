@@ -25,7 +25,7 @@ seqsammeha(samm, spell, typology, persper = TRUE)
   \item{samm}{A SAMM object produced by \code{seqsamm}.}
   \item{type}{the type of the plot. Available types are "d" for state distribution plots (chronograms), "f" for sequence frequency plots, "Ht" for transversal entropy plots, "i" for selected sequence index plots, "I" for whole set index plots, "ms" for plotting the sequence of modal states, "mt" for mean times plots, "pc" for parallel coordinate plots and "r" for representative sequence plots.}
   \item{spell}{Character. The (ending) spell to consider. It should be one of the state of the \code{\link{alphabet}} of the sequences. }
-  \item{typology}{Factor or character. The typology of the trajectories out of the specified ending \code{spell}. It should contain one observation per observed ending spell. }
+  \item{typology}{Factor or character. The typology of the trajectories out of the specified ending \code{spell}. It should contain one observation per observed ending spell.}
   \item{persper}{Logical. If \code{TRUE}, the data are returned in person-period format. Otherwise, only one line per observed spell is returned.}
   \item{...}{additional plot parameters passed to \code{\link{seqplot}}.}
 }
@@ -128,7 +128,7 @@ summary(coxme(Surv(spell.time, SAMMjoblessness1)~gcse5eq+Grammar+funemp+(1|id), 
 
 ###########################################################################
 ### Now repeat steps II and III for employment and then education
-### (Not detailed here
+### (Not shown here)
 ###########################################################################
 
 }
