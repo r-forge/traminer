@@ -20,8 +20,9 @@ seqsammeha(samm, spell, typology, persper = TRUE)
 \arguments{
 \item{seqdata}{State sequence object created with the \code{\link{seqdef}} function. The whole trajectory followed by individuals.}
   \item{sublength}{Numeric. The length of the trajectory (or subsequence) following a transition to be considered.}
-  \item{covar}{Optional \code{data.frame} storing covariates of interest. These covariates are added to the final data set. }
-  \item{samm}{A SAMM object produced by \code{seqsamm}}
+  \item{covar}{Optional \code{data.frame} storing covariates of interest. These covariates are added to the final data set.}
+  \item{x}{A SAMM object produced by \code{seqsamm}}
+  \item{samm}{A SAMM object produced by \code{seqsamm}.}
   \item{type}{the type of the plot. Available types are "d" for state distribution plots (chronograms), "f" for sequence frequency plots, "Ht" for transversal entropy plots, "i" for selected sequence index plots, "I" for whole set index plots, "ms" for plotting the sequence of modal states, "mt" for mean times plots, "pc" for parallel coordinate plots and "r" for representative sequence plots.}
   \item{spell}{Character. The (ending) spell to consider. It should be one of the state of the \code{\link{alphabet}} of the sequences. }
   \item{typology}{Factor or character. The typology of the trajectories out of the specified ending \code{spell}. It should contain one observation per observed ending spell. }
@@ -32,7 +33,6 @@ seqsammeha(samm, spell, typology, persper = TRUE)
 The Sequence Analysis Multistate Model (SAMM) procedure works in three steps. First, the sub-sequences over a given time span \code{sublength} following any transition in the trajectories (\code{seqdata}) are extracted. This step is achieved using the \code{seqsamm} function. Second, these sub-sequences are clustered using SA to identify typical sub-sequences of medium-term changes. This is achieved separately for each ending spell (see \code{spell} arguement). The \code{seqsammseq} function can be used to retrieve the sub-trajectories following each ending spell. Third, multistates models are used to estimate the chance (or risk) to end each type of spell by distinguishing the type of trajectory that follows (and identified by sequence analysis). This allows estimating the  effect of covariates on the chances to start each kind of sub-sequence. The \code{seqsammeha} prepare the data to estimate the competing risk models for each ending spell. Then usual competing risks models can be used. 
 
 Generally speaking, the SAMM procedure allows studying the time spent in each state as well as the patterns of medium-term changes occurring in trajectories. The example section below provides a step by step example of how to use it.
-
 }
 \value{
 The \code{seqsamm} function returns a SAMM object, storing the reorganized data as person period. 
@@ -131,14 +131,4 @@ summary(coxme(Surv(spell.time, SAMMjoblessness1)~gcse5eq+Grammar+funemp+(1|id), 
 ### (Not detailed here
 ###########################################################################
 
-
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
