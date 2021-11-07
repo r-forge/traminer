@@ -53,7 +53,7 @@ The function \code{seqsammeha} returns a \code{data.frame} storing the person pe
 \item{SAMM...}{Logical. A logical vector specifying whether the current observation end the spell with the following \code{...} type of trajectory.}
 }
 \references{
-Studer, M., Struffolino, E., & Fasang, A. E. (2018). Estimating the Relationship between Time-varying Covariates and Trajectories: The Sequence Analysis Multistate Model Procedure. \emph{Sociological Methodology}, 48(1), 103–135. \doi{10.1177/0081175017747122}
+Studer, M., Struffolino, E., & Fasang, A. E. (2018). Estimating the Relationship between Time-varying Covariates and Trajectories: The Sequence Analysis Multistate Model Procedure. \emph{Sociological Methodology}, 48(1), 103â€“135. \doi{10.1177/0081175017747122}
 }
 \author{
 Matthias Studer
