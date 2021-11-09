@@ -12,7 +12,7 @@ seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
 
   if(length(indel) > 1 & any(indel=="auto"))
     stop(" [!] 'auto' not allowed in vector or list indel")
-  if(is.list(indel) & length(indel==1))
+  if(is.list(indel) & length(indel)==1)
     stop(" [!] When a list, indel must be of length equal to number of channels")
 
 	nchannels <- length(channels)
@@ -78,7 +78,9 @@ seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
 		  stop(" [!] you should supply one weight, one substitution matrix and one indel per channel")
 	}
 	## indels
-	if (!is.list(indel))
+	if (is.list(indel))
+    indel_list <- list()
+  else
     indel_list <- numeric(length=nchannels)
   if (any(indel == "auto") & any(sm %in% c("INDELSLOG","INDELS")))
     indel_list <- list()

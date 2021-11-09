@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-3 [2021-11-02] (Development version)
+Version 2.3-3 [2021-11-09] (Development version)
 
 Changes in existing functions:
   - plot.stslist.modst() new attribute 'info' to control

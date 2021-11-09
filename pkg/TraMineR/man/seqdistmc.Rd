@@ -29,19 +29,22 @@ seqdistmc(channels, method, norm="none", indel="auto", sm=NULL,
  \item{indel}{Double, vector of doubles, or list with an insertion/deletion cost or a vector of state dependent indel costs for each channel. Can also be \code{"auto"} (default), in which case the indel cost of each channel is automatically set in accordance with the \code{sm} value of the channel. See \code{indel} argument of \code{\link{seqdist}}.
      }
 
- \item{sm}{A list with a substitution-cost matrix for each channel 
+ \item{sm}{A list with a substitution-cost matrix for each channel
    or a list of method names for generating the substitution-costs
    (see \code{\link{seqcost}}). Ignored when \code{method="LCS"}.
    }
 
  \item{with.missing}{Logical or vector of logical. Must be \code{TRUE} for channels with non deleted
-   gaps (missing values). See details.}
+   gaps (missing values). See details.
+   }
 
  \item{full.matrix}{Logical. If \code{TRUE} (default), the full distance matrix is returned.
-   If \code{FALSE}, an object of class \code{\link{dist}} is returned.}
+   If \code{FALSE}, an object of class \code{\link{dist}} is returned.
+   }
 
  \item{link}{Character string. One of \code{"sum"} or \code{"mean"}. Method to compute the "link"
-   between channels. Default is to sum the substitution costs.}
+   between channels. Default is to sum the substitution costs.
+   }
 
  \item{cval}{Double. Substitution cost for \code{"CONSTANT"} matrix, see \code{\link{seqcost}}.}
 
