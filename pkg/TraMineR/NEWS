@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-3 [2021-11-09] (Development version)
+Version 2.3-3 [2021-11-30] (Development version)
 
 Changes in existing functions:
   - plot.stslist.modst() new attribute 'info' to control
@@ -35,12 +35,14 @@ Changes in existing functions:
     to provide different values for each channel.
   - seqdistmc() now also supports "INDELS" and "INDELSLOG"
     values for the sm argument.
+  - seqcost() removed "->" at end of row/column labels
+    of matrix sm.
 
 Bug fixes:
   - seqdiff() negative values in cmprange caused an error.
   - seqdiff() Changed deprecated norm=TRUE into
     norm='auto' in default seqdist.args value.
-  - seqecreate() NAs introduced by coercion with character id. 
+  - seqecreate() NAs introduced by coercion with character id.
 
 Misc.
   - Dependence on boot and RColorBrewer replaced by importFrom

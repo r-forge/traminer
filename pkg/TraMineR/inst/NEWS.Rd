@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-3 [2021-11-09] (Development version)}{
+\section{Changes in version 2.3-3 [2021-11-30] (Development version)}{
 
   \subsection{Changes in existing functions}{
     \itemize{
@@ -32,6 +32,8 @@
       \code{seqdistmc()} \code{with.missing} can now be a vector to provide different values for each channel.
       \item
       \code{seqdistmc()} now also supports \code{"INDELS"} and \code{"INDELSLOG"} values for the \code{sm} argument.
+      \item
+      \code{seqcost()} removed "\code{->}" at end of row/column labels of matrix \code{sm}.
     }
   }
 

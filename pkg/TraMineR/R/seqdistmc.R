@@ -1,6 +1,6 @@
 ## multichannel distances
 
-seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
+seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 	with.missing=FALSE, full.matrix=TRUE, link="sum", cval=2, miss.cost=2, cweight=NULL,
   what="diss", ch.sep = "@@@@TraMineRSep@@@@") {
 
@@ -9,6 +9,15 @@ seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
   if (!(what %in% whatlist)){
     msg.stop("what should be one of ",paste0("'",whatlist,"'", collapse=","))
   }
+
+  if (what=="diss" & is.null(method))
+    msg.stop("method cannot be NULL when what = 'diss'")
+  if (what=="sm" & is.null(sm))
+    msg.stop("sm cannot be NULL when what = 'sm'")
+  ## if time varying sm are provided, all sm must be 3-dimensional
+  if (any(length(dim(sm[[1]]))==3) && !all(length(dim(sm[[1]]))==3))
+    msg.stop("One sm is 3-dimensional and some are not!")
+  timeVarying <- length(dim(sm[[1]])) == 3
 
   if(length(indel) > 1 & any(indel=="auto"))
     stop(" [!] 'auto' not allowed in vector or list indel")
@@ -38,32 +47,35 @@ seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
 	numseq <- numseq[1]
 	message(" [>] ", nchannels, " channels with ", numseq, " sequences")
 	## Actually LCP and RLCP are not included
-	metlist <- c("OM", "LCS", "DHD", "HAM")
-	if (!method %in% metlist) {
-		stop(" [!] method must be one of: ", paste(metlist, collapse=" "), call.=FALSE)
-	}
-	## We handle LCS as OM
-	if (method=="LCS") {
-		method <- "OM"
-		sm <- "CONSTANT"
-		indel <- 1
-		cval <- 2
-		miss.cost <- 2
-	}
-	timeVarying <- method %in% c("DHD")
-	## Indels and sm only apply for OM
-	## Correct number of arguments
-	## Generating default substitution arguments for DHD ## not HAM
-	if (is.null(sm)) {
-		costmethod <- "CONSTANT"
-		if (method == "DHD") {
-			costmethod <- "TRATE"
-		}
-		sm <- rep(costmethod, nchannels)
-	}
-	else if (length(sm)==1 && sm %in% c("CONSTANT", "TRATE", "INDELS", "INDELSLOG")){
-		sm <- rep(sm, nchannels)
-	}
+
+  if (what=="diss") {
+  	metlist <- c("OM", "LCS", "DHD", "HAM")
+  	if (!method %in% metlist) {
+  		stop(" [!] method must be one of: ", paste(metlist, collapse=" "), call.=FALSE)
+  	}
+  	## We handle LCS as OM
+  	if (method=="LCS") {
+  		method <- "OM"
+  		sm <- "CONSTANT"
+  		indel <- 1
+  		cval <- 2
+  		miss.cost <- 2
+  	}
+	  timeVarying <- method %in% c("DHD")
+  	## Indels and sm only apply for OM
+  	## Correct number of arguments
+  	## Generating default substitution arguments for DHD ## not HAM
+  	if (is.null(sm)) {
+  		costmethod <- "CONSTANT"
+  		if (method == "DHD") {
+  			costmethod <- "TRATE"
+  		}
+  		sm <- rep(costmethod, nchannels)
+  	}
+  }
+ 	else if (length(sm)==1 && sm %in% c("CONSTANT", "TRATE", "INDELS", "INDELSLOG")){
+ 		sm <- rep(sm, nchannels)
+ 	}
 
 	if (length(indel)==1) {
 	   	indel <- rep(indel, nchannels)
@@ -72,10 +84,12 @@ seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
       with.missing <- rep(with.missing, nchannels)
   }
 	## Checking correct numbers of info per channel
+  if (what != "seqmc") {
 	if ((length(indel)!= nchannels) ||
 		(length(sm)!= nchannels) ||
 		(length(cweight)!= nchannels)) {
 		  stop(" [!] you should supply one weight, one substitution matrix and one indel per channel")
+    }
 	}
 	## indels
 	if (is.list(indel))
@@ -172,6 +186,7 @@ seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
   		}
   		alphabet_list[[i]] <- attr(channels[[i]],"alphabet")
   		## Checking missing values
+      ##cat("i = ",i,"with.missing = ",with.missing,"\n")
   		if (with.missing[i]) {
   			alphabet_list[[i]] <- c(alphabet_list[[i]],attr(channels[[i]],"nr"))
   			message(" [>] including missing value as an additional state" )
@@ -185,8 +200,10 @@ seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
       if(is.list(indel)){
         if (length(indel[[i]])==1)
           indel[[i]] <- rep(indel[[i]],alphsize_list[[i]])
-        if (length(indel[[i]]) != alphsize_list[[i]])
+        if (length(indel[[i]]) != alphsize_list[[i]]){
+          cat("i = ",i,", indel length = ", length(indel[[i]]), ", alphabet size = ", alphsize_list[[i]], "\n alphabet = ", alphabet_list[[i]],"\n" )
   				stop(" [!] indel length does not much size of alphabet for at least one channel")
+        }
       }
       else if (!any(indel=="auto") & !is.list(indel_list)) {
   		  indel_list[i] <- indel[i]
@@ -208,20 +225,20 @@ seqdistmc <- function(channels, method, norm="none", indel="auto", sm=NULL,
         }
   		}
   		## Checking correct dimension cost matrix
-  		else {
-        message(" [>]   channel ",i)
+  		else { ## provided sm
+        #message(" [>]   channel ",i)
 
-  			if (method=="OM") {
-          if (any(indel[i] == "auto"))
-              indel_list[i] <- max(sm[[i]])/2
-          else
-              indel_list[i] <- indel[i]
+  			#if (what=='diss' & method=="OM") {
+        if (any(indel[i] == "auto") & !is.list(indel_list))
+          indel_list[i] <- max(sm[[i]])/2
+        else
+          indel_list[i] <- indel[i]
           ##cat("\n indel_list[i] ",indel_list[i], "\n")
           ##print(sm[[i]])
-  				checkcost(sm[[i]], channels[[i]], with.missing = with.missing[i], indel = indel_list[i])
-  			} else {
-  				checkcost(sm[[i]], channels[[i]], with.missing = with.missing[i])
-  			}
+  			checkcost(sm[[i]], channels[[i]], with.missing = with.missing[i], indel = indel_list[[i]])
+        #else {
+  			#	checkcost(sm[[i]], channels[[i]], with.missing = with.missing[i])
+  			#}
   			substmat_list[[i]] <- sm[[i]]
   		}
 
