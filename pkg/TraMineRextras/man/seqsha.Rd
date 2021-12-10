@@ -82,7 +82,6 @@ seqdplot(previousTraj, sha$pclustname)
 
 
 ## Now we use a discrete time model include the type of previous trajectory as covariate.
-## Here nothing significant because of number of cases...
 summary(glm(event~time+pclustname+sex, data=sha, family=binomial))
 }
 
