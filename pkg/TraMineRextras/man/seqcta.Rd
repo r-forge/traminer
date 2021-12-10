@@ -49,7 +49,7 @@ data(biofam)
 bf.shortlab <- c("P","L","M","LM","C","LC", "LMC", "D")
 bf.seq <- seqdef(biofam[,10:25], states=bf.shortlab)
 
-## We focus on the occurrence of ending the "P" spell and the trajectory that follows
+## We focus on the occurrence of ending the first "P" spell and the trajectory that follows
 ## For the next subseq=5 years
 ## We also store the covariate sex and birthyr
 ## seqcta will transform the data to person-period until the end of the first "P" spell 
@@ -66,6 +66,7 @@ dur <- seqdur(bf.seq)
 ## If "P" is the first state, we use the time in this state (dur[, 1])
 ## Otherwise we use 0 (started immediatly at the beginning)
 timeP <- ifelse(bf.seq[, 1]=="P", dur[, 1], 0)
+
 ## The event occured if timeP is inferior to the length of the sequence
 ## Otherwise they never left their parents. 
 eventP <- timeP < 16
