@@ -187,6 +187,7 @@ summary.ddomassoc <- function(object, ...){
       }
     }
   }
+  tab <- tab[1:k,]
   rownames(tab) <- tabnames
   return(tab)
 }
