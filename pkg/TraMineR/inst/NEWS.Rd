@@ -1,10 +1,19 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-3 [2021-11-30] (Development version)}{
+\section{Changes in version 2.3-3 [2021-12-18] (Development version)}{
+
+  \subsection{New functions}{
+    \itemize{
+      \item
+      \code{summary.ddomassoc()} summary method that organizes outcome of \code{dissdomassoc} in table form.
+    }
+  }
 
   \subsection{Changes in existing functions}{
     \itemize{
+      \item
+      dissdomassoc() now returns also p-values of computed correlations.
       \item
       \code{plot.stslist.modst()} New attribute \code{info} to control whether frequency of sequence of modal state should be displayed.
       \item

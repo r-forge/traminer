@@ -1,7 +1,13 @@
 ## =========
-Version 2.3-3 [2021-11-30] (Development version)
+Version 2.3-3 [2021-12-18] (Development version)
+
+New functions:
+  - summary.ddomassoc() summary method that organizes 
+    outcome of dissdomassoc in table form.
 
 Changes in existing functions:
+  - dissdomassoc() now returns also p-values of the
+    computed correlations.
   - plot.stslist.modst() new attribute 'info' to control
     whether frequency of sequence of modal state should
     be displayed.
