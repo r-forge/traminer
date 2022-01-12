@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-3 [2021-12-18] (Development version)}{
+\section{Changes in version 2.3-3 [2022-01-12] (Development version)}{
 
   \subsection{New functions}{
     \itemize{
@@ -13,7 +13,9 @@
   \subsection{Changes in existing functions}{
     \itemize{
       \item
-      dissdomassoc() now returns also p-values of computed correlations.
+      \code{dissdomassoc()} now returns also p-values of computed correlations.
+      \item
+      \code{plot.subseqelistchisq()} (plot of outcome of \code{seqecmpgroup}) gains attribute \code{with.legend}.
       \item
       \code{plot.stslist.modst()} New attribute \code{info} to control whether frequency of sequence of modal state should be displayed.
       \item
