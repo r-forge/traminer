@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-3 [2022-01-12] (Development version)}{
+\section{Changes in version 2.3-3 [2022-01-19] (Development version)}{
 
   \subsection{New functions}{
     \itemize{
@@ -37,6 +37,8 @@
       \item
       \code{seqdistmc()} Rows and columns of the returned distance matrix and the mc sequences are now labelled with rownames of the
       first channel. Rows and columns of the returned mc substitution cost matrix are labelled with the expanded alphabet.
+      \item
+      \code{seqdistmc()} columns of the returned expanded sequence object now labelled with column names of longest domain.
       \item
       \code{seqdistmc()} \code{indel} can now be \code{"auto"} (new default) to automatically set indel values. In addition, state dependent indels are now supported.
       \item

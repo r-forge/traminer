@@ -106,9 +106,10 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 	alphsize_list <-list()
 	## seqlenth of each channels
 	maxlength_list <- numeric(length=nchannels)
-  ## Storing number of columns
+  ## Storing number of columns and cnames
   for (i in 1:nchannels)
   	maxlength_list[i] <- ncol(channels[[i]])
+  md.cnames <- colnames(channels[[which.max(maxlength_list)]])
 
   ######################
 
@@ -162,13 +163,13 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 		}
   }
 	## Setting void states back to NA  (nr will be considered as a distinct state)
-	newseqdata[newseqdataNA] <- NA
+  newseqdata[newseqdataNA] <- NA
 
   ## since v 2.2-0 automatic cpal no longer limited to 12 states, so no need of following
 	#alphabet_size <- length(unique(as.character(newseqdata))) - as.integer(sum(is.na(newseqdata))>0)
 	#suppressMessages(newseqdata <- seqdef(newseqdata, cpal=rep("blue", alphabet_size)))
-	suppressMessages(newseqdata <- seqdef(newseqdata))
-	message(" OK")
+  suppressMessages(newseqdata <- seqdef(newseqdata, cnames=md.cnames))
+  message(" OK")
 
   if (what == "seqmc") {
     return(newseqdata)

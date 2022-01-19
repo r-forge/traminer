@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-3 [2022-01-12] (Development version)
+Version 2.3-3 [2022-01-19] (Development version)
 
 New functions:
   - summary.ddomassoc() summary method that organizes
@@ -8,7 +8,7 @@ New functions:
 Changes in existing functions:
   - dissdomassoc() now returns also p-values of the
     computed correlations.
-  - plot.subseqelistchisq() (plot of outcome of seqecmpgroup) 
+  - plot.subseqelistchisq() (plot of outcome of seqecmpgroup)
     gains attribute 'with.legend'.
   - plot.stslist.modst() new attribute 'info' to control
     whether frequency of sequence of modal state should
@@ -36,6 +36,8 @@ Changes in existing functions:
     and the mc sequences are now labelled with rownames of the
     first channel. Rows and columns of the mc substitution
     cost matrix are labelled with the expanded alphabet.
+  - seqdistmc() columns of the returned expanded sequence object
+    now labelled with column names of longest domain.
   - seqdistmc() indel argument can now be "auto" (new default)
     to automatically set indel values. In addition, state
     dependent indels are now supported.
