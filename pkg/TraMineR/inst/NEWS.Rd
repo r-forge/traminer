@@ -1,7 +1,18 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-3 [2022-01-19] (Development version)}{
+\section{Changes in version 2.3-4 [2022-01-20] }{
+
+  \subsection{Misc.}{
+    \itemize{
+      \item
+      No changes
+    }
+  }
+}
+
+
+\section{Changes in version 2.2-3 [2022-01-19] }{
 
   \subsection{New functions}{
     \itemize{
@@ -17,7 +28,7 @@
       \item
       \code{plot.subseqelistchisq()} (plot of outcome of \code{seqecmpgroup}) gains attribute \code{with.legend}.
       \item
-      \code{plot.stslist.modst()} New attribute \code{info} to control whether frequency of sequence of modal state should be displayed.
+      \code{plot.stslist.modst()} new attribute \code{info} to control whether frequency of sequence of modal state should be displayed.
       \item
       \code{plot.ststlist.meant()} now uses an internal function
       to draw error bars to avoid issues with dependence on Hmisc.
@@ -28,14 +39,14 @@
       \code{seqmtplot()} (\code{seqplot(..,type="mt", ..)}) adapted for
        handling bar labels with groups. See details in \code{seqplot} help page.
       \item
-      \code{seqformat()} with \code{from="SPELL"}, provides info about number of sequences truncated, empty sequences because of spell occurring before birth year, empty because of missing start time. A new attribute \code{issues} contains
+      \code{seqformat()} with \code{from="SPELL"}, provides info about number of sequences truncated, empty sequences because of spell occurring before birth year, and empty because of missing start time. A new attribute \code{issues} contains
       the indexes of sequences with issues.
       \item
       \code{seqdef()} now prints, when applicable, the number of empty sequences and lists the first 9 empty sequences only.
       \item
       \code{seqdistmc()} gains an argument \code{ch.sep} to control the separator symbol for building state names of the expanded alphabet.
       \item
-      \code{seqdistmc()} Rows and columns of the returned distance matrix and the mc sequences are now labelled with rownames of the
+      \code{seqdistmc()} rows and columns of the returned distance matrix and the mc sequences are now labelled with rownames of the
       first channel. Rows and columns of the returned mc substitution cost matrix are labelled with the expanded alphabet.
       \item
       \code{seqdistmc()} columns of the returned expanded sequence object now labelled with column names of longest domain.
@@ -53,9 +64,9 @@
   \subsection{Bug fixes}{
     \itemize{
       \item
-      \code{seqdiff()} Negative values in \code{cmprange} caused an error.
+      \code{seqdiff()} negative values in \code{cmprange} caused an error.
       \item
-      \code{seqdiff()} Changed deprecated \code{norm=TRUE} into \code{norm='auto'} in default \code{seqdist.args} value.
+      \code{seqdiff()} changed deprecated \code{norm=TRUE} into \code{norm='auto'} in default \code{seqdist.args} value.
       \item
       \code{seqecreate()} \code{NA}s introduced by coercion with character \code{id}.
 

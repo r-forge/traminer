@@ -1,5 +1,11 @@
 ## =========
-Version 2.3-3 [2022-01-19] (Development version)
+Version 2.3-4 [2022-01-20]
+
+Misc.:
+  - No changes
+
+## =========
+Version 2.2-3 [2022-01-19] 
 
 New functions:
   - summary.ddomassoc() summary method that organizes
@@ -24,7 +30,7 @@ Changes in existing functions:
     seqplot help page.
   - seqformat() with from="SPELL", provides info about
     number of sequences truncated, empty sequences because
-    of spell occurring before birth year, empty because
+    of spell occurring before birth year, and empty because
     of missing start time. A new attribute 'issues' contains
     the indexes of sequences with issues.
   - seqdef() now prints, when applicable, the number of
@@ -32,7 +38,7 @@ Changes in existing functions:
   - seqdistmc() gains an argument 'ch.sep' to control
     the separator symbol for building state names of
     of the expanded alphabet.
-  - seqdistmc() Rows and columns of the returned distance matrix
+  - seqdistmc() rows and columns of the returned distance matrix
     and the mc sequences are now labelled with rownames of the
     first channel. Rows and columns of the mc substitution
     cost matrix are labelled with the expanded alphabet.
@@ -50,7 +56,7 @@ Changes in existing functions:
 
 Bug fixes:
   - seqdiff() negative values in cmprange caused an error.
-  - seqdiff() Changed deprecated norm=TRUE into
+  - seqdiff() changed deprecated norm=TRUE into
     norm='auto' in default seqdist.args value.
   - seqecreate() NAs introduced by coercion with character id.
 

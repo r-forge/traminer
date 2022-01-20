@@ -73,13 +73,12 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
   		sm <- rep(costmethod, nchannels)
   	}
   }
- 	else if (length(sm)==1 && sm %in% c("CONSTANT", "TRATE", "INDELS", "INDELSLOG")){
- 		sm <- rep(sm, nchannels)
- 	}
-
-	if (length(indel)==1) {
-	   	indel <- rep(indel, nchannels)
-	}
+  if (length(sm)==1 && sm %in% c("CONSTANT", "TRATE", "INDELS", "INDELSLOG")){
+ 	sm <- rep(sm, nchannels)
+  }
+  if (length(indel)==1) {
+   	indel <- rep(indel, nchannels)
+  }
   if (length(with.missing)==1) {
       with.missing <- rep(with.missing, nchannels)
   }
