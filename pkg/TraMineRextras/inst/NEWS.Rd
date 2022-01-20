@@ -1,14 +1,24 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
-\section{Changes in version 0.7.3 [2021-12-18] (Development version)}{
+\section{Changes in version 0.7.4 [2022-01-20] (Development version)}{
+
+  \subsection{Misc.}{
+    \itemize{
+      \item
+      No changes
+    }
+  }
+}
+
+\section{Changes in version 0.6.3 [2022-01-19] }{
 
   \subsection{New functions}{
     \itemize{
       \item
       \code{seqcta()} organizes data for CTA analysis (Studer et al., ALCR 2018).
       \item
-      \code{seqsamm()}, \code{seqsammseq()} and \code{seqsammeha} organize data for SAMM analysis (Studer et al., Soc. Meth. 2018).
+      \code{seqsamm()}, \code{seqsammseq()} and \code{seqsammeha} organize and retrieve data for SAMM analysis (Studer et al., Soc. Meth. 2018).
       \item
       \code{plot.SAMM()} plot of \code{SAMM} object returned by \code{seqsamm}.
       \item

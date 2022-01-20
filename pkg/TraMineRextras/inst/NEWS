@@ -1,8 +1,14 @@
-                CHANGES IN TraMineRextras VERSION 0.7.3 [2021-12-18] (Development version)
+                CHANGES IN TraMineRextras VERSION 0.7.4 [2022-01-20] (Development version)
+                
+Misc.:
+    o   No changes
+    
+
+                CHANGES IN TraMineRextras VERSION 0.6.3 [2022-01-19]
 
 New functions:
     o   seqcta() organizes data for CTA analysis (Studer et al., ALCR 2018).
-    o   seqsamm(), seqsammseq(), seqsammeha() organize data for SAMM analysis (Studer et al., Soc. Meth. 2018).
+    o   seqsamm(), seqsammseq(), seqsammeha() organize and retrieve data for SAMM analysis (Studer et al., Soc. Meth. 2018).
     o   plot.SAMM() plot of SAMM object returned by seqsamm.
     o   seqsha() organizes data for SHA analysis (Rossignon et al., in Ritschard & Studer, 2018).
 

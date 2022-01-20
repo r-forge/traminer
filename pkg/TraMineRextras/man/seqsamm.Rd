@@ -30,12 +30,12 @@ seqsammeha(samm, spell, typology, persper = TRUE)
   \item{...}{additional plot parameters passed to \code{\link{seqplot}}.}
 }
 \details{
-The Sequence Analysis Multistate Model (SAMM) procedure works in three steps. First, the subsequences over a given time span \code{sublength} following any transition out of (exit from) a spell in any given state of the alphabet state along  the trajectories (\code{seqdata}) are extracted. This step is achieved using the \code{seqsamm} function. Each subsequence starts with the last time-point of the spell in a given state. Second, these sub-sequences are clustered using SA to identify typical sub-sequences of medium-term changes. This is achieved separately for each ending spell (see \code{spell} argument). The \code{seqsammseq} function can be used to retrieve the sub-trajectories following each ending spell. Third, multistate models are used to estimate the chance (or risk) to end a spell in a given spell by distinguishing the type of trajectory that follows (and identified with cluster analysis). This allows estimating the effect of covariates on the chances to start each type of sub-sequence. The \code{seqsammeha} prepare the data to estimate the competing risk models for each ending spell. Then usual competing risks models can be used. 
+The Sequence Analysis Multistate Model (SAMM) procedure works in three steps. First, the subsequences over a given time span \code{sublength} following any transition out of (exit from) a spell in any given state of the alphabet state along  the trajectories (\code{seqdata}) are extracted. This step is achieved using the \code{seqsamm} function. Each subsequence starts with the last time-point of the spell in a given state. Second, these sub-sequences are clustered using SA to identify typical sub-sequences of medium-term changes. This is achieved separately for each ending spell (see \code{spell} argument). The \code{seqsammseq} function can be used to retrieve the sub-trajectories following each ending spell. Third, multistate models are used to estimate the chance (or risk) to end a spell in a given spell by distinguishing the type of trajectory that follows (and identified with cluster analysis). This allows estimating the effect of covariates on the chances to start each type of sub-sequence. The \code{seqsammeha} prepare the data to estimate the competing risk models for each ending spell. Then usual competing risks models can be used.
 
 Generally speaking, the SAMM procedure allows studying the time spent in each state as well as the patterns of medium-term changes after an exit from that state appears along the trajectories. The example section below provides a step by step example of how to use it.
 }
 \value{
-The \code{seqsamm} function returns a SAMM object, storing the reorganized data as person period. 
+The \code{seqsamm} function returns a SAMM object, storing the reorganized data as person period.
 \item{id}{Numeric. The ID of the observation as the row number in the original \code{seqdata}.}
 \item{time}{Numeric. The time unit of the current observation (from the beginning of the original sequence).}
 \item{begin}{Numeric. The time of the beginning of the current spell (from the beginning of the original sequence).}
@@ -51,6 +51,8 @@ The function \code{seqsammseq} returns a sequence object (see \code{\link{seqdef
 The function \code{seqsammeha} returns a \code{data.frame} storing the person period data of a specific ending \code{spell} (see \code{spell} argument) considering the given \code{typology} as competing risks (see \code{typology} argument). Several variables are added to the SAMM objects (see above):
 \item{SAMMtypology}{factor. The events ending the specified spell using \code{"None"} when not event occurs.}
 \item{SAMM...}{Logical. A logical vector specifying whether the current observation end the spell with the following \code{...} type of trajectory.}
+}
+\seealso{\code{\link{seqcta}}, \code{\link{seqsha}}
 }
 \references{
 Studer, M., Struffolino, E., & Fasang, A. E. (2018). Estimating the Relationship between Time-varying Covariates and Trajectories: The Sequence Analysis Multistate Model Procedure. \emph{Sociological Methodology}, 48(1), 103–135. \doi{10.1177/0081175017747122}
@@ -104,11 +106,11 @@ jltype <- paste0("joblessness", jlclust)
 
 ## Get the data to estimate competing risks models of the kind of trajectory
 ## out of jobjlessness
-## We specify the SAMM object, the ending spell (joblessness) and our typology. 
+## We specify the SAMM object, the ending spell (joblessness) and our typology.
 jleha <- seqsammeha(mvad.samm, "joblessness", jltype)
 
 \dontrun{
-## Now jleha stores the data in person period format for competing risks 
+## Now jleha stores the data in person period format for competing risks
 ## Discrete time model using multinomial regression
 ## SAMMtypology and spell.time are variables created and stored in the jleha dataset
 library(nnet)
