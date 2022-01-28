@@ -54,6 +54,7 @@ export(
   seqivolatility,
   seqlegend,
   seqlength,
+  seqlength.align,
   seqLLCP,
   seqLLCS,
   seqlogp,

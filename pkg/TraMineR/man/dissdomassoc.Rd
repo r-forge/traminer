@@ -25,7 +25,7 @@ Measures of association between domains are computed as the association between 
 }
 
 \details{ The \code{dissdomassoc} function computes the domain association measures proposed by \cite{Piccarreta (2017)}.
-These are for each pair of domains the correlation (Pearson or Spearman) between the domain specific pairwise dissimilarities. When \code{'R2'} is requested, the function computes the share of variance of the dissimilarities in one domain that is reproduced by the dissimilarities in all other domains. The Cronbach alpha measures the coherence between the domains. With \code{'cronbach.subsets'}, Cronbach alpha is computed for the entire set of domains as well as for each possible subset of two or more domains.
+These are for each pair of domains the correlation (Pearson or Spearman) between the domain specific pairwise dissimilarities. When \code{'R2'} is requested, the function computes the share of variance of the dissimilarities in one domain that is reproduced by the dissimilarities in all other domains. The Cronbach alpha measures the coherence between the domains. With \code{'cron.subsets'}, Cronbach alpha is computed for the entire set of domains as well as for each possible subset of two or more domains.
 
 When a \code{jointdiss} distance matrix or object is provided, correlations of each individual with this joint domain are also computed. The R2 of the joint domain takes account of all domains. However, R2's for the domains remain unchanged, i.e. they ignore the joint domain. Likewise, \code{jointdiss} does not affect the Cronbach alpha.
 

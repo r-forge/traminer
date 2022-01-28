@@ -1,11 +1,12 @@
 ## =========
-Version 2.3-4 [2022-01-20]
+Version 2.3-4 [2022-01-28]
 
-Misc.:
-  - No changes
+New functions:
+  - seqlength.align() sets lengths of sequences of multiple domains as the shortest length among the domains.
+
 
 ## =========
-Version 2.2-3 [2022-01-19] 
+Version 2.2-3 [2022-01-19]
 
 New functions:
   - summary.ddomassoc() summary method that organizes

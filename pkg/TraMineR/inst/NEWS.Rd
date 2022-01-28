@@ -1,12 +1,12 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-4 [2022-01-20] }{
+\section{Changes in version 2.3-4 [2022-01-28] }{
 
-  \subsection{Misc.}{
+  \subsection{New functions}{
     \itemize{
       \item
-      No changes
+      \code{seqlength.align()} sets lengths of sequences of multiple domains as the shortest length among the domains.
     }
   }
 }
