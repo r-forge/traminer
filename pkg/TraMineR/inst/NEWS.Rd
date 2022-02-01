@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-4 [2022-01-28] }{
+\section{Changes in version 2.3-4 [2022-02-01] }{
 
   \subsection{New functions}{
     \itemize{
@@ -9,6 +9,14 @@
       \code{seqlength.align()} sets lengths of sequences of multiple domains as the shortest length among the domains.
     }
   }
+  \subsection{Changes in existing functions}{
+    \itemize{
+      \item
+      \code{seqdistmc()}: option \code{what="sm"} becomes \code{what="cost"}.
+      Deprecated \code{"sm"} value maintained for backward compatibility.
+    }
+  }
+    
 }
 
 
