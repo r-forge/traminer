@@ -1,13 +1,14 @@
 ## =========
-Version 2.3-4 [2022-02-01]
+Version 2.3-4 [2022-02-14]
 
 New functions:
-  - seqlength.align() sets lengths of sequences of multiple 
+  - seqlength.align() sets lengths of sequences of multiple
     domains as the shortest length among the domains.
-  
+  - seqmaintokens() returns indexes of more frequent tokens.
+
 Changes in existing function:
   - seqdistmc(): option what="sm" becomes what="cost".
-    Deprecated "sm" value maintained for backward 
+    Deprecated "sm" value maintained for backward
     compatibility.
 
 

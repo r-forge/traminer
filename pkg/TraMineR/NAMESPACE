@@ -58,6 +58,7 @@ export(
   seqLLCP,
   seqLLCS,
   seqlogp,
+  seqmaintokens,
   seqmeant,
   seqmodst,
   seqmpos,

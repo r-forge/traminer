@@ -1,12 +1,14 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-4 [2022-02-01] }{
+\section{Changes in version 2.3-4 [2022-02-14] }{
 
   \subsection{New functions}{
     \itemize{
       \item
       \code{seqlength.align()} sets lengths of sequences of multiple domains as the shortest length among the domains.
+      \item
+      \code{seqmaintokens()} returns indexes of more frequent tokens.
     }
   }
   \subsection{Changes in existing functions}{
@@ -16,7 +18,7 @@
       Deprecated \code{"sm"} value maintained for backward compatibility.
     }
   }
-    
+
 }
 
 
