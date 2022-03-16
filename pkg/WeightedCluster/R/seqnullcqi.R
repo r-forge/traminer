@@ -144,7 +144,7 @@ plot.seqnullcqi <- function(x, stat, type=c("line", "density", "boxplot", "seqdp
 		}else{
 			nn <- as.vector(nullstat)
 			kk <- rep(kvals, each=nrow(nullstat))
-			boxplot(nn~kk, ylim=allrange)
+			boxplot(nn~kk, ylim=allrange, main=main, ylab=ylab, xlab="Number of clusters")
 			#plot(kvals, origstat, ylim=allrange, lwd=2, col="black", type="b", main=main, ylab=ylab, xlab="Number of clusters")
 			lines(seq_along(unique(kk)), origstat, lwd=2, col="black", type="b")
 		}
@@ -177,7 +177,7 @@ plot.seqnullcqi <- function(x, stat, type=c("line", "density", "boxplot", "seqdp
 }
 
 seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "sequencing", "stateindep", "Markov", "userpos"),
-						seqdist.args=list(), kmedoid=FALSE, hclust.method="ward.D", ...){
+						seqdist.args=list(), kmedoid=FALSE, hclust.method="ward.D", ncores=1, ...){
 	if(!inherits(clustrange, "clustrange")){
 		stop(" [!] Original cluster quality measures should be provided as a clustrange object. See ?as.clustrange().\n")
 	}
@@ -199,19 +199,53 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 	nc <- list()
 	allseq <- list()
 	oldseqdist.args <- seqdist.args
-	for(i in 1:R){
-		suppressMessages(ss <- seqnull(seqdata, model=model, ...))
-		seqdist.args$seqdata <- ss
-		allseq[[i]] <- ss
-		suppressMessages(diss <- do.call(seqdist, seqdist.args))
-		if(kmedoid){
-			nc[[i]] <- wcKMedRange(diss=diss, kvals=2:ncluster)$stats
-		}else{
-			hc <- hclust(as.dist(diss), method="ward.D")
-			nc[[i]] <- as.clustrange(hc, diss=diss, ncluster=ncluster)$stats
+	if(ncores>1){
+		if(!require(doSNOW) || !require(progress)){
+			message(" [!] the following packages are required for parallel computation: doSNOW and progress\n")
+			ncores <- 1
 		}
 	}
-	stnames <- colnames(nc[[i]])
+	if(ncores>1){
+		cl <- makeCluster(ncores)
+		registerDoSNOW(cl)
+		pb <- progress_bar$new(format = "(:spin) [:bar] :percent | Elapsed: :elapsed | ETA: :eta", total = R)
+		  #pb <- txtProgressBar(max = R, style = 3)
+		  #progress <- function(n) setTxtProgressBar(pb, n)
+		progress <- function(n) pb$tick()
+		opts <- list(progress = progress)
+		parObject <- foreach(loop=1:R,  .packages = c('TraMineR', 'WeightedCluster'), .options.snow = opts) %dopar%{#on stocke chaque
+			suppressMessages(ss <- seqnull(seqdata, model=model, ...))
+			seqdist.args$seqdata <- ss
+			suppressMessages(diss <- do.call(seqdist, seqdist.args))
+			if(kmedoid){
+				nc <- wcKMedRange(diss=diss, kvals=2:ncluster)$stats
+			}else{
+				hc <- hclust(as.dist(diss), method="ward.D")
+				nc <- as.clustrange(hc, diss=diss, ncluster=ncluster)$stats
+			}
+			list(allseq=ss, nc=nc)
+		}
+		stopCluster(cl)
+		allseq <- lapply(parObject, function(x)x$allseq)
+		nc <- lapply(parObject, function(x)x$nc)
+		
+	}
+	else{
+		
+		for(i in 1:R){
+			suppressMessages(ss <- seqnull(seqdata, model=model, ...))
+			seqdist.args$seqdata <- ss
+			allseq[[i]] <- ss
+			suppressMessages(diss <- do.call(seqdist, seqdist.args))
+			if(kmedoid){
+				nc[[i]] <- wcKMedRange(diss=diss, kvals=2:ncluster)$stats
+			}else{
+				hc <- hclust(as.dist(diss), method="ward.D")
+				nc[[i]] <- as.clustrange(hc, diss=diss, ncluster=ncluster)$stats
+			}
+		}
+	}
+	stnames <- colnames(nc[[1]])
 	stats <- list()
 	for(st in stnames){
 		stats[[st]] <- extractStat(nc, st)
