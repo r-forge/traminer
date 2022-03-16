@@ -200,20 +200,21 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 	allseq <- list()
 	oldseqdist.args <- seqdist.args
 	if(ncores>1){
-		if(!require(doSNOW) || !require(progress)){
-			message(" [!] the following packages are required for parallel computation: doSNOW and progress\n")
+		if(!requireNamespace("doSNOW", quietly=TRUE) || !requireNamespace("progress", quietly=TRUE) || !requireNamespace("parallel", quietly=TRUE) ||!requireNamespace("foreach", quietly=TRUE)){
+			message(" [!] the following packages are required for parallel computation: parallel, foreach, doSNOW and progress\n")
 			ncores <- 1
 		}
 	}
 	if(ncores>1){
-		cl <- makeCluster(ncores)
-		registerDoSNOW(cl)
-		pb <- progress_bar$new(format = "(:spin) [:bar] :percent | Elapsed: :elapsed | ETA: :eta", total = R)
+		cl <- parallel::makeCluster(ncores)
+		on.exit(parallel::stopCluster(cl))
+		doSNOW::registerDoSNOW(cl)
+		pb <- progress::progress_bar$new(format = "(:spin) [:bar] :percent | Elapsed: :elapsed | ETA: :eta", total = R)
 		  #pb <- txtProgressBar(max = R, style = 3)
 		  #progress <- function(n) setTxtProgressBar(pb, n)
-		progress <- function(n) pb$tick()
-		opts <- list(progress = progress)
-		parObject <- foreach(loop=1:R,  .packages = c('TraMineR', 'WeightedCluster'), .options.snow = opts) %dopar%{#on stocke chaque
+		opts <- list(progress = function(n) pb$tick())
+		`%dopar%` <- foreach::`%dopar%`
+		parObject <- foreach::foreach(loop=1:R,  .packages = c('TraMineR', 'WeightedCluster'), .options.snow = opts) %dopar% {#on stocke chaque
 			suppressMessages(ss <- seqnull(seqdata, model=model, ...))
 			seqdist.args$seqdata <- ss
 			suppressMessages(diss <- do.call(seqdist, seqdist.args))
@@ -225,7 +226,7 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 			}
 			list(allseq=ss, nc=nc)
 		}
-		stopCluster(cl)
+		
 		allseq <- lapply(parObject, function(x)x$allseq)
 		nc <- lapply(parObject, function(x)x$nc)
 		
