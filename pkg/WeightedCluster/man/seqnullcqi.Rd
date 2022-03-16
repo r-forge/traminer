@@ -12,7 +12,7 @@
 \usage{
 seqnullcqi(seqdata, clustrange, R, model=c("combined", "duration", "sequencing", 
                     "stateindep", "Markov", "userpos"), seqdist.args=list(), 
-					kmedoid = FALSE, hclust.method="ward.D", ...)
+					kmedoid = FALSE, hclust.method="ward.D", ncores=1, ...)
 		   
 \method{plot}{seqnullcqi}(x, stat, type = c("line", "density", "boxplot", "seqdplot"),
                           quant = 0.95, norm = TRUE, legendpos = "topright",
@@ -37,6 +37,7 @@ seqnullcqi(seqdata, clustrange, R, model=c("combined", "duration", "sequencing",
 	\item{legendpos}{Character. legend position, see \code{\link{legend}}.}
 	\item{alpha}{Transparency parameter for the lines to be drawn (only for \code{type="line"}).}
 	\item{digits}{Number of digits to be printed.}
+	\item{ncores}{Number of thread to use. Parallel processing is used if \code{ncores>1}.}
 	\item{\dots}{Additionnal parameters passed to \code{\link{seqnull}} (for \code{seqnullcqi}) or \code{\link{plot}} or \code{\link{print}}.}
 }
 \details{
