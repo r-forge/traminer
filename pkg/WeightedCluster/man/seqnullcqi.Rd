@@ -12,7 +12,8 @@
 \usage{
 seqnullcqi(seqdata, clustrange, R, model=c("combined", "duration", "sequencing", 
                     "stateindep", "Markov", "userpos"), seqdist.args=list(), 
-					kmedoid = FALSE, hclust.method="ward.D", ncores=1, ...)
+					kmedoid = FALSE, hclust.method="ward.D", 
+					ncores=1, ...)
 		   
 \method{plot}{seqnullcqi}(x, stat, type = c("line", "density", "boxplot", "seqdplot"),
                           quant = 0.95, norm = TRUE, legendpos = "topright",
