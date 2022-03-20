@@ -7,7 +7,7 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 	## Checking arguments
   if (what=="sm") {
     what <- "cost"
-    msg.warn("what='sm' deprecated! Set as what='cost'.")
+    msg.warn("what='sm' deprecated! Use what='cost' instead.")
   }
   whatlist <- c("diss","cost","seqmc")
   if (!(what %in% whatlist)){
@@ -132,7 +132,7 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 	## ================================
 	## Building the new sequence object
 	## ================================
-	msg("building combined sequences...", appendLF=F)
+	message(" [>] building combined sequences...", appendLF=F)
 	## Complex separator to ensure (hahem) unicity
 	##sep <- "@@@@TraMineRSep@@@@"  ## now argument ch.sep
   sep <- ch.sep
