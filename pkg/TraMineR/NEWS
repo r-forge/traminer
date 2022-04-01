@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-4 [2022-02-14]
+Version 2.3-4 [2022-03-18]
 
 New functions:
   - seqlength.align() sets lengths of sequences of multiple
@@ -10,6 +10,10 @@ Changes in existing function:
   - seqdistmc(): option what="sm" becomes what="cost".
     Deprecated "sm" value maintained for backward
     compatibility.
+  - plot.stslist.rep() gains two arguments seq.alt to specify
+    the domain in which representatives are displayed
+    and info to control whether coverage info should
+    be displayed.
 
 
 ## =========
