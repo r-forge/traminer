@@ -1,3 +1,6 @@
+- mail CRAN package not using USE_FC_LEN_T 25.9.2021 > CRAN package not using USE_FC_LEN_T,
+eventually include USE_FC_LEN_T in olmm.h and and change calls of fortran functions?
+
 - formulas like -1 + factor(x) will drop the first level of 'x' but not
   introduce an intercept. please check the 'vcrpart_formula_eta' function
 - Give a warning if a random coefficient is called in fvcglm resp. tvcglm 

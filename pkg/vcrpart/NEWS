@@ -1,8 +1,10 @@
-Changes in Version 1.0-6 [2021-05-16]
+Changes in Version 1.0-5 [2022-04-27]
 
     o   Newest grid.rect() version seems seems to use white as default
         background (and not transparent as previously). Was a problem in 
-        panel_coef()
+        panel_coef().
+
+    o   Solve new issue with character arguments at Fortran calls.
 
 Changes in Version 1.0-4 [2021-04-17]
 
@@ -13,11 +15,11 @@ Changes in Version 1.0-4 [2021-04-17]
 
 Changes in Version 1.0-3
 
-    o   Fixed bug for option 'numHess = TRUE' of 'olmm_control'
+    o   Fixed bug for option 'numHess = TRUE' of 'olmm_control'.
     
-    o   Fixed issues with change of class of matrices from R 4.0.0
+    o   Fixed issues with change of class of matrices from R 4.0.0.
 
-    o   Re-added vignette
+    o   Re-added vignette.
 
 Changes in Version 1.0-2
 
@@ -36,7 +38,7 @@ Changes in Version 1.0-1
         were used for small objects.
 
     o   Improve R-Code for 'alloca' calls (adding 'R_CheckStack()'
-        after calls)
+        after calls).
 
 Changes in Version 1.0-0
 
