@@ -9,6 +9,8 @@ New functions:
 Changes in existing function:
   - seqformat(), seqdef(), seqdecomp(), seqconc(), seqstatl() 
     now support tibble input data.
+  - seqformat() accepts a tibble as pdata table.
+  - seqformat() accepts a character string vector as input data.
   - seqdistmc(): option what="sm" becomes what="cost".
     Deprecated "sm" value maintained for backward
     compatibility.

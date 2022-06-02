@@ -8,7 +8,7 @@
  seqdecomp(data, var=NULL, sep='-', miss="NA", vnames=NULL)
 }
 \arguments{
- \item{data}{a dataframe, matrix, or character string vector containing sequence data. If a tibble, converted with \code{as.data.frame}.}
+ \item{data}{a dataframe, matrix, or character string vector containing sequence data (tibble will be converted with \code{as.data.frame}).}
   \item{var}{the list of columns containing the sequences. Default is \code{NULL}, ie all the columns. Whether the sequences are in the compressed (character strings) or extended format is automatically detected by counting the number of columns.}
   \item{sep}{the between states/events separator used in the input data set. Default is '\code{-}'.}
   \item{miss}{the symbol for missing values (if any) used in the input data set. Default is \code{NA}.}

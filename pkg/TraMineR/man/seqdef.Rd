@@ -18,7 +18,7 @@ seqdef(data, var=NULL, informat="STS", stsep=NULL,
 }
 
 \arguments{
-  \item{data}{a data frame, matrix, or character string vector containing sequence data (if a tibble, \code{data} is converted with \code{as.data.frame})}
+  \item{data}{a data frame, matrix, or character string vector containing sequence data (tibble will be converted with \code{as.data.frame}).}
 
   \item{var}{the list of columns containing the sequences. Default is
 \code{NULL}, i.e. all the columns. The function detects automatically

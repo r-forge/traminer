@@ -16,6 +16,10 @@
       \item
       \code{seqformat()}, \code{seqdef()}, \code{seqdecomp()}, \code{seqconc()}, \code{seqstatl()} now support tibble input data.
       \item
+      \code{seqformat()} accepts a tibble as \code{pdata} table.
+      \item
+      \code{seqformat()} accepts a character string vector as input data.
+      \item
       \code{seqdistmc()}: option \code{what="sm"} becomes \code{what="cost"}.
       Deprecated \code{"sm"} value maintained for backward compatibility.
       \item
