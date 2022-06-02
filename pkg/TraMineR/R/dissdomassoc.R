@@ -182,7 +182,7 @@ summary.ddomassoc <- function(object, ...){
           tab[k,"Spearman"] <- object[["Spearman"]][dnames[d1],dnames[d2]]
           tab[k,"p.Spearman"] <- object[["p.spearman"]][dnames[d1],dnames[d2]]
         }
-        tabname <- paste(dnames[d1],dnames[d2],sep="_vs_")
+        tabname <- paste(dnames[d1],dnames[d2],sep="_with_")
         tabnames <- c(tabnames,tabname)
       }
     }

@@ -9,6 +9,8 @@ seqformat <- function(data, var = NULL, from, to, compress = FALSE, nrep = NULL,
 
   TraMineR.check.depr.args(alist(compress = compressed, missing = nr))
 
+  ## tibble converted to data frame
+  if (inherits(data, "tbl_df")) data <- as.data.frame(data)
   is.stslist <- if (inherits(data, "stslist")) TRUE else FALSE
 
   #### Check arguments with deprecated values ####

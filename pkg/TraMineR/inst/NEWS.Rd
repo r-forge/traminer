@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-4 [2022-03-28] }{
+\section{Changes in version 2.3-4 [2022-06-02] }{
 
   \subsection{New functions}{
     \itemize{
@@ -14,11 +14,13 @@
   \subsection{Changes in existing functions}{
     \itemize{
       \item
+      \code{seqformat()}, \code{seqdef()}, \code{seqdecomp()}, \code{seqconc()}, \code{seqstatl()} now support tibble input data.
+      \item
       \code{seqdistmc()}: option \code{what="sm"} becomes \code{what="cost"}.
       Deprecated \code{"sm"} value maintained for backward compatibility.
       \item
       \code{plot.stslist.rep()} gains two arguments \code{seq.alt} to specify
-      the domain in which representatives are displayed and \code{info} to control 
+      the domain in which representatives are displayed and \code{info} to control
       whether coverage info should be displayed.
     }
   }
