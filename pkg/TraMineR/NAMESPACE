@@ -29,6 +29,7 @@ export(
   seqdist,
   seqdistmc,
   seqdplot,
+  seqdHplot,
   seqdss,
   seqdur,
   seqfcheck,

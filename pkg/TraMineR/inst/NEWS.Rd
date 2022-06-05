@@ -1,10 +1,12 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-4 [2022-06-02] }{
+\section{Changes in version 2.3-4 [2022-06-05] }{
 
   \subsection{New functions}{
     \itemize{
+      \item
+      \code{seqdHplot()} alias for \code{seqplot(...,type="dH",...)}
       \item
       \code{seqlength.align()} sets lengths of sequences of multiple domains as the shortest length among the domains.
       \item
@@ -13,6 +15,10 @@
   }
   \subsection{Changes in existing functions}{
     \itemize{
+      \item
+      \code{plot.stslist.statd()} new type \code{"dH"} that overlays entropy line on the chronogram. In addition, new arguments \code{col}, \code{lwd}, and \code{ylim} allow controlling aspect of entropy line.
+      \item
+      \code{seqplot()} new type \code{"dH"}.
       \item
       \code{seqformat()}, \code{seqdef()}, \code{seqdecomp()}, \code{seqconc()}, \code{seqstatl()} now support tibble input data.
       \item
