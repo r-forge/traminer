@@ -9,7 +9,7 @@ seqlength.align <- function(seq.list){
   lgth <- matrix(NA,nrow=nr,ncol=nsl)
   for (i in 1:nsl) {
     if (!is.stslist(seq.list[[i]]))
-        stop("At leats one element of seq.list is not a stslist object!")
+        stop("At least one element of seq.list is not a stslist object!")
     if (nrow(seq.list[[i]]) != nr)
         stop("Sequence objects must all have same number of sequences")
     lgth[,i] <- seqlength(seq.list[[i]])
