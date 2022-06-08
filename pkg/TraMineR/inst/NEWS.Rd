@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-4 [2022-06-05] }{
+\section{Changes in version 2.3-4 [2022-06-08] }{
 
   \subsection{New functions}{
     \itemize{
@@ -34,7 +34,14 @@
       whether coverage info should be displayed.
     }
   }
-
+  \subsection{Misc.}{
+    \itemize{
+      \item
+      Suppressed dependence on cNORM because of license
+      incompatibility. (\code{dissdomassoc} uses now a proper
+      internal function in place of \code{cNORM:::weighted.rank}).
+    }
+  }
 }
 
 

@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-4 [2022-06-05]
+Version 2.3-4 [2022-06-08]
 
 New functions:
   - seqdHplot() alias for seqplot(...,type="dH",...)
@@ -24,6 +24,11 @@ Changes in existing function:
     the domain in which representatives are displayed
     and info to control whether coverage info should
     be displayed.
+
+Misc.:
+  - Suppressed dependence on cNORM because of license
+    incompatibility. (dissdomassoc uses now a proper
+    internal function in place of cNORM:::weighted.rank).
 
 
 ## =========
