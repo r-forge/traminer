@@ -30,7 +30,7 @@ This is the plot method for output produced by the \code{\link{seqstatd}} functi
   \item{space}{the space between the stacked bars. Default is 0, i.e. no space.}
 
   \item{xlab}{Optional title for the x axis. See \code{\link{title}}.}
-  
+
   \item{lwd}{Width of entropy line. Default is 3.5. Ignored when \code{type="d"}.}
 
   \item{col}{Color of entropy line. Default is \code{"blue"}. Ignored when \code{type="d"}.}
@@ -51,6 +51,9 @@ This plot method is called by the generic \code{\link{seqplot}} function (if \co
 
 \value{The plotted values, i.e. for \code{type="d"} the cross-sectional distributions, for \code{type="Ht"} the cross-sectional entropies, and for \code{type="dH"} the \code{x} \code{stslist.statd} object.
 }
+
+\author{Alexis Gabadinho and Gilbert Ritschard}
+
 
 \examples{
 ## Defining a sequence object with the data in columns 10 to 25

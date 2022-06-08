@@ -57,7 +57,7 @@ seqdistmc(channels, method, norm="none", indel="auto", sm=NULL,
  \item{ch.sep}{Character string. Separator used for building state names of the expanded alphabet.}
 }
 
-\details{The \code{seqdistmc} function first builds a state sequence by combining the channels. Then, it derives the multichannel indel and substitution costs from the indel and substitution costs of each channel by means of the additive trick (AT) proposed by \cite{Pollock, 2007}). Finally, it computes the multichannel distances using the AT-multichannel costs. The available metrics (see \code{method} argument) are optimal matching (\code{"OM"}), longest common subsequence (\code{"LCS"}), Hamming distance (\code{"HAM"}), and Dynamic Hamming Distance (\code{"DHD"}). For other edit distances, extract the combined state sequence object (by setting \code{what="seqmc"}) and the AT-multichannel substitution and indel costs (by setting \code{what="cost"}). Then use these outcomes as input in a call to \code{seqdist}.  See \code{\link{seqdist}} for more information about available distances measures.
+\details{The \code{seqdistmc} function first builds a state sequence by combining the channels. Then, it derives the multichannel indel and substitution costs from the indel and substitution costs of each channel by means of the additive trick (AT) proposed by \cite{Pollock, 2007}). Finally, it computes the multichannel distances using the AT-multichannel costs. The available metrics (see \code{method} argument) are optimal matching (\code{"OM"}), longest common subsequence (\code{"LCS"}), Hamming distance (\code{"HAM"}), and Dynamic Hamming Distance (\code{"DHD"}). For other edit distances, extract the combined state sequence object (by setting \code{what="seqmc"}) and the AT-multichannel substitution and indel costs (by setting \code{what="cost"}). Then use these outcomes as input in a call to \code{seqdist}.  See \code{\link{seqdist}} for more information about available distance measures.
 
 Normalization may be useful when dealing with sequences that are not all of the same length. For details on the applied normalization, see \code{\link{seqdist}}. }
 
@@ -87,7 +87,7 @@ left.seq <- seqdef(left)
 mcdist <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
  	method="OM", sm =list("INDELSLOG", "INDELSLOG", "TRATE"))
 
-## Using a weight of 2 for children channel and specifying 
+## Using a weight of 2 for children channel and specifying
 ##   channel specific substitution costs
 smatrix <- list()
 smatrix[[1]] <- seqsubm(child.seq, method="CONSTANT")
@@ -98,12 +98,12 @@ mcdist2 <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
 
 ## Retrieving the multichannel sequences
 mcseq <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
-	method="OM", sm =smatrix, cweight=c(2,1,1), what="seqmc", ch.sep="+")
-alphabet(mcseq)
+    method="OM", sm =smatrix, cweight=c(2,1,1), what="seqmc", ch.sep="+")
+    alphabet(mcseq)
 
 ## Retrieving the AT-multichannel substitution costs
 mcsm <- seqdistmc(channels=list(child.seq, marr.seq, left.seq),
-	method="OM", sm =smatrix, cweight=c(2,1,1), what="cost", ch.sep="+")
+    method="OM", sm=smatrix, cweight=c(2,1,1), what="cost", ch.sep="+")
 }
 
 

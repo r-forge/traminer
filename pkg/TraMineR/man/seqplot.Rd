@@ -22,6 +22,7 @@ seqplot(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
   legend.prop = NA, rows = NA, cols = NA, title, cex.plot, withlegend, ...)
 
 seqdplot(seqdata, group = NULL, main = NULL, ...)
+seqdHplot(seqdata, group = NULL, main = NULL, ...)
 seqfplot(seqdata, group = NULL, main = NULL, ...)
 seqiplot(seqdata, group = NULL, main = NULL, ...)
 seqIplot(seqdata, group = NULL, main = NULL, ...)
@@ -36,7 +37,7 @@ seqrplot(seqdata, group = NULL, main = NULL, ...)
     \item{group}{Grouping variable of length equal to the number of sequences. When not \code{NULL}, a distinct plot is generated for each level of \code{group}.}
 
     \item{type}{the type of the plot. Available types are \code{"d"}
-    for state distribution plots (chronograms), \code{"dH"} for chronograms 
+    for state distribution plots (chronograms), \code{"dH"} for chronograms
     with overlayed entropy line, \code{"f"} for sequence frequency
     plots, \code{"Ht"} for transversal entropy plots, \code{"i"} for
     selected sequence index plots, \code{"I"} for whole set index

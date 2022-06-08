@@ -31,7 +31,7 @@ representative sequence plot.
   \item{xtstep}{optional interval at which the tick-marks and labels of the x-axis are displayed. For example, with \code{xtstep=3} a tick-mark is drawn at position 1, 4, 7, etc... The display of the corresponding labels depends on the available space and is dealt with automatically. If unspecified, the \code{xtstep} attribute of the \code{x} object is used.}
   \item{tick.last}{Logical. Should a tick mark be enforced at the last position on the x-axis? If unspecified, the \code{tick.last} attribute of the \code{x} object is used.}
   \item{seq.alt}{an object of class \emph{stslist} with same number of sequences than the sequence object for which the representatives \code{x} are provided. When not \code{NULL}, representatives are plotted in this alternative domain.}
-  \item{info}{Logical. Should coverage into be displayed? Default is \code{TRUE}.}
+  \item{info}{Logical. Should coverage info be displayed? Default is \code{TRUE}.}
   \item{cex.with.axis}{
     Axis annotation and plotting text and symbols magnification.
     See \code{\link{par}}.
@@ -53,7 +53,7 @@ plots with group splits and automatic display of the color legend. The \code{\li
 calling \code{seqplot} with \code{type="r"}.
 }
 
-\author{Alexis Gabadinho (with Gilbert Ritschard for the help page)}
+\author{Alexis Gabadinho and Gilbert Ritschard}
 
 \examples{
 ## Loading the mvad data set and creating a sequence object

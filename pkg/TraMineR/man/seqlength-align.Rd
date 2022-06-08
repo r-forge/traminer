@@ -13,7 +13,7 @@ Sequences in the sequence objects are assumed to be ordered conformably. The len
 \arguments{
   \item{seq.list}{list of sequence objects (of class \code{stslist}) created with the \code{\link{seqdef}} function. The sequence objects must all have the same number of sequences.}
 }
-\seealso{\code{\link{seqlength.align}}}
+\seealso{\code{\link{seqlength}}}
 \examples{
 ## Using the ex1 data set with sequences of different length
 data(ex1)
