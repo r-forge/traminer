@@ -1,13 +1,15 @@
 Package: TraMineRextras
 Version: 0.7.4
-Date: 2022-01-20
+Date: 2022-06-13
 Title: TraMineR Extension
 Authors@R: c(
   person("Gilbert", "Ritschard", role = c("aut", "cre", "ths", "cph"),
   email = "gilbert.ritschard@unige.ch", comment = c(ORCID = "0000-0001-7776-0903")),
   person("Matthias", "Studer", role = "aut", comment = c(ORCID = "0000-0002-6269-1412")),
-  person("Reto", "Buergin", role = "aut"),
-  person("Tim", "Liao", role = "ctb"),
+  person("Reto", "Buergin", role = "aut",
+        comment = c(ORCID = "0000-0002-6212-1567")),
+  person("Tim", "Liao", role = "ctb",
+        comment = c(ORCID = "0000-0002-1296-7660")),
   person("Alexis", "Gabadinho", role = "ctb"),
   person("Pierre-Alexandre", "Fonta", role = "ctb"),
   person("Nicolas", "Muller", role = "ctb"),

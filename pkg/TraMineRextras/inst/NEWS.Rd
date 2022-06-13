@@ -1,12 +1,21 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
-\section{Changes in version 0.7.4 [2022-01-20] (Development version)}{
+\section{Changes in version 0.7.4 [2022-06-13] }{
 
-  \subsection{Misc.}{
+  \subsection{Changes in existing functions}{
     \itemize{
       \item
-      No changes
+      \code{seqplot.rf()} gains a new argument \code{plus.one} to control which group sizes to increase when number of sequences is not a multiple of number of groups.
+    }
+  }
+
+  \subsection{Bug fixes}{
+    \itemize{
+      \item
+      \code{seqindic.dyn()} checked whether \code{fstat} is a function by comparing \code{class} with a string. Now uses \code{inherits}.
+      \item
+      Issue with non literal item name in seqsamm.Rd.
     }
   }
 }
