@@ -97,7 +97,7 @@ wtd.cors <- function(x, y=NULL, weight=NULL){
   x <- q[!is.na(weight),]
   y <- r[!is.na(weight),]
   weight <- weight[!is.na(weight)]
-  out <- .Call("wcorr", as.matrix(x), as.matrix(y), as.double(weight), NAOK=TRUE, PACKAGE="weights")
+  out <- .Call("wcorr", as.matrix(x), as.matrix(y), as.double(weight), NAOK=TRUE, PACKAGE="TraMineR")
   ## C code for this package was contributed by Marcus Schwemmle
   if(!is.null(colnames(x)))
      rownames(out) <- colnames(x)
