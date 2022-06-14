@@ -1,8 +1,10 @@
 ## =========
-Version 2.3-5 [2022-06-08]
+Version 2.3-5 [2022-06-14]
 
 Misc.
-  - No changes
+  - Proper wtd.cor, wtd.mean, and wtd.var functions to avoid 
+    issues with dependence on packages weights and Hmisc.
+    (Code in TraMineR-weights.R and TraMineR-wtd-stats.R.)
 
 ## =========
 Version 2.3-4 [2022-06-08]
@@ -14,12 +16,11 @@ New functions:
   - seqmaintokens() returns indexes of more frequent tokens.
 
 Changes in existing function:
-  - plot.stslist.statd() new type "dH" that overlays entropy 
-    line on the chronogram. In addition, new arguments col, 
+  - plot.stslist.statd() new type "dH" that overlays entropy
+    line on the chronogram. In addition, new arguments col,
     lwd, and ylim allow controlling aspect of entropy line.
   - seqplot() new type "dH".
-
-  - seqformat(), seqdef(), seqdecomp(), seqconc(), seqstatl() 
+  - seqformat(), seqdef(), seqdecomp(), seqconc(), seqstatl()
     now support tibble input data.
   - seqformat() accepts a tibble as pdata table.
   - seqformat() accepts a character string vector as input data.
