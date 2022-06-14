@@ -1,7 +1,18 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
-\section{Changes in version 0.7.4 [2022-06-13] }{
+\section{Changes in version 0.7.5 [2022-06-14] }{
+
+  \subsection{Misc.}{
+    \itemize{
+      \item
+      Replaced \code{permute(.)} with \code{sample(.)} in \code{seqCompare} to remove dependence on gtools that has become orphaned.
+    }
+  }
+}
+
+
+\section{Changes in version 0.6.4 [2022-06-13] }{
 
   \subsection{Changes in existing functions}{
     \itemize{
@@ -14,6 +25,8 @@
     \itemize{
       \item
       \code{seqindic.dyn()} checked whether \code{fstat} is a function by comparing \code{class} with a string. Now uses \code{inherits}.
+      \item
+      Issue with example in seqtabstocc.Rd.
       \item
       Issue with non literal item name in seqsamm.Rd.
     }
