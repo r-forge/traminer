@@ -2,8 +2,9 @@
 Version 2.3-5 [2022-06-14]
 
 Misc.
-  - Proper wtd.cor, wtd.mean, and wtd.var functions to avoid 
-    issues with dependence on packages weights and Hmisc.
+  - Proper wtd.cor, wtd.mean, and wtd.var internal functions 
+    to avoid issues with dependence on packages weights 
+    and Hmisc.
     (Code in TraMineR-weights.R and TraMineR-wtd-stats.R.)
 
 ## =========

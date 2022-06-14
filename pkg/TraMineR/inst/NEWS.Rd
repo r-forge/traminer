@@ -6,7 +6,7 @@
     \subsection{Misc.}{
         \itemize{
             \item
-            Proper \code{wtd.cor}, \code{wtd.mean}, and \code{wtd.var} functions to avoid
+            Proper \code{wtd.cor}, \code{wtd.mean}, and \code{wtd.var} internal functions to avoid
             issues with dependence on packages weights and Hmisc. (Code in TraMineR-weights.R and TraMineR-wtd-stats.R.)
 
         }
