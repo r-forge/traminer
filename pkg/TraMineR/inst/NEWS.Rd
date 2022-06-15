@@ -1,14 +1,15 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-5 [2022-06-14] }{
+\section{Changes in version 2.3-5 [2022-06-15] }{
 
     \subsection{Misc.}{
         \itemize{
             \item
             Proper \code{wtd.cor}, \code{wtd.mean}, and \code{wtd.var} internal functions to avoid
             issues with dependence on packages weights and Hmisc. (Code in TraMineR-weights.R and TraMineR-wtd-stats.R.)
-
+            \item
+            Suppressed function \code{TraMineR.checkupdates}.
         }
     }
 }
