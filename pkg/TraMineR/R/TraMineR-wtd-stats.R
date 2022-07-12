@@ -265,3 +265,48 @@ wtd.var <- function(x, weights=NULL, normwt=FALSE, na.rm=TRUE,
 ###   y <- c(y, rep(0, sum(other>0)))
 ###   list(subs=subs, weights=wt, y=y)
 ### }
+
+
+### ## Determine if variable is a date, time, or date/time variable in R.
+### ## The following 2 functions are used by describe.vector
+### ## timeUsed assumes is date/time combination variable and has no NAs
+### testDateTime <- function(x, what=c('either','both','timeVaries'))
+### {
+###   what <- match.arg(what)
+###   cl <- class(x)
+###   if(!length(cl))
+###     return(FALSE)
+###
+###   dc <- c('Date', 'POSIXt','POSIXct','dates','times','chron')
+###
+###   dtc <- c('POSIXt','POSIXct','chron')
+###
+###   switch(what,
+###          either = any(cl %in% dc),
+###          both   = any(cl %in% dtc),
+###          timeVaries = {
+###            if('chron' %in% cl || 'Date' %in% cl) {
+###              ## chron or S+ timeDate
+###              y <- as.numeric(x)
+###              length(unique(round(y - floor(y),13))) > 1
+###            }
+###            else length(unique(format(x,'%H%M%S'))) > 1
+###          })
+### }
+###
+### ###########################
+### all.is.numeric <- function(x, what=c('test','vector'),
+###                            extras=c('.','NA'))
+### {
+###   what <- match.arg(what)
+###   x <- sub('[[:space:]]+$', '', x)
+###   x <- sub('^[[:space:]]+', '', x)
+###   xs <- x[x %nin% c('',extras)]
+###   if(! length(xs)) return(if(what == 'test') FALSE else x)
+###   isnum <- suppressWarnings(!any(is.na(as.numeric(xs))))
+###   if(what=='test')
+###     isnum
+###   else if(isnum)
+###     as.numeric(x)
+###   else x
+### }

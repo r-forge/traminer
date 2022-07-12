@@ -190,16 +190,34 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
 				if (!"border" %in% names(olist)) {olist <- c(olist, list(border=NA))}
 			}
 		}
+		## Sequence relative frequency plot
+		else if (type=="rf") {
+			f <- seqrf
+			with.missing <- TRUE
+
+			## Selecting sub sample for sort variable
+			## according to 'group'
+			if ("sortv" %in% names(olist)) {
+				if (!length(sortv)==1) {
+					olist[["sortv"]] <- sortv[gindex[[np]]]
+				}
+			}
+
+			if (!"space" %in% names(olist)) {olist <- c(olist, list(space=0))}
+			if (!"border" %in% names(olist)) {olist <- c(olist, list(border=NA))}
+			## Selecting distances according to group
+			olist[["diss"]] <- diss[gindex[[np]],gindex[[np]]]
+		}
 		## Mean times
 		else if (type=="mt") {
-      f <- seqmeant
-      if (!is.null(barlab)) {
-        if (ncol(barlab)==1)
-          olist[["bar.labels"]] <- as.vector(barlab)
-        else
-          olist[["bar.labels"]] <- as.vector(barlab[,np])
-      }
-    }
+          f <- seqmeant
+          if (!is.null(barlab)) {
+            if (ncol(barlab)==1)
+              olist[["bar.labels"]] <- as.vector(barlab)
+            else
+              olist[["bar.labels"]] <- as.vector(barlab[,np])
+          }
+        }
 		## Modal states
 		else if (type=="ms") {
 			f <- seqmodst
@@ -258,7 +276,7 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
 		olist <- olist[!match.args]
     ## suppress non plot arguments if necessary
     olist <- olist[!names(olist) %in% c("with.missing")]
-    if (!(type %in% c("i","I"))) olist <- olist[!(names(olist) %in% c("sortv","weighted"))]
+    if (!(type %in% c("i","I","rf"))) olist <- olist[!(names(olist) %in% c("sortv","weighted"))]
     if (type != "r") olist <- olist[!(names(olist) %in% c("dmax","stats"))]
 
 		plist <- c(list(x=res), plist, olist)

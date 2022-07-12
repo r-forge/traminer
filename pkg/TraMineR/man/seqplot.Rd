@@ -3,6 +3,7 @@
 \alias{seqdplot}
 \alias{seqdHplot}
 \alias{seqfplot}
+\alias{seqrfplot}
 \alias{seqiplot}
 \alias{seqIplot}
 \alias{seqHtplot}

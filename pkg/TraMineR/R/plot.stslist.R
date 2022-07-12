@@ -38,20 +38,21 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
 
 	## Sorting
 	if (!is.null(sortv)) {
-		if (length(sortv)==1 && sortv %in% c("from.start", "from.end")) {
+        if (length(sortv)==1 && sortv %in% c("from.start", "from.end")) {
         		end <- if (sortv=="from.end") { max(seqlength(x)) } else { 1 }
         		beg <- if (sortv=="from.end") { 1 } else { max(seqlength(x)) }
 
-			sortv <- do.call(order, as.data.frame(x)[,end:beg])
-			x <- x[sortv,]
-		} else if (length(sortv)!=n) {
-			stop(call.=FALSE, "sortv must contain one value for each row in the sequence object")
-		} else {
-			if (is.factor(sortv)) { sortv <- as.integer(sortv) }
-			x <- x[order(sortv),]
-		}
+        	sortv <- do.call(order, as.data.frame(x)[,end:beg])
+        	x <- x[sortv,]
+        } else if (length(sortv)!=n) {
+            stop(call.=FALSE, "sortv must contain one value for each row in the sequence object ",
+                "or be either 'from.start' or 'from.end'")
+        } else {
+        	if (is.factor(sortv)) { sortv <- as.integer(sortv) }
+        	x <- x[order(sortv),]
+        }
 
-		sortlab <- paste(", sorted")
+        sortlab <- paste(", sorted")
 
 	} else { sortlab <- NULL }
 

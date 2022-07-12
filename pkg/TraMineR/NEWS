@@ -1,5 +1,15 @@
 ## =========
-Version 2.3-5 [2022-06-15]
+Version 2.3-5 [2022-07-12]
+
+New functions:
+  - dissrf() medoids of relative frequency (RF) groups
+  - seqrf() medoid sequences of RF groups
+  - plot.seqrf() plot method for medoids of RF groups
+  - seqrfplot() alias for seqplot(...,type="rf",...)
+  - print and summary methods for dissrf and seqrf objects
+  
+Changes in existing functions
+  - seqplot() new value \code{"rf"} (RF plots) for argument type.
 
 Misc.
   - Proper wtd.cor, wtd.mean, and wtd.var internal functions

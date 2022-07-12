@@ -1,7 +1,31 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-5 [2022-06-15] }{
+\section{Changes in version 2.3-5 [2022-07-12] }{
+
+    \subsection{New functions}{
+        \itemize{
+            \item
+            \code{dissrf()} medoids of relative frequency (RF) groups
+            \item
+            \code{seqrf()} medoid sequences of RF groups
+            \item
+            \code{plot.seqrf()} plot method for medoids of RF groups
+            \item
+            seqrfplot() alias for seqplot(...,type="rf",...)
+            \item
+            print and summary methods for \code{dissrf} and \code{seqrf} objects
+        }
+    
+    }
+    
+    \subsection{Changes in existing functions}{
+        \itemize{
+            \item
+            \code{seqplot()} new value \code{"rf"} (RF plots) for argument type.
+        }
+    }
+    
 
     \subsection{Misc.}{
         \itemize{
