@@ -1,8 +1,22 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
-\section{Changes in version 0.7.5 [2022-06-14] }{
+\section{Changes in version 0.7.5 [2022-07-18] }{
 
+  \subsection{Changes in existing functions}{
+    \itemize{
+      \item
+      \code{seqplot.rf()} argument \code{plus.one} renamed \code{grp.meth}
+    }
+  }
+  \subsection{Bug fixes}{
+    \itemize{
+      \item
+      \code{seqplot.rf()} \code{which.plot = "diss.to.med"} did not work.
+      \item
+      \code{seqplot.rf()} issue with unwanted ":" in plot title.
+    }
+  }
   \subsection{Misc.}{
     \itemize{
       \item

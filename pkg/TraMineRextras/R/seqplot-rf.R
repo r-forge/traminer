@@ -13,7 +13,10 @@ seqplot.rf_internal <- function(seqdata, k=floor(nrow(seqdata)/10), diss, sortv=
                         plus.one = "first", ...){
 	
 	message(" [>] Using k=", k, " frequency groups")
-	
+
+    plot.types <- c("both","medoids","diss.to.med")
+    if (! which.plot %in% plot.types)
+        stop(" which.plot must be one of ", plot.types)
 	
 	#Extract medoid, possibly weighted
 	gmedoid.index <- disscenter(diss, medoids.index="first")
@@ -102,7 +105,11 @@ seqplot.rf_internal <- function(seqdata, k=floor(nrow(seqdata)/10), diss, sortv=
   }
 
   if (which.plot=="medoids")
-  	 seqIplot(seqtoplot, sortv=mdsk, yaxis=yaxis, ylab=ylab, main=paste(main,"Sequences medoids", sep=": "), ...)
+     if (!is.null(main))
+        main <- paste(main,"Sequences medoids", sep=": ")
+     else
+        main <- "Sequences medoids"
+  	 seqIplot(seqtoplot, sortv=mdsk, yaxis=yaxis, ylab=ylab, main=main, ...)
 	##seqIplot(seqtoplot, with.legend=FALSE, sortv=mdsk)
 	
   heights <- xtabs(~mdsk)/nrow(seqdata)
@@ -115,9 +122,14 @@ seqplot.rf_internal <- function(seqdata, k=floor(nrow(seqdata)/10), diss, sortv=
         main="Dissimilarities to medoid",
         ylim=range(as.vector(diss)), at=at, ylab=ylab)
   }
-	if (which.plot == "diss.med") {
+	if (which.plot == "diss.to.med") {
+       if (!is.null(main))
+          main <- paste(main,"Dissimilarities to medoids", sep=": ")
+       else
+          main <- "Dissimilarities to medoids"
+
 	   boxplot(kmedoid.dist~mdsk, horizontal=TRUE, width=heights, frame=FALSE,
-        main=paste(main,"Dissimilarities to medoid",sep=": "),
+        main=main,
         ylim=range(as.vector(diss)), at=at, ylab=ylab)
   }
 	
