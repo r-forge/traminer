@@ -1,5 +1,5 @@
 ## import(boot, RColorBrewer)
-importFrom("graphics", "abline", "arrows", "axis", "barplot", "box", "hist", "layout", "legend", "lines", "mtext", "par", "plot", "plot.new", "points", "polygon", "rect", "segments", "strwidth", "text", "title")
+importFrom("graphics", "abline", "arrows", "axis", "barplot", "box", "bxp", "hist", "layout", "legend", "lines", "mtext", "par", "plot", "plot.new", "points", "polygon", "rect", "segments", "strwidth", "text", "title")
 importFrom("grDevices", "col2rgb", "colorRamp", "dev.off", "rgb")
 importFrom("stats", "as.dist", "chisq.test", "coef", "cor", "complete.cases", "density", "dnorm", "dunif", "fitted", "formula", "lm", "median", "model.frame", "model.matrix", "na.omit", "na.pass", "pchisq", "pnorm", "qnorm", "quantile", "reshape", "runif", "terms", "var", "weighted.mean", "xtabs",
  "cmdscale", "cutree", "fivenum", "hclust", "pf")
