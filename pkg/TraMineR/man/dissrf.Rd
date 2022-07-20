@@ -5,7 +5,6 @@
 \alias{summary.seqrf}
 \alias{print.dissrf}
 \alias{print.seqrf}
-\alias{plot.seqrf}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -19,18 +18,20 @@ dissrf(diss,
        k=NULL,
        sortv=NULL,
        weights=NULL,
-       grp.meth = "first",
+       grp.meth = "prop",
        squared = FALSE)
-       
+
 seqrf(seqdata, diss,
        k=NULL,
        sortv=NULL,
        weights=NULL,
        weighted=TRUE,
-       grp.meth = "first",
+       grp.meth = "prop",
        squared = FALSE)
-       
-\method{plot}{seqrf}(x, space=0, border=NA, ...)
+
+\method{summary}{dissrf}(object, dist.idx = 1:10, ...)
+
+\method{summary}{seqrf}(object, format="SPS", dist.idx = 1:10, ...)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -41,25 +42,24 @@ seqrf(seqdata, diss,
   \item{sortv}{Real vector (of length \code{nrow(diss)}), character string, or \code{NULL}. Sorting variable or method used to compute the frequency groups. If a string, one of \code{"from.start"} and \code{"from.end"}.If \code{NULL}, the first MDS factor of \code{diss} is used. Ties are randomly ordered.}
   \item{weights}{Vector  (of length \code{nrow(diss)}) of non-negative weights. If \code{NULL} (default), equal weights are used.}
   \item{weighted}{Logical. Should weights be used when there are weights in \code{seqdata}? (default is \code{TRUE})}
-  \item{grp.meth}{Character string. One of \code{"first"} (default), \code{"random"}, and \code{"prop"}. Grouping method. See details.}
+  \item{grp.meth}{Character string. One of \code{"prop"}, \code{"first"}, and \code{"random"}. Grouping method. See details.}
   \item{squared}{Logical. Should dissimilarities be squared?}
-  \item{x}{a \code{seqrf} object}
-  \item{space}{space between horizontal bars representing medoid sequences (see \code{\link{barplot}})}
-  \item{border}{the color to be used for the border of the bars. Use border = NA to omit borders. (see \code{\link{barplot}})}
   \item{...}{additional arguments passed to \code{\link{plot.stslist}}}
+  \item{object}{Object of class \code{dissrf} or \code{seqrf}}
+  \item{format}{String. One of \code{"SPS"} (default) or \code{"STS"}. Display format of the medoid sequences.}
+  \item{dist.idx}{Indexes of groups for which summary statistics of distances to the medoids are displayed. Default is \code{1:10}. Set as 0 to plot statistics for all groups.}
 }
 
 \details{
 Function \code{dissrf} partitions the \eqn{n} cases (rows of the \code{diss} matrix) into \eqn{k} equally sized groups. First, the cases are sorted according to the \code{sortv} variable (or method). Then the groups are built by consecutively grouping the first \eqn{n/k} cases, then the next \eqn{n/k} cases, and so on.
 
-The \code{grp.meth} argument serves when the group size (\eqn{n/k}) is not integer. With \code{grp.meth="first"}, the integer part of \eqn{n/k} is used as group size and the size of the first groups is augmented by one unit so that the sum of the group sizes equals \eqn{n}. With \code{grp.meth="random"}, randomly selected groups have their size augmented by one unit, and with \code{grp.meth="prop"}, cases at the limit between groups are assigned proportionally to each of the two groups.
+The \code{grp.meth} argument serves when the group size (\eqn{n/k}) is not integer. With \code{grp.meth="first"}, the integer part of \eqn{n/k} is used as group size and the size of the first groups is augmented by one unit so that the sum of the group sizes equals \eqn{n}. With \code{grp.meth="random"}, randomly selected groups have their size augmented by one unit, and with \code{grp.meth="prop"} (default), cases at the limit between groups are proportionally assigned to each of the two groups.
 
 For \code{seqrf}, when \code{weights=NULL} and \code{weighted=TRUE}, \code{weights} is set as the \code{weights} attribute of \code{seqdata}.
 
-When \code{weights} is non-null, \code{grp.meth} is forced as \code{"prop"}, because it is the only method applicable to weighted data.
+When \code{weights} is non-null, \code{grp.meth} is enforced as \code{"prop"}, because it is the only method applicable to weighted data.
 
 The function computes indicative statistics of the resulting partition, namely a pseudo R2 and a pseudo F statistics. These statistics compare the mean distance to the group medoid with the mean distance to the overall medoid. When \code{squared} is \code{TRUE}, mean squared dissimilarities are used and otherwise the R2 and F ratios are based on mean of non-squared dissimilarities. An indicative p-value of the F statistics is computed using the F distribution. This p-value should be interpreted with caution since F is not a true F value.
-
 }
 
 \value{\code{dissrf} returns a list of class \code{dissrfprop} when \code{grp.meth="prop"} and of class \code{dissrfcrisp} otherwise. In both cases the list also receives class \code{"dissrf"}. The elements of the list are:
@@ -78,15 +78,15 @@ The function computes indicative statistics of the resulting partition, namely a
   \item{Fstat}{Pseudo F statistics}
   \item{pvalue}{p-value of the pseudo F (to be used with caution since F is not a true F value)}
   \item{sizes}{\code{ncase} (number of cases), \code{wsum} (sum of weights), \code{k} (number of groups), \code{gsize} (group size)}
-      
+
 \code{seqrf} returns a list of class \code{seqrfprop} when \code{grp.meth="prop"} and of class \code{seqrfcrisp} otherwise. In both cases the list also receives class \code{"seqrf"}. The elements of the list are:
     \item{seqtoplot}{RF medoid sequences as a state sequence \code{stslist} object}
-    \item{rf}{the associated \code{dissrf} object} 
+    \item{rf}{the associated \code{dissrf} object}
 
 There are print and summary methods for objects of class \code{dissrf} and \code{seqrf}, and a plot method for objects of class \code{seqrf}
 }
 
-\seealso{\code{\link{seqrfplot}}, \code{\link{dissrep}}, and \code{\link{seqrep}}
+\seealso{\code{\link{plot.seqrf}}, \code{\link{seqrfplot}}, \code{\link{dissrep}}, and \code{\link{seqrep}}
 }
 
 \references{

@@ -2,7 +2,7 @@
 
 dissrf <- function(diss, k=NULL, sortv=NULL, weights=NULL,
 						#ylab=NA, yaxis=FALSE, main=NULL, which.plot="both",
-                        grp.meth = "first", squared = FALSE){
+                        grp.meth = "prop", squared = FALSE){
 	
 	return(dissrf_internal(diss, k=k, sortv=sortv, weights=weights,
 						#ylab=ylab, yaxis=yaxis, main=main, which.plot=which.plot,
@@ -14,13 +14,15 @@ dissrf <- function(diss, k=NULL, sortv=NULL, weights=NULL,
 dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
                             use.hclust=FALSE, hclust_method="ward.D", #use.quantile=FALSE,
                             #ylab=NA, yaxis=FALSE, main=NULL, which.plot="both",
-                            grp.meth = "first", squared=squared){
+                            grp.meth = "prop", squared = FALSE){
 
   if (inherits(diss, "dist")) diss <- as.matrix(diss)
   ncase <- dim(diss)[1]
 
-  if (squared) pow <- 2 else pow <- 1
+  pow <- if (squared) 2 else 1
 
+  if (!is.null(sortv) & length(sortv) != nrow(diss))
+    stop(" length of sortv not equal to nrow(diss)!")
 
   ## normalizing weights
   if (is.null(weights)){
@@ -51,7 +53,10 @@ dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
   kmedoid.index <- rep(0, ncase)
   #calculate qij - distance to frequency group specific medoid within frequency group
   if(is.null(sortv) && !use.hclust){
-    sortv <- wcmdscale(diss^pow, k = 1, w=weights)
+    if (weighted)
+        sortv <- wcmdscale(diss^pow, k = 1, w=weights)
+    else
+        sortv <- cmdscale(diss^pow, k = 1)
   }
   ## sort order
   sortorder <- order(sortv)
@@ -282,11 +287,16 @@ print.dissrf <- function(x, ...){
 
 
 
-summary.dissrf <- function(object, ...){
+summary.dissrf <- function(object, dist.idx=1:10, ...){
   #limit <- max(seqlength(seqdss(seqrf[["seqtoplot"]])))
   medoids <- object[["medoids"]]
   dlist <- object[["dist.list"]]
   dweights <- object[["weights.list"]]
+##  g <- length(dlist)
+##  dist.stat <- matrix(rep(NA,5*g), nrow=5)
+##  for (i in 1:g){
+##    dist.stat[,1] <- wtd.fivenum.tmr(dlist[[i]],dweights[[i]])
+##  }
   dist.stat  <- sapply(dlist, fivenum)
   k <- length(dlist)
   dmean <- stdev <- vector("double",length=k)
@@ -300,6 +310,10 @@ summary.dissrf <- function(object, ...){
   }
   dist.stat <- rbind(dist.stat,dmean,stdev)
   rownames(dist.stat) <- c("minimum","lower-hinge","median","upper-hinge","maximum","mean","stdev")
+  if (min(dist.idx) < 1)
+    dist.idx <- NULL
+  else if (max(dist.idx) <= ncol(dist.stat))
+    dist.stat <- dist.stat[,dist.idx]
   stat <- c(R2 = object[["R2"]],Fstat=object[["Fstat"]],pvalue=object[["pvalue"]])
   return(list(medoids = medoids,
               dist.stat = dist.stat,

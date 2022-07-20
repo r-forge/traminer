@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-5 [2022-07-12]
+Version 2.3-5 [2022-07-20]
 
 New functions:
   - dissrf() medoids of relative frequency (RF) groups
@@ -7,16 +7,17 @@ New functions:
   - plot.seqrf() plot method for medoids of RF groups
   - seqrfplot() alias for seqplot(...,type="rf",...)
   - print and summary methods for dissrf and seqrf objects
-  
+
 Changes in existing functions
   - seqplot() new value \code{"rf"} (RF plots) for argument type.
 
 Misc.
-  - Proper wtd.cor, wtd.mean, and wtd.var internal functions
-    to avoid issues with dependence on packages weights
-    and Hmisc.
+  - Proper wtd.cor, wtd.mean, wtd.var, wtd.fivenum, 
+    and wtd.boxplot internal functions
+    to avoid issues with dependence on packages weights,
+    Hmisc, and ENmisc.
     (Code in TraMineR-weights.R and TraMineR-wtd-stats.R.)
-  - Suppressed function TraMineR.checkupdates.
+  - Function TraMineR.checkupdates has been removed.
 
 ## =========
 Version 2.3-4 [2022-06-08]

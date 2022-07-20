@@ -1,4 +1,164 @@
-## Stuff from Hmisc to avoid issues with dependence on Hmisc
+## weighted boxplots
+## Stuff from ENmisc (by Erich Neuwirth <erich.neuwirth at univie.ac.at>)
+##  included here to avoid issues with dependence on ENmisc
+
+wtd.boxplot.tmr <-
+function(x, weights=NULL, ..., range = 1.5, width = NULL, varwidth = FALSE,
+         notch = FALSE, outline = TRUE, names, plot = TRUE,
+         border = par("fg"), col = "lightgrey", log = "",
+         pars = list(boxwex = 0.8, staplewex = 0.5, outwex = 0.5),
+         horizontal = FALSE, add = FALSE, at = NULL,
+         frame.plot = FALSE)
+{
+    args <- list(x, ...)
+    namedargs <-
+        if(!is.null(attributes(args)$names))
+            attributes(args)$names != ""
+        else
+            rep(FALSE, length.out = length(args))
+    pars <- c(args[namedargs], pars)
+    groups <- if(is.list(x)) x else args[!namedargs]
+    if (!is.null(weights)){
+    if(!is.list(weights)) weights<-list(weights)
+        datasize<-sapply(groups,length)
+        wtsize<-sapply(weights,length)
+        if (length(datasize)!=length(wtsize))
+          stop("number of groups for data and weights are different")
+        if (any(datasize != wtsize))
+          stop("group sizes for data and weights are different")
+        groupwts<-weights
+    }
+    else groupwts<-NULL
+    if(0 == (n <- length(groups)))
+        stop("invalid first argument")
+    if(length(class(groups)))
+        groups <- unclass(groups)
+    if(!missing(names))
+        attr(groups, "names") <- names
+    else {
+        if(is.null(attr(groups, "names")))
+            attr(groups, "names") <- 1:n
+        names <- attr(groups, "names")
+    }
+    for(i in 1:n) {
+        if(is.null(groupwts[[i]]))
+            groups[i] <- list(wtd.boxplot.stats.tmr(groups[[i]],
+                              weights=NULL,
+                              coef=range)) # do.conf=notch)
+        else
+            groups[i] <- list(wtd.boxplot.stats.tmr(groups[[i]],
+                              weights=groupwts[[i]],
+                              coef=range)) # do.conf=notch)
+    }
+    stats <- matrix(0,nrow=5,ncol=n)
+    conf  <- matrix(0,nrow=2,ncol=n)
+    ng <- out <- group <- numeric(0)
+    ct <- 1
+    for(i in groups) {
+        stats[,ct] <- i$stats
+        conf [,ct] <- i$conf
+        ng <- c(ng, i$n)
+        if((lo <- length(i$out))) {
+            out   <- c(out,i$out)
+            group <- c(group, rep.int(ct, lo))
+        }
+        ct <- ct+1
+    }
+    z <- list(stats = stats, n = ng, conf = conf, out = out, group = group,
+              names = names)
+    if(plot) {
+        bxp(z, width, varwidth = varwidth, notch = notch, log = log,
+#            border = border, col = col, pars = pars,
+            border = border, boxfill = col, pars = pars,
+            outline = outline, horizontal = horizontal, add = add, at = at,
+            frame.plot = frame.plot)
+    invisible(z)
+    }
+    else z
+}
+
+wtd.boxplot.stats.tmr <-
+function(x, weights=NULL, coef = 1.5, do.conf=TRUE, do.out=TRUE)
+{
+
+    nna <- !is.na(x)
+    n <- sum(nna)                       # including +/- Inf
+#   stats <- stats::fivenum(x, weights=weights, na.rm = TRUE) # is the new call
+# the previous lines needs to be uncommented fot inclusion in the R distribution
+# and the next line has to be deleted
+    if (length(x) > 1)
+        stats <- wtd.fivenum.tmr(x, weights=weights, na.rm = TRUE) # is the call for the test version
+    else
+        stats <- rep(x,5)
+    iqr <- diff(stats[c(2, 4)])
+    if(coef < 0) stop("'coef' must not be negative")
+    if(coef == 0)
+        do.out <- FALSE
+    else {                              # coef > 0
+        out <- x < (stats[2] - coef * iqr) | x > (stats[4] + coef * iqr)
+        if(any(out[nna])) stats[c(1, 5)] <- range(x[!out], na.rm = TRUE)
+    }
+    conf <- NULL
+    if(do.conf && is.null(weights))
+        conf <- stats[3] + c(-1.58, 1.58) * iqr / sqrt(n)
+    if(do.conf&& !is.null(weights))
+        conf <- stats[3] + c(-1.58, 1.58) * iqr * sqrt(sum((weights/sum(weights))^2))
+    nn<-ifelse(is.null(weights),n,sum(weights))
+            list(stats = stats, n = nn, conf = conf,
+                out = if(do.out) x[out & nna] else numeric(0))
+}
+
+wtd.fivenum.tmr <-
+function(x, weights=NULL, na.rm=TRUE)
+{
+    interpolatedindex<-function(myval,weights){
+        indices<-1:length(weights)
+        n<-sum(weights)
+        weightsbelow<-rep(0,length(weights))
+        for (i in 2:length(weights))
+            weightsbelow[i] <- weightsbelow[i-1]+weights[i-1]
+        weightsabove<-n-weightsbelow-weights
+        lowcands<-weightsbelow<myval
+        highcands<-weightsabove<n-myval
+        (ifelse(any(lowcands),max(indices[lowcands]),1)+
+         ifelse(any(highcands),min(indices[highcands]),length(x)))/2
+    }
+    if (is.null(weights)) weights<-rep(1,length(x))
+    if (length(x)>1)
+        equalweights<- all((weights[2:length(weights)]-
+              weights[1:length(weights)-1])==0)
+    else
+        equalweights<-TRUE
+    xna <- (is.na(x) | weights==0)
+    if(na.rm) x <- x[!xna]
+    else if(any(xna)) return(rep.int(NA,5))
+    sortorder<-order(x)
+    x <- x[sortorder]
+    weights<-weights[sortorder]
+    n <- sum(weights)
+    if(n == 0) rep.int(NA,5)
+    else {
+      if (equalweights){
+          d <- c(1, 0.5*floor(0.5*(n+3)), 0.5*(n+1),
+                  n+1-0.5*floor(0.5*(n+3)), n)
+      }
+      else {
+        if(length(x)>1)
+            d<-c(1,sapply(c(0.25*n,0.5*n,0.75*n),
+                function(xxx)interpolatedindex(xxx,weights)),
+                length(x))
+        else
+            d<-rep(1,5)
+      }
+      0.5*(x[floor(d)]+x[ceiling(d)])
+    }
+}
+
+
+
+
+## Stuff from Hmisc
+## included here to avoid issues with dependence on Hmisc
 
 ## See stackoverflow.com/questions/10049402
 
@@ -46,6 +206,8 @@ wtd.var <- function(x, weights=NULL, normwt=FALSE, na.rm=TRUE,
   xbar <- sum(weights * x) / sw
   sum(weights*((x - xbar)^2)) / (sw - 1)
 }
+
+
 
 ### wtd.quantile <- function(x, weights=NULL, probs=c(0, .25, .5, .75, 1),
 ###                          type=c('quantile','(i-1)/(n-1)','i/(n+1)','i/n'),

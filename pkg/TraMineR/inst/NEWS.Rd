@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-5 [2022-07-12] }{
+\section{Changes in version 2.3-5 [2022-07-20] }{
 
     \subsection{New functions}{
         \itemize{
@@ -12,28 +12,29 @@
             \item
             \code{plot.seqrf()} plot method for medoids of RF groups
             \item
-            seqrfplot() alias for seqplot(...,type="rf",...)
+            \code{seqrfplot()} alias for \code{seqplot(...,type="rf",...)}
             \item
             print and summary methods for \code{dissrf} and \code{seqrf} objects
         }
-    
+
     }
-    
+
     \subsection{Changes in existing functions}{
         \itemize{
             \item
             \code{seqplot()} new value \code{"rf"} (RF plots) for argument type.
         }
     }
-    
+
 
     \subsection{Misc.}{
         \itemize{
             \item
-            Proper \code{wtd.cor}, \code{wtd.mean}, and \code{wtd.var} internal functions to avoid
-            issues with dependence on packages weights and Hmisc. (Code in TraMineR-weights.R and TraMineR-wtd-stats.R.)
+            Proper \code{wtd.cor}, \code{wtd.mean}, \code{wtd.var}, \code{wtd.fivenum}, and
+            \code{wtd.boxplot}  internal functions to avoid
+            issues with dependence on packages weights, Hmisc, and ENmisc. (Code in TraMineR-weights.R and TraMineR-wtd-stats.R.)
             \item
-            Suppressed function \code{TraMineR.checkupdates}.
+            Function \code{TraMineR.checkupdates} has been removed.
         }
     }
 }
