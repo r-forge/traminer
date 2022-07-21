@@ -1,7 +1,7 @@
 ## creating rf sequence object
 seqrf <- function(seqdata, diss, k=NULL, sortv=NULL, weights=NULL,
                   weighted=TRUE,
-                  grp.meth = "prop", squared = FALSE){
+                  grp.meth = "prop", squared = FALSE, pow = NULL){
 
   if (is.null(weights) & weighted) weights <- attr(seqdata,"weights")
   if (!weighted) weights <- NULL
@@ -20,7 +20,7 @@ seqrf <- function(seqdata, diss, k=NULL, sortv=NULL, weights=NULL,
     }
   }
   rf <- dissrf(diss, k=k, sortv=sortv, weights=weights,
-               grp.meth = grp.meth, squared = squared)
+               grp.meth = grp.meth, squared = squared, pow = pow)
   seqtoplot <- seqdata[rf[["medoids"]],]
   attr(seqtoplot,"weights") <- rf[["heights"]]
   srf <- list(seqtoplot=seqtoplot,rf=rf)
@@ -32,70 +32,6 @@ seqrf <- function(seqdata, diss, k=NULL, sortv=NULL, weights=NULL,
     class(srf) <- c("seqrfcrisp",class(srf))
 
   return(srf)
-}
-
-## methods
-plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
-                    main=NULL, frame.plot=FALSE, info="all", ...){
-    dotargs <- list(...)
-    xaxt <- "s"
-    if (!is.null(dotargs[["xaxis"]]))
-        if(!dotargs[["xaxis"]]) xaxt <- "n"
-    xaxis <- xaxt == "s"
-    plot.types <- c("both","medoids","diss.to.med")
-    if (! which.plot %in% plot.types)
-        stop(" which.plot must be one of ", plot.types)
-    info.types <- c("all","stat","subtitle","none")
-
-    if(which.plot=="both"){
-      def.par <- par(no.readonly = TRUE) # save default, for resetting...
-  	  ##opar <- par(mfrow=c(1,2), oma=c(3,(!is.na(ylab)*5),(!is.null(main))*3,0), mar=c(1, 1, 2, 0))
-  	  if (info %in% c("all","stat"))
-        par(oma=c(3,0,(!is.null(main))*3,0))
-      else
-        par(oma=c(0,0,(!is.null(main))*3,0))
-      layout(matrix(c(1,2),ncol=2), widths=c(.6,.4))
-	  on.exit(par(def.par))
-    }
-
-    if (info %in% c("all","subtitle")){
-      titmed <- "Sequence medoids"
-      titbxp <- "Distances to medoids"
-      if (!is.null(main) & which.plot=="medoids")
-            titmed <- paste(main,titmed, sep=": ")
-    } else {
-      titmed <- titbxp <- NULL
-    }
-
-  if (which.plot %in% c("medoids","both")){
-     if (which.plot == "both")
-          if (!is.na(ylab))
-            par(mar=c(xaxis * 2.5, 4, (info %in% c("all","subtitle")) * 2, 0))
-          else
-            par(mar=c(xaxis * 2.5, 1, (info %in% c("all","subtitle")) * 2, 0))
-     plot(x[["seqtoplot"]], idxs = 0, space=space, border=border, ylab=ylab, main=titmed, ...)
-  }
-
-  if (!is.null(main) & which.plot == "diss.to.med")
-        titbxp <- paste(main,titbxp, sep=": ")
-  if (which.plot %in% c("diss.to.med","both")){
-     heights <- x[["rf"]][["heights"]]
-     at      <- x[["rf"]][["at"]]
-     pars = list(boxwex = 0.8, staplewex = 0.5, outwex = 0.5, frame.plot=frame.plot)
-     if (which.plot == "both")
-            par(mar=c(xaxis * 2.5, 1, (info %in% c("all","subtitle")) * 2, 0))
-     wtd.boxplot.tmr(x[["rf"]][["dist.list"]], x[["rf"]][["weights.list"]], horizontal=TRUE, width=heights,
-        main=titbxp, pars=pars, yaxt="n", xaxt=xaxt, frame.plot=frame.plot,
-        ylim=range(unlist(x[["rf"]][["dist.list"]])), at=at)
-  }
-
-  if (which.plot=="both") {
-
-  	if(!is.null(main)) title(main=main, outer=TRUE)
-  	if(info %in% c("all","stat"))title(sub=sprintf("Representation quality: R2=%0.2f and F=%0.2f",
-        x[["rf"]][["R2"]], x[["rf"]][["Fstat"]]), outer=TRUE, line=2)
-  }
-
 }
 
 ######

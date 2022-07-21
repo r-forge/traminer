@@ -35,6 +35,11 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
       oolist[["diss"]] <- diss
     } # FIXME dist.matrix is deprecated
 
+    if ("which.plot" %in% names(oolist)){
+        msg.warn("which.plot ignored, because not allowed as seqplot argument!")
+        oolist <- oolist[[names(oolist) != "which.plot"]]
+    }
+
 
   if (type == "pc") { # modification of Reto Bürgin 16.08.2012
     oolist <- append(oolist, list(group = group, rows = rows, cols = cols))

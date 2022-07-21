@@ -11,6 +11,7 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
     if (! which.plot %in% plot.types)
         stop(" which.plot must be one of ", plot.types)
     info.types <- c("all","stat","subtitle","none")
+    if (is.null(ylab)) ylab <- NA
 
     xaxt <- "s"
     if (!is.null(dotargs[["xaxis"]]))

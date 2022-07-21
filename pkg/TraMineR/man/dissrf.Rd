@@ -11,7 +11,7 @@
 Relative Frequency Groups.
 }
 \description{
-Relative Frequency (RF) groups are equally sized groups obtained by partitioning sorted cases into \eqn{k} consecutive groups. Function \code{dissrf} returns medoid index of the RF groups and related statistics and \code{seqrf} returns in addition the RF medoid sequences.
+Relative Frequency (RF) groups are equally sized groups obtained by partitioning sorted cases into \eqn{k} consecutive groups. Function \code{dissrf} returns the medoid indexes of the RF groups and related statistics. Function \code{seqrf} is for sequence data and returns in addition the RF medoid sequences.
 }
 \usage{
 dissrf(diss,
@@ -19,15 +19,18 @@ dissrf(diss,
        sortv=NULL,
        weights=NULL,
        grp.meth = "prop",
-       squared = FALSE)
+       squared = FALSE,
+       pow = NULL)
 
-seqrf(seqdata, diss,
+seqrf(seqdata, 
+       diss,
        k=NULL,
        sortv=NULL,
        weights=NULL,
        weighted=TRUE,
        grp.meth = "prop",
-       squared = FALSE)
+       squared = FALSE,
+       pow = NULL)
 
 \method{summary}{dissrf}(object, dist.idx = 1:10, ...)
 
@@ -43,7 +46,8 @@ seqrf(seqdata, diss,
   \item{weights}{Vector  (of length \code{nrow(diss)}) of non-negative weights. If \code{NULL} (default), equal weights are used.}
   \item{weighted}{Logical. Should weights be used when there are weights in \code{seqdata}? (default is \code{TRUE})}
   \item{grp.meth}{Character string. One of \code{"prop"}, \code{"first"}, and \code{"random"}. Grouping method. See details.}
-  \item{squared}{Logical. Should dissimilarities be squared?}
+  \item{squared}{Logical. Should medoids be based on squared dissimilarities? (default is \code{FALSE})}
+  \item{pow}{Double}{Dissimilarity power exponent (typically 1 or 2) for computation of pseudo R2 and F. When \code{NULL}, \code{pow} is set as 1 when \code{squared = FALSE}, and as 2 otherwise.}
   \item{...}{additional arguments passed to \code{\link{plot.stslist}}}
   \item{object}{Object of class \code{dissrf} or \code{seqrf}}
   \item{format}{String. One of \code{"SPS"} (default) or \code{"STS"}. Display format of the medoid sequences.}
@@ -61,7 +65,7 @@ For \code{seqrf}, when \code{weights=NULL} and \code{weighted=TRUE}, \code{weigh
 
 When \code{weights} is non-null, \code{grp.meth} is enforced as \code{"prop"}, because it is the only method applicable to weighted data.
 
-The function computes indicative statistics of the resulting partition, namely a pseudo R2 and a pseudo F statistics. These statistics compare the mean distance to the group medoid with the mean distance to the overall medoid. When \code{squared} is \code{TRUE}, mean squared dissimilarities are used and otherwise the R2 and F ratios are based on mean of non-squared dissimilarities. An indicative p-value of the F statistics is computed using the F distribution. This p-value should be interpreted with caution since F is not a true F value.
+The function computes indicative statistics of the resulting partition, namely a pseudo R2 and a pseudo F statistics. These statistics compare the mean distance to the group medoid with the mean distance to the overall medoid. When \code{pow} is \code{2}, mean squared dissimilarities are used and when \code{pow} is 1 the R2 and F ratios are based on mean of non-squared dissimilarities. An indicative p-value of the F statistics is computed using the F distribution. This p-value should be interpreted with caution since F is not a true F value.
 }
 
 \value{\code{dissrf} returns a list of class \code{dissrfprop} when \code{grp.meth="prop"} and of class \code{dissrfcrisp} otherwise. In both cases the list also receives class \code{"dissrf"}. The elements of the list are:

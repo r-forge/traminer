@@ -2,11 +2,11 @@
 
 dissrf <- function(diss, k=NULL, sortv=NULL, weights=NULL,
 						#ylab=NA, yaxis=FALSE, main=NULL, which.plot="both",
-                        grp.meth = "prop", squared = FALSE){
+                        grp.meth = "prop", squared = FALSE, pow = NULL){
 	
 	return(dissrf_internal(diss, k=k, sortv=sortv, weights=weights,
 						#ylab=ylab, yaxis=yaxis, main=main, which.plot=which.plot,
-                        grp.meth = grp.meth, squared = squared
+                        grp.meth = grp.meth, squared = squared, pow = pow
                         )
            )
 }
@@ -14,12 +14,14 @@ dissrf <- function(diss, k=NULL, sortv=NULL, weights=NULL,
 dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
                             use.hclust=FALSE, hclust_method="ward.D", #use.quantile=FALSE,
                             #ylab=NA, yaxis=FALSE, main=NULL, which.plot="both",
-                            grp.meth = "prop", squared = FALSE){
+                            grp.meth = "prop", squared = FALSE, pow = NULL){
 
   if (inherits(diss, "dist")) diss <- as.matrix(diss)
   ncase <- dim(diss)[1]
 
-  pow <- if (squared) 2 else 1
+  if (is.null(pow)){
+    pow <- if (squared) 2 else 1
+  }
 
   if (!is.null(sortv) & length(sortv) != nrow(diss))
     stop(" length of sortv not equal to nrow(diss)!")
