@@ -39,7 +39,7 @@ seqrf(seqdata, diss,
   \item{diss}{Matrix or distance object. Pairwise dissimilarities between analyzed cases.}
   \item{seqdata}{State sequence \code{stslist} object as produced by \code{\link{seqdef}}.}
   \item{k}{Integer: Number of groupings (frequency groups)}
-  \item{sortv}{Real vector (of length \code{nrow(diss)}), character string, or \code{NULL}. Sorting variable or method used to compute the frequency groups. If a string, one of \code{"from.start"} and \code{"from.end"}.If \code{NULL}, the first MDS factor of \code{diss} is used. Ties are randomly ordered.}
+  \item{sortv}{Real vector (of length \code{nrow(diss)}), character string (\code{seqrf} only), or \code{NULL}. Sorting variable used to compute the frequency groups.  If \code{NULL}, the first MDS factor of \code{diss} is used. Ties are randomly ordered. If a string, one of \code{"from.start"} and \code{"from.end"}, which apply to \code{seqrf} only.}
   \item{weights}{Vector  (of length \code{nrow(diss)}) of non-negative weights. If \code{NULL} (default), equal weights are used.}
   \item{weighted}{Logical. Should weights be used when there are weights in \code{seqdata}? (default is \code{TRUE})}
   \item{grp.meth}{Character string. One of \code{"prop"}, \code{"first"}, and \code{"random"}. Grouping method. See details.}
@@ -51,9 +51,11 @@ seqrf(seqdata, diss,
 }
 
 \details{
-Function \code{dissrf} partitions the \eqn{n} cases (rows of the \code{diss} matrix) into \eqn{k} equally sized groups. First, the cases are sorted according to the \code{sortv} variable (or method). Then the groups are built by consecutively grouping the first \eqn{n/k} cases, then the next \eqn{n/k} cases, and so on.
+Function \code{dissrf} partitions the \eqn{n} cases (rows of the \code{diss} matrix) into \eqn{k} equally sized groups. First, the cases are sorted according to the \code{sortv} variable.  Then the groups are built by consecutively grouping the first \eqn{n/k} cases, then the next \eqn{n/k} cases, and so on. In \code{seqrf}, one of sort methods \code{"from.start"} and \code{"from.end"} can be specified as \code{sortv} argument.
 
-The \code{grp.meth} argument serves when the group size (\eqn{n/k}) is not integer. With \code{grp.meth="first"}, the integer part of \eqn{n/k} is used as group size and the size of the first groups is augmented by one unit so that the sum of the group sizes equals \eqn{n}. With \code{grp.meth="random"}, randomly selected groups have their size augmented by one unit, and with \code{grp.meth="prop"} (default), cases at the limit between groups are proportionally assigned to each of the two groups.
+Ties in the \code{sortv} variable are handled by \code{\link{order}} using the default method, which produces stable outcome. To use a different method, compute a suited variable without ties (e.g. using \code{order} with the wanted method for ties) and pass it as \code{sortv} argument.
+
+The \code{grp.meth} argument applies when the group size (\eqn{n/k}) is not integer. With \code{grp.meth="first"}, the integer part of \eqn{n/k} is used as basic group size and the size of the first groups is augmented by one unit so that the sum of the group sizes equals \eqn{n}. With \code{grp.meth="random"}, randomly selected groups have their size augmented by one unit, and with \code{grp.meth="prop"} (default), cases at the limit between groups are proportionally assigned to each of the two groups.
 
 For \code{seqrf}, when \code{weights=NULL} and \code{weighted=TRUE}, \code{weights} is set as the \code{weights} attribute of \code{seqdata}.
 
@@ -110,20 +112,25 @@ biofam.seq <- seqdef(biofam[501:600, 10:25], labels=biofam.lab,
                     weights=biofam[501:600,"wp00tbgs"])
 diss <- seqdist(biofam.seq, method="LCS")
 
-## Using 12 groups and default MDS sorting
-dissrf(diss=diss, k=12, grp.meth="random")
+## Using 12 groups, default MDS sorting, 
+##  and original method by Fasang and Liao (2014)
+dissrf(diss=diss, k=12, grp.meth="first")
 
-## Using 12 groups, weights, and default MDS sorting
-w <- attr(biofam.seq,"weights")
-dissrf(diss=diss, k=12, grp.meth="prop", weights=w)
+## Using 12 groups, weights, default MDS sorting,
+##  and default "prop" method
+w <- attr(biofam.seq, "weights")
+dissrf(diss=diss, k=12, weights=w)
 
 ## With a user specified sorting variable
-## Here time spent in parental home: there are ties
+## Here time spent in parental home, which has ties
 parentTime <- seqistatd(biofam.seq)[, 1]
 b.srf <- seqrf(biofam.seq, diss=diss, k=12, sortv=parentTime)
-b.srf
-summary(b.srf)
+
+## print, summary, and plot methods
+b.srf  
+summary(b.srf) 
 plot(b.srf)
+plot(b.srf, which.plot="both")
 
 }
 

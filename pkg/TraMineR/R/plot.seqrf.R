@@ -5,6 +5,8 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
                     main=NULL, frame.plot=FALSE, info="all", ...){
 
     dotargs <- list(...)
+    def.par <- par(no.readonly = TRUE) # save default, for resetting...
+    on.exit(par(def.par))
     plot.types <- c("both","medoids","diss.to.med")
     if (! which.plot %in% plot.types)
         stop(" which.plot must be one of ", plot.types)
@@ -20,14 +22,12 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
     yaxis <- yaxt == "s"
 
     if(which.plot=="both"){
-      def.par <- par(no.readonly = TRUE) # save default, for resetting...
   	  ##opar <- par(mfrow=c(1,2), oma=c(3,(!is.na(ylab)*5),(!is.null(main))*3,0), mar=c(1, 1, 2, 0))
   	  if (info %in% c("all","stat"))
-        par(oma=c(3,0,(!is.null(main))*3,0))
+        par(oma=c(3,0,(!is.null(main))*3,.5))
       else
-        par(oma=c(0,0,(!is.null(main))*3,0))
+        par(oma=c(0,0,(!is.null(main))*3,.5))
       layout(matrix(c(1,2),ncol=2), widths=c(.6,.4))
-	  on.exit(par(def.par))
     }
 
     if (info %in% c("all","subtitle")){
@@ -39,12 +39,12 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
       titmed <- titbxp <- NULL
     }
 
+  if (!is.na(ylab))
+    par(mar=c(xaxis * 2.5, 4 , (info %in% c("all","subtitle")) * 2, .5))
+  else
+    par(mar=c(xaxis * 2.5, 2 + yaxis , (info %in% c("all","subtitle")) * 2, .5))
+     #}
   if (which.plot %in% c("medoids","both")){
-     if (which.plot == "both")
-          if (!is.na(ylab))
-            par(mar=c(xaxis * 2.5, 4, (info %in% c("all","subtitle")) * 2, 0))
-          else
-            par(mar=c(xaxis * 2.5, 1, (info %in% c("all","subtitle")) * 2, 0))
      plot(x[["seqtoplot"]], idxs = 0, space=space, border=border, ylab=ylab, main=titmed, ...)
   }
 
@@ -55,10 +55,10 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
      at      <- x[["rf"]][["at"]]
      pars = list(boxwex = 0.8, staplewex = 0.5, outwex = 0.5, frame.plot=frame.plot)
      if (which.plot == "both")
-            par(mar=c(xaxis * 2.5, 1, (info %in% c("all","subtitle")) * 2, 0))
+            par(mar=c(xaxis * 2.5, 0, (info %in% c("all","subtitle")) * 2, .5))
      wtd.boxplot.tmr(x[["rf"]][["dist.list"]], x[["rf"]][["weights.list"]], horizontal=TRUE, width=heights,
-        main=titbxp, pars=pars, yaxt="n", xaxt=xaxt, frame.plot=frame.plot,
-        ylim=range(unlist(x[["rf"]][["dist.list"]])), at=at)
+        main=titbxp, pars=pars, yaxt=yaxt, xaxt=xaxt, frame.plot=frame.plot,
+        ylim=range(unlist(x[["rf"]][["dist.list"]])), at=at, ylab=ylab)
   }
 
   if (which.plot=="both") {

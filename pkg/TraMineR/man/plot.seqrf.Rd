@@ -9,14 +9,14 @@ Plot method for seqrf objects of relative frequency groups of sequences.
 Plots the medoids of the RF groups of sequences and/or the boxplots of the distribution of the distances from the sequences to their group medoid.
 }
 \usage{
-\method{plot}{seqrf}(x, 
-        space=0, 
-        border=NA, 
-        which.plot="medoids", 
+\method{plot}{seqrf}(x,
+        space=0,
+        border=NA,
+        which.plot="medoids",
         ylab=NA,
-        main=NULL, 
-        frame.plot=FALSE, 
-        info="all", 
+        main=NULL,
+        frame.plot=FALSE,
+        info="all",
         ...)
 
 }
@@ -29,7 +29,7 @@ Plots the medoids of the RF groups of sequences and/or the boxplots of the distr
   \item{ylab}{string. An optional label for the y-axis. If set as \code{NA} (default), no label is drawn.}
   \item{main}{main graphic title. Default is \code{NULL}.}
   \item{frame.plot}{logical. Should a frame be plotted around the grouped boxplots?}
-  \item{info}{string. One of \code{"all"} (default), \code{"subtitle"}, \code{"stat"}, and \code{"none"}.} 
+  \item{info}{string. One of \code{"all"} (default), \code{"subtitle"}, \code{"stat"}, and \code{"none"}.}
   \item{...}{additional arguments passed to \code{\link{plot.stslist}}}
 }
 
@@ -39,6 +39,8 @@ The plot of the medoids is generated with the plot method for \code{stslist} obj
 When \code{which.plot="both"}, \code{\link{layout}} is used to produce the combined plot. Therefore, the resulting combined plot cannot be nested into other combinations using either \code{par(mfrow=...)} or \code{layout}. To combine with other plots, you must produce separately the plot of the medoids and the grouped boxplots using successively \code{which.plot="medoids"} and \code{which.plot="diss.to.med"}.
 
 When arguments \code{xaxis} and {yaxis} are on the \code{...} list to be passed to \code{\link{plot.stslist}}, they are also used to control the display of the x and y axis of the boxplot.
+
+With \code{info="stat"} or \code{"all"}, the pseudo R2 and F statistics are displayed under the plot, but only when \code{which.plot = "both"}.
 }
 
 \seealso{\code{\link{seqrf}}, \code{\link{seqrfplot}}
