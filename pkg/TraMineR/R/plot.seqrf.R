@@ -2,11 +2,13 @@
 ## author: Gilbert Ritschard
 
 plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
-                    main=NULL, frame.plot=FALSE, info="all", ...){
+                    main=NULL, frame.plot=FALSE, info="all", skipar = FALSE, ...){
 
     dotargs <- list(...)
-    def.par <- par(no.readonly = TRUE) # save default, for resetting...
-    on.exit(par(def.par))
+    if (!skipar){
+        def.par <- par(no.readonly = TRUE) # save default, for resetting...
+        on.exit(par(def.par))
+    }
     plot.types <- c("both","medoids","diss.to.med")
     if (! which.plot %in% plot.types)
         stop(" which.plot must be one of ", plot.types)
@@ -22,7 +24,7 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
         if(dotargs[["yaxis"]]) yaxt <- "s"
     yaxis <- yaxt == "s"
 
-    if(which.plot=="both"){
+    if(!skipar & which.plot=="both"){
   	  ##opar <- par(mfrow=c(1,2), oma=c(3,(!is.na(ylab)*5),(!is.null(main))*3,0), mar=c(1, 1, 2, 0))
   	  if (info %in% c("all","stat"))
         par(oma=c(3,0,(!is.null(main))*3,.5))
@@ -40,11 +42,12 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
       titmed <- titbxp <- NULL
     }
 
-  if (!is.na(ylab))
-    par(mar=c(xaxis * 2.5, 4 , (info %in% c("all","subtitle")) * 2, .5))
-  else
-    par(mar=c(xaxis * 2.5, 2 + yaxis , (info %in% c("all","subtitle")) * 2, .5))
-     #}
+    if (!skipar){
+      if (!is.na(ylab))
+        par(mar=c(xaxis * 2.5, 4 , (info %in% c("all","subtitle")) * 2, .5))
+      else
+        par(mar=c(xaxis * 2.5, 2 + yaxis , (info %in% c("all","subtitle")) * 2, .5))
+     }
   if (which.plot %in% c("medoids","both")){
      plot(x[["seqtoplot"]], idxs = 0, space=space, border=border, ylab=ylab, main=titmed, ...)
   }

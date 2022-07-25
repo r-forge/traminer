@@ -212,6 +212,7 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
 			if (!"border" %in% names(olist)) {olist <- c(olist, list(border=NA))}
 			## Selecting distances according to group
 			olist[["diss"]] <- diss[gindex[[np]],gindex[[np]]]
+            plist[["skipar"]] <- TRUE
 		}
 		## Mean times
 		else if (type=="mt") {

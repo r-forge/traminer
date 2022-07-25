@@ -165,6 +165,36 @@ actcal.seq <- seqdef(actcal,13:24,labels=actcal.lab)
 data(ex1)
 ex1.seq <- seqdef(ex1, 1:13, weights=ex1$weights)
 
+## ====================
+## Sequence index plots
+## ====================
+
+## First ten sequences
+seqiplot(biofam.seq)
+
+## All sequences sorted by age in 2000
+## grouped by sex
+seqIplot(actcal.seq, group=actcal$sex, sortv=actcal$age00)
+
+
+## =======================
+## State distribution plot
+## =======================
+
+## biofam grouped by sex
+seqplot(biofam.seq, type="d", group=actcal$sex)
+
+## actcal grouped by sex
+seqplot(actcal.seq, type="d", group=actcal$sex)
+
+## with overlayed entropy line
+seqplot(actcal.seq, type="dH", group=actcal$sex)
+
+## ===================
+## Cross-sectional entropy plot
+## ===================
+seqplot(biofam.seq, type="Ht", group=biofam$sex)
+
 ## ========================
 ## Sequence frequency plots
 ## ========================
@@ -192,48 +222,23 @@ seqmsplot(biofam.seq)
 
 ## Computing a distance matrix
 ## with OM metric
-costs <- seqcost(biofam.seq, method="INDELSLOG")
-biofam.om <- seqdist(biofam.seq, method="OM", sm=costs$sm, indel=costs$indel)
+costs <- seqcost(actcal.seq, method="INDELSLOG")
+actcal.om <- seqdist(actcal.seq, method="OM", sm=costs$sm, indel=costs$indel)
 
 ## Plot of the representative sets grouped by sex
 ## using the default density criterion
-seqrplot(biofam.seq, group=biofam$sex, diss=biofam.om)
+seqrplot(actcal.seq, group=actcal$sex, diss=actcal.om, coverage=.5)
 
 ## Plot of the representative sets grouped by sex
 ## using the "dist" (centrality) criterion
-seqrplot(biofam.seq, group=biofam$sex, criterion="dist", diss=biofam.om)
+seqrplot(actcal.seq, group=actcal$sex, criterion="dist", diss=actcal.om, coverage=.33)
 
-## ====================
-## Sequence index plots
-## ====================
+## ========================
+## Relative frequency plots
+## ========================
+## Using default sorting by first MDS variable
+seqrfplot(actcal.seq, diss=actcal.om, sortv=NULL, group=actcal$sex)
 
-## First ten sequences
-seqiplot(biofam.seq)
-
-## All sequences sorted by age in 2000
-## grouped by sex
-## using 'border=NA' and 'space=0' options to have a nicer plot
-seqiplot(actcal.seq, group=actcal$sex, idxs=0, border=NA, space=0,
-         sortv=actcal$age00)
-
-
-## =======================
-## State distribution plot
-## =======================
-
-## biofam grouped by sex
-seqplot(biofam.seq, type="d", group=actcal$sex)
-
-## actcal grouped by sex
-seqplot(actcal.seq, type="d", group=actcal$sex)
-
-## with overlayed entropy line
-seqplot(actcal.seq, type="dH", group=actcal$sex)
-
-## ===================
-## Cross-sectional entropy plot
-## ===================
-seqplot(biofam.seq, type="Ht", group=biofam$sex)
 
 ## ===============
 ## Mean time plot
