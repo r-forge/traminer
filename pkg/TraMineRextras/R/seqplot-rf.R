@@ -104,14 +104,16 @@ seqplot.rf_internal <- function(seqdata, k=floor(nrow(seqdata)/10), diss, sortv=
 	   seqIplot(seqtoplot, with.legend=FALSE, sortv=mdsk, yaxis=yaxis, main="Sequences medoids", ...)
   }
 
-  if (which.plot=="medoids")
+  if (which.plot=="medoids"){
      if (!is.null(main))
         main <- paste(main,"Sequences medoids", sep=": ")
      else
         main <- "Sequences medoids"
+
   	 seqIplot(seqtoplot, sortv=mdsk, yaxis=yaxis, ylab=ylab, main=main, ...)
 	##seqIplot(seqtoplot, with.legend=FALSE, sortv=mdsk)
 	
+  }
   heights <- xtabs(~mdsk)/nrow(seqdata)
 	at <- (cumsum(heights)-heights/2)/sum(heights)*length(heights)
 	if(!yaxis){
@@ -121,8 +123,8 @@ seqplot.rf_internal <- function(seqdata, k=floor(nrow(seqdata)/10), diss, sortv=
 	   boxplot(kmedoid.dist~mdsk, horizontal=TRUE, width=heights, frame=FALSE,
         main="Dissimilarities to medoid",
         ylim=range(as.vector(diss)), at=at, ylab=ylab)
-  }
-	if (which.plot == "diss.to.med") {
+    }
+    if (which.plot == "diss.to.med") {
        if (!is.null(main))
           main <- paste(main,"Dissimilarities to medoids", sep=": ")
        else
