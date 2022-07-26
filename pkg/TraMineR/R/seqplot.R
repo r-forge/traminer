@@ -33,12 +33,21 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
   	else if ("dist.matrix" %in% names(oolist)) {
       diss <- oolist[["dist.matrix"]]
       oolist[["diss"]] <- diss
-    } # FIXME dist.matrix is deprecated
+    } #  dist.matrix is deprecated
 
+    ## Stuff for rf plot
+    use.rf.layout <- FALSE
     if ("which.plot" %in% names(oolist)){
-        msg.warn("which.plot ignored, because not allowed as seqplot argument!")
-        oolist <- oolist[[names(oolist) != "which.plot"]]
+        #msg.warn("which.plot ignored, because not allowed as seqplot argument!")
+        #if (length(oolist) > 0) oolist <- oolist[[names(oolist) != "which.plot"]]
+        #else oolist <-  list()
+        if (oolist[["which.plot"]] == "both"){
+            if (!is.null(group))
+                msg.stop('which.plot="both" applies only when group=NULL')
+            use.rf.layout <- TRUE
+        }
     }
+
 
 
   if (type == "pc") { # modification of Reto Bürgin 16.08.2012
@@ -131,9 +140,16 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
 		## Saving graphical parameters
 		savepar <- par(no.readonly = TRUE)
 
-		lout <- TraMineR.setlayout(nplot, rows, cols, with.legend, axes, legend.prop)
-	  	layout(lout$laymat, heights=lout$heights, widths=lout$widths)
 
+        if (use.rf.layout) {
+		  lout <- TraMineR.setlayout(2, 1, 2, with.legend, axes, legend.prop)
+          lout$widths[1] <- 1.3*lout$widths[1]
+	  	  layout(lout$laymat, heights=lout$heights, widths=lout$widths)
+        }
+        else {
+		  lout <- TraMineR.setlayout(nplot, rows, cols, with.legend, axes, legend.prop)
+	  	  layout(lout$laymat, heights=lout$heights, widths=lout$widths)
+        }
 		## Should axis be plotted or not ?
 		xaxis <- 1:nplot==lout$axisp
 
@@ -213,6 +229,8 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
 			## Selecting distances according to group
 			olist[["diss"]] <- diss[gindex[[np]],gindex[[np]]]
             plist[["skipar"]] <- TRUE
+
+            if (use.rf.layout) olist[["which.plot"]] <- "medoids"
 		}
 		## Mean times
 		else if (type=="mt") {
@@ -287,6 +305,13 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
 
 		plist <- c(list(x=res), plist, olist)
 		do.call(plot, args=plist)
+
+        if (use.rf.layout){
+            plist[["which.plot"]] <- "diss.to.med"
+            plist[["ylab"]] <- NA
+            plist[["yaxis"]] <- FALSE
+            do.call(plot, args=plist)
+        }
 	}
 
 	## Plotting the legend
