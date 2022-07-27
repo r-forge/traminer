@@ -41,13 +41,13 @@ seqrf(seqdata,
 \arguments{
   \item{diss}{Matrix or distance object. Pairwise dissimilarities between analyzed cases.}
   \item{seqdata}{State sequence \code{stslist} object as produced by \code{\link{seqdef}}.}
-  \item{k}{Integer: Number of groupings (frequency groups)}
+  \item{k}{Integer: Number of groupings (frequency groups). When \code{NULL}, \code{k} is set as the minimum begween 100 and the sum of weights over 10.}
   \item{sortv}{Real vector (of length \code{nrow(diss)}), character string (\code{seqrf} only), or \code{NULL}. Sorting variable used to compute the frequency groups.  If \code{NULL}, the first MDS factor of \code{diss} is used. Ties are randomly ordered. If a string, one of \code{"from.start"} and \code{"from.end"}, which apply to \code{seqrf} only.}
   \item{weights}{Vector  (of length \code{nrow(diss)}) of non-negative weights. If \code{NULL} (default), equal weights are used.}
   \item{weighted}{Logical. Should weights be used when there are weights in \code{seqdata}? (default is \code{TRUE})}
   \item{grp.meth}{Character string. One of \code{"prop"}, \code{"first"}, and \code{"random"}. Grouping method. See details.}
   \item{squared}{Logical. Should medoids be based on squared dissimilarities? (default is \code{FALSE})}
-  \item{pow}{Double}{Dissimilarity power exponent (typically 1 or 2) for computation of pseudo R2 and F. When \code{NULL}, \code{pow} is set as 1 when \code{squared = FALSE}, and as 2 otherwise.}
+  \item{pow}{Double. Dissimilarity power exponent (typically 1 or 2) for computation of pseudo R2 and F. When \code{NULL}, \code{pow} is set as 1 when \code{squared = FALSE}, and as 2 otherwise.}
   \item{...}{additional arguments passed to \code{\link{plot.stslist}}}
   \item{object}{Object of class \code{dissrf} or \code{seqrf}}
   \item{format}{String. One of \code{"SPS"} (default) or \code{"STS"}. Display format of the medoid sequences.}

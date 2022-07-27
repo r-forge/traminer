@@ -40,7 +40,7 @@ dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
   }
 
   wsum <- sum(weights)
-  if (is.null(k)) k <- floor(wsum/10)
+  if (is.null(k)) k <- min(floor(wsum/10),100)
   message(" [>] Using k=", k, " frequency groups")
 
   #Extract medoid, possibly weighted
