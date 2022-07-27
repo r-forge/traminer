@@ -34,17 +34,25 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
     }
 
     if (info %in% c("all","subtitle")){
-      titmed <- "Sequence medoids"
+      titmed <- "Group medoids"
       titbxp <- "Distances to medoids"
-      if (!is.null(main) & which.plot=="medoids")
+      if (!is.null(main)) {
+        if (which.plot=="medoids")
             titmed <- paste(main,titmed, sep=": ")
-    } else {
-      titmed <- titbxp <- NULL
+        else if (which.plot=="diss.to.med")
+            titbxp <- paste(main, titbxp, sep=": ")
+      }
     }
+    else if (!is.null(main) & which.plot == "both")
+            titmed <- titbxp <- NULL
+    else
+        titmed <- titbxp <- main
 
     if (!skipar){
       if (!is.na(ylab))
         par(mar=c(xaxis * 2.5, 4 , (info %in% c("all","subtitle")) * 2, .5))
+      else if (!is.null(main) & info %in% c("none","stat"))
+        par(mar=c(xaxis * 2.5, 2 + yaxis , 2, .5))
       else
         par(mar=c(xaxis * 2.5, 2 + yaxis , (info %in% c("all","subtitle")) * 2, .5))
      }
@@ -52,14 +60,18 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
      plot(x[["seqtoplot"]], idxs = 0, space=space, border=border, ylab=ylab, main=titmed, ...)
   }
 
-  if (!is.null(main) & which.plot == "diss.to.med")
-        titbxp <- paste(main,titbxp, sep=": ")
+  #if (!is.null(main) & which.plot == "diss.to.med")
+  #      titbxp <- paste(main,titbxp, sep=": ")
   if (which.plot %in% c("diss.to.med","both")){
      heights <- x[["rf"]][["heights"]]
      at      <- x[["rf"]][["at"]]
      pars = list(boxwex = 0.8, staplewex = 0.5, outwex = 0.5, frame.plot=frame.plot)
-     if (which.plot == "both")
+     if (which.plot == "both"){
+        if (!is.null(main) & info %in% c("none","stat"))
+            par(mar=c(xaxis * 2.5, 0, 2, .5))
+        else
             par(mar=c(xaxis * 2.5, 0, (info %in% c("all","subtitle")) * 2, .5))
+     }
      wtd.boxplot.tmr(x[["rf"]][["dist.list"]], x[["rf"]][["weights.list"]], horizontal=TRUE, width=heights,
         main=titbxp, pars=pars, yaxt=yaxt, xaxt=xaxt, frame.plot=frame.plot,
         ylim=range(unlist(x[["rf"]][["dist.list"]])), at=at, ylab=ylab)
