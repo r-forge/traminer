@@ -1,6 +1,6 @@
 Package: TraMineR
 Version: 2.3-5
-Date: 2022-07-26
+Date: 2022-07-29
 Title: Trajectory Miner: a Toolbox for Exploring and Rendering Sequences
 Authors@R: c(
   person("Alexis", "Gabadinho", 

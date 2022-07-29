@@ -11,7 +11,7 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
     }
     plot.types <- c("both","medoids","diss.to.med")
     if (! which.plot %in% plot.types)
-        stop(" which.plot must be one of ", plot.types)
+        stop(" which.plot must be one of ", paste(plot.types, collapse=", "))
     info.types <- c("all","stat","subtitle","none")
     if (is.null(ylab)) ylab <- NA
 
@@ -66,7 +66,7 @@ plot.seqrf <- function(x, space=0, border=NA, which.plot="medoids", ylab=NA,
      heights <- x[["rf"]][["heights"]]
      at      <- x[["rf"]][["at"]]
      pars = list(boxwex = 0.8, staplewex = 0.5, outwex = 0.5, frame.plot=frame.plot)
-     if (which.plot == "both"){
+     if (which.plot == "both" & !skipar){
         if (!is.null(main) & info %in% c("none","stat"))
             par(mar=c(xaxis * 2.5, 0, 2, .5))
         else
