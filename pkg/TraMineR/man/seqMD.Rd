@@ -8,7 +8,7 @@
 \usage{
 seqMD(channels, method=NULL, norm="none", indel="auto", sm=NULL,
      with.missing=FALSE, full.matrix=TRUE, link="sum", cval=2,
-     miss.cost=2, cweight=NULL, what=what, ch.sep="+")
+     miss.cost=2, cweight=NULL, what="MDseq", ch.sep="+")
 
 seqdistmc(channels, what="diss", ch.sep="@@@@TraMineRSep@@@@", ...)
 
@@ -108,12 +108,12 @@ MDseq <- seqMD(channels)
 alphabet(MDseq)
 
 ## Retrieving the AT-multidomain substitution costs
-## Using a weight of 2 for domain "child" 
+## Using a weight of 2 for domain "child"
 MDcost <- seqMD(channels,
     sm=smatrix, cweight=c(1,1,2), what="cost")
 
 ## Retrieving pairwise distances based on AT-costs
-MDdist2 <- seqMD(channels, method="OM", 
+MDdist2 <- seqMD(channels, method="OM",
     sm =smatrix, cweight=c(1,1,2), what="diss")
 
 }
