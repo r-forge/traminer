@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-5 [2022-07-25]
+Version 2.3-5 [2022-08-20]
 
 New functions:
   - dissrf() medoids of relative frequency (RF) groups
@@ -10,9 +10,19 @@ New functions:
 
 Changes in existing functions
   - seqplot() new value \code{"rf"} (RF plots) for argument type.
+  - seqtab(): result gains an attribute idxf with indexes
+    of first found most frequent sequences.
+  - seqdistmc() renamed seqMD to better reflect that the
+    function can return various outcomes related to multidomain
+    (MD) sequences, not just distances based on the MCSA trick.
+    Old name maintained as an alias for backward compatibility.
+
+Bug fixes:
+  - plot.stslist() possible conflict between x names and arguments of order.
+  - plot.stslist.rep() position of y-axis when !is.na(ylab)
 
 Misc.
-  - Proper wtd.cor, wtd.mean, wtd.var, wtd.fivenum, 
+  - Proper wtd.cor, wtd.mean, wtd.var, wtd.fivenum,
     and wtd.boxplot internal functions
     to avoid issues with dependence on packages weights,
     Hmisc, and ENmisc.

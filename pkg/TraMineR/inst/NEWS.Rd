@@ -1,10 +1,12 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-5 [2022-07-25] }{
+\section{Changes in version 2.3-5 [2022-08-20] }{
 
     \subsection{New functions}{
         \itemize{
+            %\item
+            %\code{seqplot.md()} plot of multidomain sequences.
             \item
             \code{dissrf()} medoids of relative frequency (RF) groups
             \item
@@ -23,9 +25,21 @@
         \itemize{
             \item
             \code{seqplot()} new value \code{"rf"} (RF plots) for argument type.
+            \item
+            \code{seqtab()} result gains an attribute \code{idxf} with indexes of first found frequent sequences.
+            \item
+            \code{seqdistmc()} renamed \code{seqMD} to better reflect that the function can return various outcomes related to multidomain (MD) sequences, not just distances based on the MCSA trick. Old name maintained as an alias for backward compatibility.
         }
     }
 
+    \subsection{Bug fixes}{
+        \itemize{
+          \item
+          \code{plot.stslist()} possible conflict between \code{x} names and arguments of \code{order}.
+          \item
+          \code{plot.stslist.rep()} bad position of y-axis when \code{!is.na(ylab)}
+        }
+    }
 
     \subsection{Misc.}{
         \itemize{

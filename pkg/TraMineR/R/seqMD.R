@@ -1,21 +1,33 @@
-## multichannel distances
+## multidomain sequences:
+## - MD sequences in terms of expanded alphabet,
+## - additive trick costs (CAT),
+## - OM distances based on CAT costs
 
-seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
+## alias for backward compatibility
+seqdistmc <- function(channels, what="diss", ch.sep="@@@@TraMineRSep@@@@", ...){
+    seqMD(channels = channels, what=what, ch.sep=ch.sep, ...)
+}
+
+seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 	with.missing=FALSE, full.matrix=TRUE, link="sum", cval=2, miss.cost=2, cweight=NULL,
-  what="diss", ch.sep = "@@@@TraMineRSep@@@@") {
+  what="MDseq", ch.sep = "+") {
 
 	## Checking arguments
   if (what=="sm") {
     what <- "cost"
     msg.warn("what='sm' deprecated! Use what='cost' instead.")
   }
-  whatlist <- c("diss","cost","seqmc")
+  if (what=="seqmc") {
+    what <- "MDseq"
+    msg.warn("what='seqmc' deprecated! Use what='MDseq' instead.")
+  }
+  whatlist <- c("MDseq","cost","diss")
   if (!(what %in% whatlist)){
     msg.stop("what should be one of ",paste0("'",whatlist,"'", collapse=","))
   }
 
-  if (what=="diss" & is.null(method))
-    msg.stop("method cannot be NULL when what = 'diss'")
+  if (what=="diss" && (is.null(method) || is.na(method)))
+    msg.stop("a valid method must be provided when what = 'diss'")
   if (what=="cost" & is.null(sm))
     msg.stop("sm cannot be NULL when what = 'cost'")
   ## if time varying sm are provided, all sm must be 3-dimensional
@@ -26,11 +38,11 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
   if(length(indel) > 1 & any(indel=="auto"))
     stop(" [!] 'auto' not allowed in vector or list indel")
   if(is.list(indel) & length(indel)==1)
-    stop(" [!] When a list, indel must be of length equal to number of channels")
+    stop(" [!] When a list, indel must be of length equal to number of domains")
 
 	nchannels <- length(channels)
 	if (nchannels < 2) {
-		stop("[!] please specify at least two channels")
+		stop("[!] please specify at least two domains")
 	}
 	if (is.null(cweight)) {
 		cweight <- rep(1, nchannels)
@@ -40,16 +52,16 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
       stop(" [!] ch.sep symbol (",ch.sep,") occurs in alphabet of at least one channel")
   }
   if (is.list(indel) & length(indel) != nchannels)
-		stop("[!] when a list, indel must be of length equal to number of channels")
+		stop("[!] when a list, indel must be of length equal to number of domains")
   if (length(with.missing) > 1 & length(with.missing) != nchannels )
-		stop("[!] when a vector, with.missing must be of length equal to number of channels")
+		stop("[!] when a vector, with.missing must be of length equal to number of domains")
 
 	numseq <- sapply(channels,nrow)
 	if(any(numseq!=numseq[1])) {
 		stop(" [!] sequence objects have different numbers of rows")
 	}
 	numseq <- numseq[1]
-	msg.warn(nchannels, " channels with ", numseq, " sequences")
+	msg.warn(nchannels, " domains with ", numseq, " sequences")
 	## Actually LCP and RLCP are not included
 
   if (what=="diss") {
@@ -87,11 +99,11 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
       with.missing <- rep(with.missing, nchannels)
   }
 	## Checking correct numbers of info per channel
-  if (what != "seqmc") {
+  if (what != "MDseq") {
 	if ((length(indel)!= nchannels) ||
 		(length(sm)!= nchannels) ||
 		(length(cweight)!= nchannels)) {
-		  stop(" [!] you should supply one weight, one substitution matrix and one indel per channel")
+		  stop(" [!] you must supply one weight, one substitution matrix, and one indel per domain")
     }
 	}
 	## indels
@@ -124,7 +136,7 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 			#if (with.missing) {
 			#	stop(" [!] Some individuals have channels of different length. Set 'with.missing=TRUE' for all channels.")
 			#} else {
-				warning(" [!] Some individuals have channels of different length. Shorter sequences will be filled with missing values and corresponding channel with.missing set as TRUE")
+				msg.warn("Some individuals have channels of different length. Shorter sequences will be filled with missing values and corresponding channel with.missing set as TRUE")
 				break
 			#}
 		}
@@ -132,7 +144,7 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 	## ================================
 	## Building the new sequence object
 	## ================================
-	message(" [>] building combined sequences...", appendLF=F)
+	message("building MD sequences of combined states...", appendLF=F)
 	## Complex separator to ensure (hahem) unicity
 	##sep <- "@@@@TraMineRSep@@@@"  ## now argument ch.sep
   sep <- ch.sep
@@ -174,12 +186,12 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
   suppressMessages(newseqdata <- seqdef(newseqdata, cnames=md.cnames))
   message(" OK")
 
-  if (what == "seqmc") {
+  if (what == "MDseq") {
     return(newseqdata)
   }
   else { ## what == "diss" or "cost"
   ######################
-  #if (what != "seqmc") {
+  #if (what != "MDseq") {
   	## ============================================================
   	## Building and checking substitution matrix per channel
   	## ============================================================
@@ -215,7 +227,7 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 
   		## Substitution matrix generation method is given
   		if	(is.character(sm[[i]])) {
-  			message(" [>] computing substitution cost matrix for channel ", i)
+  			message(" [>] computing substitution cost matrix for domain ", i)
   			costs <- seqcost(channels[[i]], sm[[i]], with.missing=with.missing[i],
   				time.varying=timeVarying, cval=cval, miss.cost=miss.cost)
         substmat_list[[i]] <- costs$sm
@@ -254,7 +266,7 @@ seqdistmc <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 
 
   	## =========================================
-  	## Building the new substitution cost matrix
+  	## Building the new CAT substitution cost matrix
   	## =========================================
   	message(" [>] computing combined substitution and indel costs...", appendLF=FALSE)
   	## Build subsitution matrix and new alphabet

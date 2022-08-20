@@ -42,7 +42,7 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
         		end <- if (sortv=="from.end") { max(seqlength(x)) } else { 1 }
         		beg <- if (sortv=="from.end") { 1 } else { max(seqlength(x)) }
 
-        	sortv <- do.call(order, as.data.frame(x)[,end:beg])
+        	sortv <- do.call(order, unname(as.data.frame(x))[,end:beg])
         	x <- x[sortv,]
         } else if (length(sortv)!=n) {
             stop(call.=FALSE, "sortv must contain one value for each row in the sequence object ",
