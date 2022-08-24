@@ -82,7 +82,7 @@ data(biofam)
 
 ## Building one channel per type of event left home, married, and child
 cases <- 200
-bf <- as.matrix(biofam[cases, 10:25])
+bf <- as.matrix(biofam[1:cases, 10:25])
 left <- bf==1 | bf==3 | bf==5 | bf==6
 married <- bf == 2 | bf== 3 | bf==6
 children <-  bf==4 | bf==5 | bf==6
@@ -112,9 +112,9 @@ alphabet(MDseq)
 MDcost <- seqMD(channels,
     sm=smatrix, cweight=c(1,1,2), what="cost")
 
-## Retrieving pairwise distances based on AT-costs
-MDdist2 <- seqMD(channels, method="OM",
-    sm =smatrix, cweight=c(1,1,2), what="diss")
+## OMspell distances between MD sequences
+MDdist2 <- seqdist(MDseq, method="OMspell",
+    sm = MDcost, indel=attr(MDcost,"indel"))
 
 }
 

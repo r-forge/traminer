@@ -38,6 +38,7 @@ export(
   seqformat,
   seqfplot,
   seqfpos,
+  seqfposend,
   seqgen,
   seqHtplot,
   seqibad,

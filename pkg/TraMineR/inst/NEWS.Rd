@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-5 [2022-08-20] }{
+\section{Changes in version 2.3-5 [2022-08-24] }{
 
     \subsection{New functions}{
         \itemize{
@@ -17,6 +17,8 @@
             \code{seqrfplot()} alias for \code{seqplot(...,type="rf",...)}
             \item
             print and summary methods for \code{dissrf} and \code{seqrf} objects
+            \item
+            \code{seqfposend()} end of spell in given state
         }
 
     }
