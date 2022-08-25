@@ -22,7 +22,7 @@ dissrf(diss,
        squared = FALSE,
        pow = NULL)
 
-seqrf(seqdata, 
+seqrf(seqdata,
        diss,
        k=NULL,
        sortv=NULL,
@@ -41,7 +41,7 @@ seqrf(seqdata,
 \arguments{
   \item{diss}{Matrix or distance object. Pairwise dissimilarities between analyzed cases.}
   \item{seqdata}{State sequence \code{stslist} object as produced by \code{\link{seqdef}}.}
-  \item{k}{Integer: Number of groupings (frequency groups). When \code{NULL}, \code{k} is set as the minimum begween 100 and the sum of weights over 10.}
+  \item{k}{Integer: Number of groupings (frequency groups). When \code{NULL}, \code{k} is set as the minimum between 100 and the sum of weights over 10.}
   \item{sortv}{Real vector (of length \code{nrow(diss)}), character string (\code{seqrf} only), or \code{NULL}. Sorting variable used to compute the frequency groups.  If \code{NULL}, the first MDS factor of \code{diss} is used. Ties are randomly ordered. If a string, one of \code{"from.start"} and \code{"from.end"}, which apply to \code{seqrf} only.}
   \item{weights}{Vector  (of length \code{nrow(diss)}) of non-negative weights. If \code{NULL} (default), equal weights are used.}
   \item{weighted}{Logical. Should weights be used when there are weights in \code{seqdata}? (default is \code{TRUE})}
@@ -63,7 +63,7 @@ The \code{grp.meth} argument applies when the group size (\eqn{n/k}) is not inte
 
 For \code{seqrf}, when \code{weights=NULL} and \code{weighted=TRUE}, \code{weights} is set as the \code{weights} attribute of \code{seqdata}.
 
-When \code{weights} is non-null, \code{grp.meth} is enforced as \code{"prop"}, because it is the only method applicable to weighted data.
+When \code{weights} is non-null (\code{dissrf}) or when \code{wheighted=TRUE} and there are weights in \code{seqdata} (\code{seqrf}), only \code{grp.meth="prop"} applies.
 
 The function computes indicative statistics of the resulting partition, namely a pseudo R2 and a pseudo F statistics. These statistics compare the mean distance to the group medoid with the mean distance to the overall medoid. When \code{pow} is \code{2}, mean squared dissimilarities are used and when \code{pow} is 1 the R2 and F ratios are based on mean of non-squared dissimilarities. An indicative p-value of the F statistics is computed using the F distribution. This p-value should be interpreted with caution since F is not a true F value.
 }
@@ -116,7 +116,7 @@ biofam.seq <- seqdef(biofam[501:600, 10:25], labels=biofam.lab,
                     weights=biofam[501:600,"wp00tbgs"])
 diss <- seqdist(biofam.seq, method="LCS")
 
-## Using 12 groups, default MDS sorting, 
+## Using 12 groups, default MDS sorting,
 ##  and original method by Fasang and Liao (2014)
 dissrf(diss=diss, k=12, grp.meth="first")
 
@@ -131,8 +131,8 @@ parentTime <- seqistatd(biofam.seq)[, 1]
 b.srf <- seqrf(biofam.seq, diss=diss, k=12, sortv=parentTime)
 
 ## print, summary, and plot methods
-b.srf  
-summary(b.srf) 
+b.srf
+summary(b.srf)
 plot(b.srf)
 plot(b.srf, which.plot="both")
 

@@ -32,11 +32,11 @@ dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
     weighted <- FALSE
   } else {
     if (grp.meth != "prop") {
-      message("[!] grp.meth set as 'prop' because weights can only be handled by grouping method 'prop'!!")
+      msg.stop(paste0("Selected grp.meth '",grp.meth,"' does not apply to weighted data! Use grp.meth='prop'."))
     }
     #weights <- ncase * weights/sum(weights)
     weighted <- TRUE
-    grp.meth <- "prop"
+    #grp.meth <- "prop"
   }
 
   wsum <- sum(weights)
