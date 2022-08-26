@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-5 [2022-08-25] }{
+\section{Changes in version 2.3-5 [2022-08-26] }{
 
     \subsection{New functions}{
         \itemize{
@@ -18,7 +18,7 @@
             \item
             print and summary methods for \code{dissrf} and \code{seqrf} objects
             \item
-            \code{seqfposend()} end of spell in given state
+            \code{seqfposend()} position of end of spell in given state
         }
 
     }

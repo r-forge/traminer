@@ -41,7 +41,7 @@ seqrf(seqdata,
 \arguments{
   \item{diss}{Matrix or distance object. Pairwise dissimilarities between analyzed cases.}
   \item{seqdata}{State sequence \code{stslist} object as produced by \code{\link{seqdef}}.}
-  \item{k}{Integer: Number of groupings (frequency groups). When \code{NULL}, \code{k} is set as the minimum between 100 and the sum of weights over 10.}
+  \item{k}{Integer: Number of groupings (RF groups). When \code{NULL}, \code{k} is set as the minimum between 100 and the sum of weights over 10.}
   \item{sortv}{Real vector (of length \code{nrow(diss)}), character string (\code{seqrf} only), or \code{NULL}. Sorting variable used to compute the frequency groups.  If \code{NULL}, the first MDS factor of \code{diss} is used. Ties are randomly ordered. If a string, one of \code{"from.start"} and \code{"from.end"}, which apply to \code{seqrf} only.}
   \item{weights}{Vector  (of length \code{nrow(diss)}) of non-negative weights. If \code{NULL} (default), equal weights are used.}
   \item{weighted}{Logical. Should weights be used when there are weights in \code{seqdata}? (default is \code{TRUE})}
@@ -51,11 +51,11 @@ seqrf(seqdata,
   \item{...}{additional arguments passed to \code{\link{plot.stslist}}}
   \item{object}{Object of class \code{dissrf} or \code{seqrf}}
   \item{format}{String. One of \code{"SPS"} (default) or \code{"STS"}. Display format of the medoid sequences.}
-  \item{dist.idx}{Indexes of groups for which summary statistics of distances to the medoids are displayed. Default is \code{1:10}. Set as 0 to plot statistics for all groups.}
+  \item{dist.idx}{Indexes of RF groups for which summary statistics of distances to the medoids are displayed. Default is \code{1:10}. Set as 0 to plot statistics for all RF groups.}
 }
 
 \details{
-Function \code{dissrf} partitions the \eqn{n} cases (rows of the \code{diss} matrix) into \eqn{k} equally sized groups. First, the cases are sorted according to the \code{sortv} variable.  Then the groups are built by consecutively grouping the first \eqn{n/k} cases, then the next \eqn{n/k} cases, and so on. In \code{seqrf}, one of sort methods \code{"from.start"} and \code{"from.end"} can be specified as \code{sortv} argument.
+Function \code{dissrf} partitions the \eqn{n} cases (rows of the \code{diss} matrix) into \eqn{k} equally sized groups (RF groups). First, the cases are sorted according to the \code{sortv} variable.  Then the groups are built by consecutively grouping the first \eqn{n/k} cases, then the next \eqn{n/k} cases, and so on. In \code{seqrf}, one of sort methods \code{"from.start"} and \code{"from.end"} can be specified as \code{sortv} argument.
 
 Ties in the \code{sortv} variable are handled by \code{\link{order}} using the default method, which produces stable outcome. To use a different method, compute a suited variable without ties (e.g. using \code{order} with the wanted method for ties) and pass it as \code{sortv} argument.
 
