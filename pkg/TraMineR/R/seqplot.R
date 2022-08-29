@@ -44,7 +44,7 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
         if (oolist[["which.plot"]] == "both"){
             if (!is.null(group))
                 msg.stop('which.plot="both" applies only when group=NULL')
-            use.rf.layout <- TRUE
+            use.layout <- use.rf.layout <- TRUE
         }
     }
 
