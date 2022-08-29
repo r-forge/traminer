@@ -31,6 +31,8 @@
             \code{seqtab()} result gains an attribute \code{idxf} with indexes of first found frequent sequences.
             \item
             \code{seqdistmc()} renamed \code{seqMD} to better reflect that the function can return various outcomes related to multidomain (MD) sequences, not just distances based on the MCSA trick. Old name maintained as an alias for backward compatibility.
+            \item
+            \code{plot.stslist()} now raises an explicit error for bad \code{ytlab} value.
         }
     }
 

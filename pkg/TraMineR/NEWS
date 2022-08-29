@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-5 [2022-08-26]
+Version 2.3-5 [2022-08-29]
 
 New functions:
   - dissrf() medoids of relative frequency (RF) groups
@@ -17,6 +17,8 @@ Changes in existing functions
     function can return various outcomes related to multidomain
     (MD) sequences, not just distances based on the MCSA trick.
     Old name maintained as an alias for backward compatibility.
+  - plot.stslist() now raises an explicit error for bad 
+    ytlab value.
 
 Bug fixes:
   - plot.stslist() possible conflict between x names and

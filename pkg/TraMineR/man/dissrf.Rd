@@ -42,11 +42,11 @@ seqrf(seqdata,
   \item{diss}{Matrix or distance object. Pairwise dissimilarities between analyzed cases.}
   \item{seqdata}{State sequence \code{stslist} object as produced by \code{\link{seqdef}}.}
   \item{k}{Integer: Number of groupings (RF groups). When \code{NULL}, \code{k} is set as the minimum between 100 and the sum of weights over 10.}
-  \item{sortv}{Real vector (of length \code{nrow(diss)}), character string (\code{seqrf} only), or \code{NULL}. Sorting variable used to compute the frequency groups.  If \code{NULL}, the first MDS factor of \code{diss} is used. Ties are randomly ordered. If a string, one of \code{"from.start"} and \code{"from.end"}, which apply to \code{seqrf} only.}
+  \item{sortv}{Real vector (of length \code{nrow(diss)}), character string (\code{seqrf} only), or \code{NULL}. Sorting variable used to compute the frequency groups.  If \code{NULL}, the first MDS factor of \code{diss} (\code{diss^2} when \code{squared=TRUE}) is used. Ties are randomly ordered. If a string, one of \code{"from.start"} and \code{"from.end"}, which apply to \code{seqrf} only.}
   \item{weights}{Vector  (of length \code{nrow(diss)}) of non-negative weights. If \code{NULL} (default), equal weights are used.}
   \item{weighted}{Logical. Should weights be used when there are weights in \code{seqdata}? (default is \code{TRUE})}
   \item{grp.meth}{Character string. One of \code{"prop"}, \code{"first"}, and \code{"random"}. Grouping method. See details.}
-  \item{squared}{Logical. Should medoids be based on squared dissimilarities? (default is \code{FALSE})}
+  \item{squared}{Logical. Should medoids (and computation of \code{sortv} when applicable) be based on squared dissimilarities? (default is \code{FALSE})}
   \item{pow}{Double. Dissimilarity power exponent (typically 1 or 2) for computation of pseudo R2 and F. When \code{NULL}, \code{pow} is set as 1 when \code{squared = FALSE}, and as 2 otherwise.}
   \item{...}{additional arguments passed to \code{\link{plot.stslist}}}
   \item{object}{Object of class \code{dissrf} or \code{seqrf}}
@@ -84,6 +84,7 @@ The function computes indicative statistics of the resulting partition, namely a
   \item{Fstat}{Pseudo F statistics}
   \item{pvalue}{p-value of the pseudo F (to be used with caution since F is not a true F value)}
   \item{sizes}{\code{ncase} (number of cases), \code{wsum} (sum of weights), \code{k} (number of groups), \code{gsize} (group size)}
+  \item{grp.meth}{grouping method used}
 
 \code{seqrf} returns a list of class \code{seqrfprop} when \code{grp.meth="prop"} and of class \code{seqrfcrisp} otherwise. In both cases the list also receives class \code{"seqrf"}. The elements of the list are:
     \item{seqtoplot}{RF medoid sequences as a state sequence \code{stslist} object}

@@ -141,7 +141,10 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
 
 		if (is.null(ytlab)) {ytlab <- idxs}
 		else if (length(ytlab)==1) {
-            if(ytlab=="id") {ytlab <- rownames(x)[idxs]}
+            if(ytlab=="id")
+                {ytlab <- rownames(x)[idxs]}
+            else if (length(idxs)>1)
+                stop(paste("Bad ytlab value",ytlab))
         }
 
 		axis(2, at=y.lab.pos, mgp=c(1.5,0.5,0), labels=ytlab, las=ylas, tick=FALSE, cex.axis=cex.axis)

@@ -22,6 +22,7 @@ dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
   if (is.null(pow)){
     pow <- if (squared) 2 else 1
   }
+  mdspow <- 2^squared
 
   if (!is.null(sortv) & length(sortv) != nrow(diss))
     stop(" length of sortv not equal to nrow(diss)!")
@@ -41,7 +42,7 @@ dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
 
   wsum <- sum(weights)
   if (is.null(k)) k <- min(floor(wsum/10),100)
-  message(" [>] Using k=", k, " frequency groups")
+  message(" [>] Using k=", k, " frequency groups with grp.meth='",grp.meth,"'")
 
   #Extract medoid, possibly weighted
   gmedoid.index <- disscenter(diss, medoids.index="first", weights=weights, squared=squared)
@@ -56,9 +57,9 @@ dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
   #calculate qij - distance to frequency group specific medoid within frequency group
   if(is.null(sortv) && !use.hclust){
     if (weighted)
-        sortv <- wcmdscale(diss^pow, k = 1, w=weights)
+        sortv <- wcmdscale(diss^mdspow, k = 1, w=weights)
     else
-        sortv <- cmdscale(diss^pow, k = 1)
+        sortv <- cmdscale(diss^mdspow, k = 1)
   }
   ## sort order
   sortorder <- order(sortv)
@@ -244,7 +245,8 @@ dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
       R2 = R2,
       Fstat = Fstat,
       pvalue = pvalue,
-      sizes = c(ncase = ncase, wsum = wsum, k=k, gsize=gsize)
+      sizes = c(ncase = ncase, wsum = wsum, k=k, gsize=gsize),
+      grp.meth = grp.meth
     )
     class(retlist) <- c("dissrf","dissrfprop",class(retlist))
   } else {
@@ -264,7 +266,8 @@ dissrf_internal <- function(diss, k=NULL, sortv=NULL, weights=NULL,
       R2 = R2,
       Fstat = Fstat,
       pvalue = pvalue,
-      sizes = c(ncase = ncase, k= k, ng=ng, r=r)
+      sizes = c(ncase = ncase, k= k, ng=ng, r=r),
+      grp.meth = grp.meth
     )
     class(retlist) <- c("dissrf","dissrfcrisp",class(retlist))
   }
@@ -320,7 +323,8 @@ summary.dissrf <- function(object, dist.idx=1:10, ...){
   return(list(medoids = medoids,
               dist.stat = dist.stat,
               stat=stat,
-              sizes = object[["sizes"]]
+              sizes = object[["sizes"]],
+              grp.meth = object[["grp.meth"]]
   ))
 
 }
