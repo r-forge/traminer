@@ -146,6 +146,8 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
             else if (length(idxs)>1)
                 stop(paste("Bad ytlab value",ytlab))
         }
+        else if (length(ytlab)!=length(idxs))
+                stop("Length of ytlab does not much number of sequences!")
 
 		axis(2, at=y.lab.pos, mgp=c(1.5,0.5,0), labels=ytlab, las=ylas, tick=FALSE, cex.axis=cex.axis)
 	}

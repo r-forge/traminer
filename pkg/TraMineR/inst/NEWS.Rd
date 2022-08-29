@@ -12,7 +12,7 @@
             \item
             \code{seqrf()} medoid sequences of RF groups
             \item
-            \code{plot.seqrf()} plot method for medoids of RF groups
+            \code{plot.seqrf()} plot method for medoid sequences of RF groups
             \item
             \code{seqrfplot()} alias for \code{seqplot(...,type="rf",...)}
             \item

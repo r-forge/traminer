@@ -4,7 +4,7 @@ Version 2.3-5 [2022-08-29]
 New functions:
   - dissrf() medoids of relative frequency (RF) groups
   - seqrf() medoid sequences of RF groups
-  - plot.seqrf() plot method for medoids of RF groups
+  - plot.seqrf() plot method for medoid sequences of RF groups
   - seqrfplot() alias for seqplot(...,type="rf",...)
   - print and summary methods for dissrf and seqrf objects
   - seqfposend() position of end of first spell in given state
@@ -17,7 +17,7 @@ Changes in existing functions
     function can return various outcomes related to multidomain
     (MD) sequences, not just distances based on the MCSA trick.
     Old name maintained as an alias for backward compatibility.
-  - plot.stslist() now raises an explicit error for bad 
+  - plot.stslist() now raises an explicit error for bad
     ytlab value.
 
 Bug fixes:
