@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
-\section{Changes in version 0.7.5 [2022-07-26] }{
+\section{Changes in version 0.7.5 [2022-08-29] }{
 
   \subsection{Changes in existing functions}{
     \itemize{
@@ -15,6 +15,9 @@
       \code{seqplot.rf()} \code{which.plot = "diss.to.med"} did not work.
       \item
       \code{seqplot.rf()} issue with unwanted ":" in plot title.
+      \item
+      \code{sorti()} possible conflict between column names of \code{seqdata} and arguments passed to \code{order}.
+
     }
   }
   \subsection{Misc.}{

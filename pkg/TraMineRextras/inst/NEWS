@@ -1,14 +1,15 @@
-                CHANGES IN TraMineRextras VERSION 0.7.5 [2022-07-26]
+                CHANGES IN TraMineRextras VERSION 0.7.5 [2022-08-29]
 
 Changes in existing functions:
-    o   seqplot.rf() argument 'plus.one' renamed 'grp.meth' 
+    o   seqplot.rf() argument 'plus.one' renamed 'grp.meth'
 
 Bug fixes:
     o   seqplot.rf() which.plot = "diss.to.med" did not work.
     o   seqplot.rf() issue with unwanted ":" in plot title.
+    o   sorti() possible conflict between column names of seqdata and arguments passed to order.
 
 Misc.:
-    o   Replaced \code{permute(.)} with \code{sample(.)} in \code{seqCompare} to remove dependence
+    o   Replaced `permute(.)` with `sample(.)` in `seqCompare` to remove dependence
         on gtools that has become orphaned.
 
 
