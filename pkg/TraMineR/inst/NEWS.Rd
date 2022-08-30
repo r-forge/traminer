@@ -1,7 +1,17 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-5 [2022-08-26] }{
+\section{Changes in version 2.3-6 [2022-08-30] }{
+
+    \subsection{Misc.}{
+        \itemize{
+            \item
+            Replaced \code{seqdistmc} with \code{seqMD} in examples of \code{dissdomassoc}.
+        }
+    }
+}
+
+\section{Changes in version 2.2-5 [2022-08-30] }{
 
     \subsection{New functions}{
         \itemize{
