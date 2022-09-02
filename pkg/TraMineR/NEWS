@@ -1,5 +1,9 @@
 ## =========
-Version 2.3-6 [2022-08-30]
+Version 2.3-6 [2022-09-02]
+
+Bug fixes:
+  - summary.dissrf(): five number statistics ignored weights 
+    (pointed out by Marcel Raab)
 
 Misc.:
   - replaced seqdistmc with seqMD in examples of dissdomassoc.

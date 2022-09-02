@@ -1,7 +1,13 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-6 [2022-08-30] }{
+\section{Changes in version 2.3-6 [2022-09-02] }{
+    \subsection{Bug fixes}{
+        \itemize{
+            \item
+            \code{summary.dissrf()}: five number statistics ignored weights (pointed out by Marcel Raab)
+        }
+    }
 
     \subsection{Misc.}{
         \itemize{
