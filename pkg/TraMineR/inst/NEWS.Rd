@@ -1,13 +1,15 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-6 [2022-10-04] }{
+\section{Changes in version 2.3-6 [2022-10-05] }{
     \subsection{Bug fixes}{
         \itemize{
             \item
             \code{summary.dissrf()}: five number statistics ignored weights (reported by Marcel Raab)
             \item
             \code{seqstatl()}: non-integer state value were not recognized.
+            \item
+            \code{R_init_TraMineR} lacking prototype (in init.c)
         }
     }
 

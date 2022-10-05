@@ -2,6 +2,7 @@
 #include <Rinternals.h>
 #include <stdlib.h>
 #include <R_ext/Rdynload.h>
+void R_init_TraMineR(DllInfo *dll);
 
 /* .C calls */
 extern void cLCP(int *, int * , double *, int *);
