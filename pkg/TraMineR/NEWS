@@ -1,9 +1,10 @@
 ## =========
-Version 2.3-6 [2022-09-02]
+Version 2.3-6 [2022-10-04]
 
 Bug fixes:
-  - summary.dissrf(): five number statistics ignored weights 
-    (pointed out by Marcel Raab)
+  - summary.dissrf(): five number statistics ignored weights
+    (reported by Marcel Raab)
+  - seqstatl(): non-integer state value were not recognized.
 
 Misc.:
   - replaced seqdistmc with seqMD in examples of dissdomassoc.
