@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-6 [2022-10-05] }{
+\section{Changes in version 2.3-6 [2022-10-07] }{
     \subsection{Bug fixes}{
         \itemize{
             \item
@@ -9,7 +9,7 @@
             \item
             \code{seqstatl()}: non-integer state value were not recognized.
             \item
-            \code{R_init_TraMineR} lacking prototype (in init.c)
+            issues with prototypes in init.c
         }
     }
 

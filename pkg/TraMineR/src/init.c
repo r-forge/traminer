@@ -13,7 +13,7 @@ extern SEXP checktriangleineq(SEXP, SEXP, SEXP);
 extern SEXP cstringdistance(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP cstringrefseqdistance(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP dist2matrix(SEXP, SEXP);
-extern SEXP getTraMineRDebugLevel();
+extern SEXP getTraMineRDebugLevel(void);
 extern SEXP setTraMineRDebugLevel(SEXP);
 extern SEXP tmrChisq(SEXP, SEXP, SEXP);
 extern SEXP tmrChisqRef(SEXP, SEXP, SEXP, SEXP);
