@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
-\section{Changes in version 0.7.5 [2022-08-29] }{
+\section{Changes in version 0.7.5 [2022-10-09] }{
 
   \subsection{Changes in existing functions}{
     \itemize{
@@ -17,7 +17,8 @@
       \code{seqplot.rf()} issue with unwanted ":" in plot title.
       \item
       \code{sorti()} possible conflict between column names of \code{seqdata} and arguments passed to \code{order}.
-
+      \item
+      issue with a commented line in TraMineRextras.Rd
     }
   }
   \subsection{Misc.}{
