@@ -7,7 +7,7 @@ Bug fixes:
     o   seqplot.rf() which.plot = "diss.to.med" did not work.
     o   seqplot.rf() issue with unwanted ":" in plot title.
     o   sorti() possible conflict between column names of seqdata and arguments passed to order.
-    o   issue with a commented line in TraMineRextras.Rd
+    o   issue with non UTF-8 commented line in TraMineRextras.Rd
 
 Misc.:
     o   Replaced `permute(.)` with `sample(.)` in `seqCompare` to remove dependence

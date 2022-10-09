@@ -18,7 +18,7 @@
       \item
       \code{sorti()} possible conflict between column names of \code{seqdata} and arguments passed to \code{order}.
       \item
-      issue with a commented line in TraMineRextras.Rd
+      issue with non UTF-8 commented line in TraMineRextras.Rd
     }
   }
   \subsection{Misc.}{
