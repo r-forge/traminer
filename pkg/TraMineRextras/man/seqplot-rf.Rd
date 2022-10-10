@@ -47,7 +47,7 @@ Matthias Studer, Anette Eva Fasang, Tim Liao, and Gilbert Ritschard.
 }
 
 \seealso{
-See also \code{\link{seqplot}} and \code{\link{seqrep}}.
+See also \code{\link{seqplot}}, \code{\link{seqrf}}, \code{\link{seqrep}}.
 }
 \examples{
 ## Defining a sequence object with the data in columns 10 to 25

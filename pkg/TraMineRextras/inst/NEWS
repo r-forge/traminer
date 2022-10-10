@@ -1,4 +1,10 @@
-                CHANGES IN TraMineRextras VERSION 0.7.5 [2022-10-09]
+                CHANGES IN TraMineRextras VERSION 0.7.5 [2022-10-10]
+
+Misc.:
+    o   No changes
+
+
+                CHANGES IN TraMineRextras VERSION 0.6.5 [2022-10-09]
 
 Changes in existing functions:
     o   seqplot.rf() argument 'plus.one' renamed 'grp.meth'
