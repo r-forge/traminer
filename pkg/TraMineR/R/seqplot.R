@@ -2,7 +2,7 @@
 ## Generic function for plotting state sequence objects
 ## ====================================================
 
-seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
+seqplot <- function(seqdata, group = NULL, type = "i", main = "auto", cpal = NULL,
   missing.color = NULL, ylab = NULL, yaxis = TRUE, axes = "all", xtlab = NULL,
   cex.axis = 1, with.legend = "auto", ltext = NULL, cex.legend = 1,
   use.layout = (!is.null(group) | with.legend != FALSE), legend.prop = NA,
@@ -112,14 +112,24 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
             gindex[[s]] <- which(group==levels(group)[s])
 
           ## Title of each plot
-          if (!is.null(main))
-            main <- paste(main,"-",levels(group))
-          else
-            main <- levels(group)
+          #if (!is.null(main))
+          #  main <- paste(main,"-",levels(group))
+          #else
+          #  main <- levels(group)
+
+
+          if (!is.null(main)) {
+              if (main[1] == "auto")
+                main <- levels(group) ## will be NULL if group is NULL
+              else if (length(main)==1)
+                main <- paste(main,"-",levels(group))
+          }
+
 	} else { # single group
           nplot <- 1
           gindex <- vector("list",1)
           gindex[[1]] <- 1:nrow(seqdata)
+          if (!is.null(main) && main[1] == "auto" && type!="pc") main <- NULL
 	}
 
 	## ===================
@@ -265,7 +275,7 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
     }
     else if (type == "pc") { # modification of Reto Bürgin 16.08.2012
 
-                        plist[["main"]] <- main
+                        plist[["main"]] <- list(main)
                         olist <- c(olist, plist)
                         olist[["plot"]] <- FALSE
                         f <- seqpcplot

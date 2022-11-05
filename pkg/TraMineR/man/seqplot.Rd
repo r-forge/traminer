@@ -16,22 +16,22 @@
 High level plot functions to render state sequence objects. Can produce many different types of plots and can render sequences by group.
 }
 \usage{
-seqplot(seqdata, group = NULL, type = "i", main = NULL, cpal = NULL,
+seqplot(seqdata, group = NULL, type = "i", main = "auto", cpal = NULL,
   missing.color = NULL, ylab = NULL, yaxis = TRUE, axes = "all",
   xtlab = NULL, cex.axis = 1, with.legend = "auto", ltext = NULL,
   cex.legend = 1, use.layout = (!is.null(group) | with.legend != FALSE),
   legend.prop = NA, rows = NA, cols = NA, title, cex.plot, withlegend, ...)
 
-seqdplot(seqdata, group = NULL, main = NULL, ...)
-seqdHplot(seqdata, group = NULL, main = NULL, ...)
-seqfplot(seqdata, group = NULL, main = NULL, ...)
-seqiplot(seqdata, group = NULL, main = NULL, ...)
-seqIplot(seqdata, group = NULL, main = NULL, ...)
-seqHtplot(seqdata, group = NULL, main = NULL, ...)
-seqmsplot(seqdata, group = NULL, main = NULL, ...)
-seqmtplot(seqdata, group = NULL, main = NULL, ...)
-seqrplot(seqdata, group = NULL, main = NULL, ...)
-seqrfplot(seqdata, group = NULL, main = NULL, ...)
+seqdplot(seqdata, group = NULL, main = "auto", ...)
+seqdHplot(seqdata, group = NULL, main = "auto", ...)
+seqfplot(seqdata, group = NULL, main = "auto", ...)
+seqiplot(seqdata, group = NULL, main = "auto", ...)
+seqIplot(seqdata, group = NULL, main = "auto", ...)
+seqHtplot(seqdata, group = NULL, main = "auto", ...)
+seqmsplot(seqdata, group = NULL, main = "auto", ...)
+seqmtplot(seqdata, group = NULL, main = "auto", ...)
+seqrplot(seqdata, group = NULL, main = "auto", ...)
+seqrfplot(seqdata, group = NULL, main = "auto", ...)
 }
 \arguments{
     \item{seqdata}{State sequence object created with the \code{\link{seqdef}} function.}
@@ -48,7 +48,7 @@ seqrfplot(seqdata, group = NULL, main = NULL, ...)
     coordinate plots, \code{"r"} for representative sequence plots, and
     \code{"rf"} for relative frequency plots.}
 
-    \item{main}{Character string. Title for the graphic. Default is \code{NULL}.}
+    \item{main}{Character string. Title for the graphic. Default \code{"auto"} prints group levels as default title when group is not {NULL} and no title otherwise. Set as \code{NULL} to suppress titles. }
 
     \item{cpal}{Color palette used for the states. By default, the \code{cpal} attribute of the \code{seqdata} sequence object is used (see \code{\link{seqdef}}). If user specified, a vector of colors of length and order corresponding to \code{alphabet(seqdata)}.}
 
