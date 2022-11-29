@@ -1,16 +1,28 @@
 ## =========
-Version 2.3-6 [2022-11-15]
+Version 2.3-6 [2022-11-29]
 
 Changes in existing functions
   - seqplot() and all the seqxxplot family functions: default
     value for the main argument is now "auto" and NULL behaves
     as expected, i.e., removes all titles.
+  - seqplot()} and all the \code{seqxxplot family functions:
+    argument 'axes' is deprecated and replaced by 'xaxis'.
+    Argument 'yaxis' can now also be one of "all" or "left".
+  - plot() methods for objects returned by seqdef, seqstatd,
+    seqtab, seqmodst, seqmeant, and seqrf now display the ylab
+    closer from the y-axis when yaxis=FALSE.
+  - plot() method for object returned by seqrep now displays
+    the ylab closer from the y-axis when stats=FALSE.
 
 Bug fixes:
   - summary.dissrf(): five number statistics ignored weights
     (reported by Marcel Raab)
   - seqstatl(): non-integer state value were not recognized.
+  - plot() methods for objects returned by seqdef, seqstatd,
+    seqtab, seqmodst, seqmeant, seqrf, and seqrep ignored
+    the cex.lab argument.
   - issues with prototypes in init.c
+  - removed unused code with deprecated \code{sprintf} in eventdictionary.cpp
 
 Misc.:
   - replaced seqdistmc with seqMD in examples of dissdomassoc.

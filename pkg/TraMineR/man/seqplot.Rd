@@ -17,10 +17,10 @@ High level plot functions to render state sequence objects. Can produce many dif
 }
 \usage{
 seqplot(seqdata, group = NULL, type = "i", main = "auto", cpal = NULL,
-  missing.color = NULL, ylab = NULL, yaxis = TRUE, axes = "all",
+  missing.color = NULL, ylab = NULL, yaxis = "all", xaxis = "all",
   xtlab = NULL, cex.axis = 1, with.legend = "auto", ltext = NULL,
   cex.legend = 1, use.layout = (!is.null(group) | with.legend != FALSE),
-  legend.prop = NA, rows = NA, cols = NA, title, cex.plot, withlegend, ...)
+  legend.prop = NA, rows = NA, cols = NA, title, cex.plot, withlegend, axes, ...)
 
 seqdplot(seqdata, group = NULL, main = "auto", ...)
 seqdHplot(seqdata, group = NULL, main = "auto", ...)
@@ -56,9 +56,9 @@ seqrfplot(seqdata, group = NULL, main = "auto", ...)
 
     \item{ylab}{Character string. an optional label for the y-axis. If set to \code{NA}, no label is drawn.}
 
-    \item{yaxis}{Logical. Should the y-axis be plotted? When set as \code{TRUE} (default value), sequence indexes are displayed for \code{"i"} and \code{"I"}, mean time values for \code{"mt"}, percentages for \code{"d"} and \code{"f"}, and state/event labels for \code{"pc"}. Ignored for \code{"r"}. }
+    \item{yaxis}{Logical or one of \code{"all"} or \code{"left"}. If set as \code{TRUE} or \code{"all"} (default value), sequence indexes are displayed for \code{"i"} and \code{"I"}, mean time values for \code{"mt"}, percentages for \code{"d"} and \code{"f"}, and state/event labels for \code{"pc"}. Ignored for \code{"r"}. If \code{"left"} and \code{group} is used, the y-axis is only displayed on plots of the left panel. If \code{FALSE} no y-axis is drawn.}
 
-    \item{axes}{Character string or logical. If set as \code{"all"} (default value) x axes are drawn for each plot in the graphic. If set as \code{"bottom"} and \code{group} is used, axes are drawn only under the plots located at the bottom of the graphic area. If \code{FALSE}, no x-axis is drawn.}
+    \item{xaxis}{Logical or one of \code{"all"} or \code{"bottom"}. If set as \code{TRUE} or \code{"all"} (default value) x-axes are drawn for each plot in the graphic. If set as \code{"bottom"} and \code{group} is used, axes are drawn only under the plots of the bottom panel. If \code{FALSE}, no x-axis is drawn.}
 
     \item{xtlab}{Vector of length equal to the number of columns of \code{seqdata}. Optional labels for the x-axis tick labels. If unspecified, the column names of the \code{seqdata} sequence object are used (see \code{\link{seqdef}}).}
 
@@ -83,6 +83,7 @@ seqrfplot(seqdata, group = NULL, main = "auto", ...)
   \item{title}{Deprecated. Use \code{main} instead.}
   \item{cex.plot}{Deprecated. Use \code{cex.axis} instead.}
   \item{withlegend}{Deprecated. Use \code{with.legend} instead.}
+  \item{axes}{Deprecated. Use \code{xaxis} instead.}
   \item{\dots}{arguments to be passed to the function called to produce the appropriate statistics and the associated plot method (see details), or other graphical parameters. For example the \code{weighted} argument can be passed to control whether (un)weighted statistics are produced or \code{with.missing} argument to take missing values into account when computing transversal or longitudinal state distributions.}
 }
 

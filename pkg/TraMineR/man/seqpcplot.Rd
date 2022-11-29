@@ -1,4 +1,4 @@
-%% -*- RD:ANSI -*-
+%% -*- TeX -*-
 \name{seqpcplot}
 \alias{seqpcplot}
 \alias{seqpcfilter}
@@ -88,9 +88,11 @@ seqpcfilter(method = c("minfreq", "cumfreq", "linear"), level = 0.05)
 
   \item{order.align}{Aligning method. For aligning on order positions use either \code{"first"} (default) or
   \code{"last"}. Option \code{"first"} numbers the positions from the beginning
-  while \code{"last"} numbers them from the end. With \code{order.align = "time"}, the elements in the sequences are aligned on their rounded timestamps.}
+  while \code{"last"} numbers them from the end. With \code{order.align = "time"}, the elements in the
+  sequences are aligned on their rounded timestamps.}
 
-  \item{main}{title for the graphic. Default \code{"auto"} prints default titles. Set as \code{NULL} to suppress the title.}
+  \item{main}{title for the graphic. Default \code{"auto"} prints default titles. Set as \code{NULL} to
+  suppress the title.}
   \item{xlab}{label for the x axis}
   \item{ylab}{label for the y axis}
   \item{xaxis}{logical: Should x-axis be plotted?}
@@ -107,13 +109,15 @@ seqpcfilter(method = c("minfreq", "cumfreq", "linear"), level = 0.05)
 
   \item{rows,cols}{integers. Number of rows and columns of the plot panel.}
 
-  \item{plot}{logical. Should the plot be displayed? Set as \code{FALSE} to retrieve the \code{seqpcplot} object without plotting it.}
+  \item{plot}{logical. Should the plot be displayed? Set as \code{FALSE} to retrieve the \code{seqpcplot}
+  object without plotting it.}
 
   \item{seed}{integer. Start seed value.}
 
   \item{weighted}{logical. Should weights be accounted for? Default is \code{TRUE}.}
 
-  \item{with.missing}{logical. Should we care about possible missings? Default is \code{TRUE}. See also the \code{missing} argument.}
+  \item{with.missing}{logical. Should we care about possible missings? Default is \code{TRUE}. See also the
+  \code{missing} argument.}
 
   \item{method}{character string. Defines the filtering
      function. Available are \code{"minfreq"}, \code{"cumfreq"} and
@@ -192,7 +196,8 @@ seqpcfilter(method = c("minfreq", "cumfreq", "linear"), level = 0.05)
 \seealso{ \code{\link{seqplot}}, \code{\link{seqdef}}, \code{\link{seqecreate}}}
 
 \references{
-  Bürgin, R. and G. Ritschard (2014), A decorated parallel coordinate plot for categorical longitudinal data, \emph{The American Statistician} 68(2), 98-103.
+  Bürgin, R. and G. Ritschard (2014), A decorated parallel coordinate plot for categorical longitudinal
+  data, \emph{The American Statistician} 68(2), 98-103.
 }
 
 \examples{
