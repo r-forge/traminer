@@ -1,5 +1,11 @@
 ## =========
-Version 2.3-6 [2022-11-29]
+Version 2.3-7 [2022-12-02]
+
+Misc.:
+  - no changes
+
+## =========
+Version 2.2-6 [2022-11-29]
 
 Changes in existing functions
   - seqplot() and all the seqxxplot family functions: default
