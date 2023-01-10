@@ -1,14 +1,24 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-7 [2022-12-02] }{
+\section{Changes in version 2.3-7 [2023-01-10] }{
 
-    \subsection{Misc.}{
+    \subsection{New functions}{
         \itemize{
             \item
-            No changes
+            \code{seqplotMD()} plot of multidomain/multichannel sequences by domain and group.
         }
     }
+
+    \subsection{Changes in exiting functions}{
+        \itemize{
+            \item
+            \code{seqplot()} and all the \code{seqxxplot()} family functions: \code{ylab} can be a vector of labels by group level.
+            \item
+            \code{seqplot()} and all the \code{seqxxplot()} family functions support arguments of \code{legend} among the \code{...} list.
+        }
+    }
+
 }
 
 
@@ -22,7 +32,7 @@
             \code{seqplot()} and all the \code{seqxxplot()} family functions: argument \code{axes} is deprecated and replaced by \code{xaxis}. Argument \code{yaxis} can now also be one of \code{"all"} or \code{"left"}.
             \item
             \code{plot()} methods for objects returned by \code{seqdef}, \code{seqstatd}, \code{seqtab}, \code{seqmodst}, \code{seqmeant}, and \code{seqrf} now display the \code{ylab} closer from the y-axis when \code{yaxis=FALSE}.
-            \item 
+            \item
             \code{plot()} method for object returned by \code{seqrep} now displays the \code{ylab} closer from the y-axis when \code{stats=FALSE}.
 
         }

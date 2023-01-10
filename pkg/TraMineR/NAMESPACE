@@ -72,7 +72,7 @@ export(
   seqpcfilter,
   seqpcplot,
   seqplot,
-  #seqplotMD,
+  seqplotMD,
   seqpm,
     seqprecarity,
     seqprecorr,

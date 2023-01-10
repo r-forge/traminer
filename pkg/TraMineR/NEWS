@@ -1,8 +1,15 @@
 ## =========
-Version 2.3-7 [2022-12-02]
+Version 2.3-7 [2023-01-10]
 
-Misc.:
-  - no changes
+New functions:
+  - seqplotMD(): plot of multidomain/multichannel sequences
+    by domain and group.
+    
+Changes in existing functions:
+  - seqplot() and all the seqxxplot family: ylab can  
+    be a vector of labels by group level.
+  - seqplot() and all the seqxxplot family support 
+    arguments of legend among the ... list.
 
 ## =========
 Version 2.2-6 [2022-11-29]
@@ -28,7 +35,8 @@ Bug fixes:
     seqtab, seqmodst, seqmeant, seqrf, and seqrep ignored
     the cex.lab argument.
   - issues with prototypes in init.c
-  - removed unused code with deprecated \code{sprintf} in eventdictionary.cpp
+  - removed unused code with deprecated \code{sprintf} 
+    in eventdictionary.cpp
 
 Misc.:
   - replaced seqdistmc with seqMD in examples of dissdomassoc.

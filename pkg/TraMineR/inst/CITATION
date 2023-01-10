@@ -7,6 +7,8 @@ p4 <- person("Nicolas S.", "M\u00FCller", email = "nsmuller@gmail.com")
 p5 <- person("Reto", "B\u00FCrgin", email = "rbuergin@gmx.ch")
 p6 <- person("Marherita", "Bussi")
 p7 <- person("Jacqueline", "O'Reilly")
+p8 <- person("Tim F.", "Liao")
+p9 <- person("Emanuela", "Struffolino")
 
 citEntry(entry = "Article",
   title        = "Analyzing and Visualizing State Sequences in {R} with {TraMineR}",
@@ -41,6 +43,18 @@ citEntry(entry="Article",
 )
 
 citEntry(entry="Article",
+    author = personList(p2, p8, p9),
+    title = "Strategies for multidomain sequence analysis in social research",
+    journal = "Sociological Methodology",
+    year    = "2023",
+    note    = "In press",
+
+    textVersion="Ritschard, G., Liao, T.F. & Struffolino, E.  (2023). Strategies for multidomain sequence analysis in social research, Sociological Methodology, In press",
+    header="For multidomain/multichannel sequence analysis:\n"
+)
+
+
+citEntry(entry="Article",
     author = personList(p3, p2, p1, p4),
     title = "Discrepancy analysis of state sequences",
     journal = "Sociological Methods and Research",
@@ -65,8 +79,9 @@ citEntry(entry="incollection",
     volume = "292",
     address = "Berlin",
     pages = "3-19",
+    doi = "10.1007/978-3-642-00580-0_1",
 
-    textVersion="Studer, M., Ritschard, G., Gabadinho, A. & M\u00FCller, N.S. (2010), Discrepancy analysis of complex objects using dissimilarities, In Guillet, F., Ritschard, G., Zighed, D.A. & Briand, H. (eds) Advances in Knowledge Discovery and Management. Series: Studies in Computational Intelligence. Volume 292, pp. 3-19. Berlin: Springer.",
+    textVersion="Studer, M., Ritschard, G., Gabadinho, A. & M\u00FCller, N.S. (2010), Discrepancy analysis of complex objects using dissimilarities, In Guillet, F., Ritschard, G., Zighed, D.A. & Briand, H. (eds) Advances in Knowledge Discovery and Management. Series: Studies in Computational Intelligence. Volume 292, pp. 3-19. Berlin: Springer. DOI https://doi.org/10.1007/978-3-642-00580-0_1",
 )
 
 citEntry(entry="incollection",
