@@ -6,10 +6,10 @@ Graphical representation of a set of events sequences.
 \description{
 This function provides two ways to represent a set of events.
 The first one (\code{type="survival"}) plots the survival curves of the first occurrence of each event.
-The second one (\code{type="hazard"}) plots the mean counts of each events in a given time frame.
+The second one (\code{type="hazard"}) plots the mean counts of each event in a given time frame.
 }
 \usage{
-seqedplot(seqe, group = NULL, breaks = 20, ages = NULL, main = NULL,
+seqedplot(seqe, group = NULL, breaks = 20, ages = NULL, main = "auto",
    type = "survival", ignore = NULL, withlegend = "auto", cex.legend = 1,
    use.layout = (!is.null(group) | withlegend != FALSE),
    legend.prop = NA, rows = NA, cols = NA, axes = "all", xlab = "time",
@@ -22,7 +22,7 @@ seqedplot(seqe, group = NULL, breaks = 20, ages = NULL, main = NULL,
   \item{group}{Plots one plot for each level of the factor given as argument.}
   \item{breaks}{Number of breaks defining a period.}
   \item{ages}{Two numeric values representing minimum and maximum ages to be represented.}
-  \item{main}{title for the graphic. Default is \code{NULL}.}
+  \item{main}{title for the graphic. Default is \code{"auto"}, i.e., group levels. Set as \code{NULL} to suppress titles.}
   \item{type}{the type of the plot. If \code{type="survival"}, plots the survival curves of the first occurrence of each event. If \code{type="hazard"}, plots the mean numbers of each event in a given time frame.}
   \item{ignore}{Character. An optional list of events that will not be plotted.}
   \item{withlegend}{defines if and where the legend of the state colors is plotted.

@@ -1,4 +1,5 @@
-seqedplot <- function(seqe, group=NULL, breaks=20, ages=NULL, main=NULL, type="survival", ignore=NULL,
+seqedplot <- function(seqe, group=NULL, breaks=20, ages=NULL,
+    main="auto", type="survival", ignore=NULL,
 	withlegend="auto",cex.legend=1, use.layout=(!is.null(group) | withlegend!=FALSE),legend.prop=NA, rows=NA, cols=NA, axes="all",
 	xlab="time", ylab=ifelse(type=="survival", "survival probability", "mean number of events"), cpal=NULL,
   title, ...){
@@ -30,10 +31,12 @@ seqedplot <- function(seqe, group=NULL, breaks=20, ages=NULL, main=NULL, type="s
 			gindex[[s]] <- which(group==levels(group)[s])
 
 		## Title of each plot
-		if (!is.null(main))
-			main <- paste(main,"-",levels(group))
-		else
-			main <- levels(group)
+        if (!is.null(main)) {
+            if (main[1] == "auto")
+              main <- levels(group) ## will be NULL if group is NULL
+            else if (length(main)==1)
+              main <- paste(main,"-",levels(group))
+        }
 	}
 	else {
 		nplot <- 1

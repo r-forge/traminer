@@ -1,12 +1,24 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
-\section{Changes in version 0.7.6 [2022-10-10] }{
+\section{Changes in version 0.7.6 [2023-01-11] }{
 
-    \subsection{Misc.}{
+    \subsection{Changes in existing functions}{
         \itemize{
             \item
-            No changes.
+            \code{seqsplot()}, argument \code{axes} is deprecated and replaced by \code{xaxis}.
+            Argument \code{yaxis} can now also be one of \code{"all"} or \code{"left"}.
+            \item
+            \code{seqsplot()}, \code{ylab} can be a vector of labels by group level.
+            \item
+            \code{seqsplot()} supports arguments of \code{legend} among the \code{...} list.
+            \item
+            \code{plot.stslist.surv()}, plot method for objects returned by \code{seqsurv} displays
+            the ylab closer from the y-axis when \code{yaxis=FALSE}. It also recognizes the \code{cex.lab} argument. 
+            \item
+            \code{seqsplot()}, \code{seqplot.tentrop()}, \code{seqplot.tentrop.m()}, \code{seqedplot()}, \code{plot.dynin()}, and \code{plot.stslist.surv()}: default value of \code{main} is  \code{"auto"} and \code{NULL} suppresses the titles as expected.
+            \item
+            \code{seplot.entrop.m()} now in namespace.
         }
     }
 }
