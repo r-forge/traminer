@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
-\section{Changes in version 0.7.6 [2023-01-11] }{
+\section{Changes in version 0.7.6 [2023-01-13] }{
 
     \subsection{Changes in existing functions}{
         \itemize{
@@ -14,11 +14,13 @@
             \code{seqsplot()} supports arguments of \code{legend} among the \code{...} list.
             \item
             \code{plot.stslist.surv()}, plot method for objects returned by \code{seqsurv} displays
-            the ylab closer from the y-axis when \code{yaxis=FALSE}. It also recognizes the \code{cex.lab} argument. 
+            the ylab closer from the y-axis when \code{yaxis=FALSE}. It also recognizes the \code{cex.lab} argument.
             \item
             \code{seqsplot()}, \code{seqplot.tentrop()}, \code{seqplot.tentrop.m()}, \code{seqedplot()}, \code{plot.dynin()}, and \code{plot.stslist.surv()}: default value of \code{main} is  \code{"auto"} and \code{NULL} suppresses the titles as expected.
             \item
             \code{seplot.entrop.m()} now in namespace.
+            \item
+            \code{seqedplot()} argument names and behavior made conformable with those of \code{TraMineR:::seqplot}
         }
     }
 }

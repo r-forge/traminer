@@ -8,7 +8,7 @@ High level plot function for state sequence objects that produces survival curve
 }
 
 \usage{
-seqsplot(seqdata, group = NULL, main = "auto", 
+seqsplot(seqdata, group = NULL, main = "auto",
   cpal = NULL, missing.color = NULL,
   ylab = NULL, yaxis = "all",
   xaxis = "all", xtlab = NULL,
@@ -29,7 +29,7 @@ seqsplot(seqdata, group = NULL, main = "auto",
 
     \item{missing.color}{Color for representing missing values inside the sequences. By default, this color is taken from the \code{missing.color} attribute of \code{seqdata}.}
 
-    \item{ylab}{Character string or vector of strings. Optional label of the y-axis. If a vector, y-axis label of each group level. If set as \code{NA}, no label is drawn.}
+    \item{ylab}{Character string or vector of strings. Optional label of the y-axis. If a vector, y-axis label of each group (or state) level. If set as \code{NA}, no label is drawn.}
 
     \item{yaxis}{Logical or one of \code{"all"} or \code{"left"}. If set as \code{TRUE} or \code{"all"} (default), the y-axis is displayed on all plots. In case of multiple plots (when \code{per.state=TRUE} or \code{group} is used), if set as \code{"left"}, the y-axis is only displayed on plots of the left panel. If \code{FALSE} no y-axis is drawn.}
 

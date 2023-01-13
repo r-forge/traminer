@@ -158,7 +158,7 @@ seqsplot <- function(seqdata, group = NULL, main = "auto",
       if (length(ylab) <= 1) ## length(NULL) is 0
         ylab <- rep(ylab, nplot)
       else if (length(ylab) != nplot)
-        stop(call.=FALSE, "if a vector, ylab must have one value per group level!")
+        stop(call.=FALSE, "if a vector, ylab must have one value per group (or state) level!")
 
 
       for (s in 1:nplot){

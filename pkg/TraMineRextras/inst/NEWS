@@ -1,4 +1,4 @@
-                CHANGES IN TraMineRextras VERSION 0.7.5 [2023-01-11]
+                CHANGES IN TraMineRextras VERSION 0.7.6 [2023-01-13]
 
 Changes in existing functions:
     o   seqsplot(), argument `axes` is deprecated and replaced by `xaxis`.
@@ -11,6 +11,7 @@ Changes in existing functions:
         and plot.stslist.surv(): default value of main is now "auto" and NULL suppresses
         the titles as expected.
     o   seqplot.tentrop.m() now in namespace.
+    o   seqedplot()} argument names and behavior made conformable with those of TraMineR:::seqplot.
 
 
                 CHANGES IN TraMineRextras VERSION 0.6.5 [2022-10-09]
