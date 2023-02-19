@@ -54,7 +54,8 @@ export(
     seqBIC,
     seqLRT,
     seqindic.dyn,
-    seqpolyads
+    seqpolyads, 
+	dissindic
 )
 
 ## emlt methods
