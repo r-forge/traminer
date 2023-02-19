@@ -12,7 +12,7 @@ dissindic(diss, group, gower = FALSE, squared = FALSE, weights = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{formula}{A dissimilarity matrix or a \code{dist} object.}
+  \item{diss}{A dissimilarity matrix or a \code{dist} object.}
   \item{group}{A categorical variable.}
   \item{gower}{Logical: Is the dissimilarity matrix already a Gower matrix?}
   \item{squared}{Logical: Should we square the provided dissimilarities?}
@@ -20,7 +20,7 @@ dissindic(diss, group, gower = FALSE, squared = FALSE, weights = NULL)
 }
 \details{
 
-The two indicators are computed within the discrepancy analysis framework (see \link{\code{dissmfacw}}). The marginality is computed as a "residual" of the discrepancy analysis. More precisely, a high value means that a sequence (or another object) is far from the center of gravity of its group, i.e. the most typical situation. A low value indicates a sequence (or another object) is close to this gravity center. 
+The two indicators are computed within the discrepancy analysis framework (see \code{\link{dissmfacw}}). The marginality is computed as a "residual" of the discrepancy analysis. More precisely, a high value means that a sequence (or another object) is far from the center of gravity of its group, i.e. the most typical situation. A low value indicates a sequence (or another object) is close to this gravity center. 
 
 By combining the "residuals" of the null model (without covariate) and the marginality, we can identify sequences that are better represented when using the covariate than without it. These values can also be linked to the contributions of a sequence to the between sums of squares, a concept directly linked to the explained discrepancy. The gain therefore measures the statistical gain of information for each case when taking the covariate into account.
 
@@ -33,9 +33,9 @@ By combining the "residuals" of the null model (without covariate) and the margi
 
 }
 \references{
-Le Roux, G., M. Studer, A. Bringé, C. Bonvalet (2023). Selecting Qualitative Cases Using Sequence Analysis: A Mixed-Method for In-Depth Understanding of Life Course Trajectories, \emph{Advances in Life Course Research}, \doi{10.1016/j.alcr.2023.100530}.
+Le Roux, G., M. Studer, A. BringÃ©, C. Bonvalet (2023). Selecting Qualitative Cases Using Sequence Analysis: A Mixed-Method for In-Depth Understanding of Life Course Trajectories, \emph{Advances in Life Course Research}, \doi{10.1016/j.alcr.2023.100530}.
 
-Studer, M., G. Ritschard, A. Gabadinho and N. S. Müller (2011). Discrepancy analysis of state sequences, \emph{Sociological Methods and Research}, Vol. 40(3), 471-510, \doi{10.1177/0049124111415372}.
+Studer, M., G. Ritschard, A. Gabadinho and N. S. MÃ¼ller (2011). Discrepancy analysis of state sequences, \emph{Sociological Methods and Research}, Vol. 40(3), 471-510, \doi{10.1177/0049124111415372}.
 
 }
 \author{Matthias Studer}
@@ -71,9 +71,11 @@ seqIplot(mvad.seq, group=mvad$gcse5eq, sortv=di$marginality)
 ##Scatterplot of the indicators separated by group value (as in Le Roux, et al. 2023)
 par(mfrow=c(1, 2))
 ## Plot for the "no" category
-plot(di$gain[mvad$gcse5eq=="no"], di$marginality[mvad$gcse5eq=="no"], main="No gcseq5q", xlim=range(di$gain), ylim=range(di$marginality))
+plot(di$gain[mvad$gcse5eq=="no"], di$marginality[mvad$gcse5eq=="no"], main="No gcseq5q", 
+	xlim=range(di$gain), ylim=range(di$marginality))
 abline(h=mean(di$marginality), v=0) ## Draw reference lines
-plot(di$gain[mvad$gcse5eq=="yes"], di$marginality[mvad$gcse5eq=="yes"], main="Yes gcseq5q", xlim=range(di$gain), ylim=range(di$marginality))
+plot(di$gain[mvad$gcse5eq=="yes"], di$marginality[mvad$gcse5eq=="yes"], main="Yes gcseq5q", 
+	xlim=range(di$gain), ylim=range(di$marginality))
 abline(h=mean(di$marginality), v=0) ## Draw reference lines
 
 }
