@@ -53,7 +53,7 @@ Studer, M., G. Ritschard, A. Gabadinho and N. S. Müller (2011). Discrepancy ana
 \examples{
 ## Defining a state sequence object
 data(mvad)
-mvad <- mvad[1:100, ] ## Use only a subsample to avoid long computation time
+mvad <- mvad[1:100, ] ## Use a subsample to avoid long computation time
 mvad.seq <- seqdef(mvad[, 17:86])
 
 ## Building dissimilarities (any dissimilarity measure can be used)
@@ -62,13 +62,15 @@ mvad.ham <- seqdist(mvad.seq, method="HAM")
 ## Study association with 
 di <- dissindic(mvad.ham, group=mvad$gcse5eq)
 
-## Plot sequences sorted by gain, illustrative trajectories at the top (and counterexample at the bottom)
+## Plot sequences sorted by gain, illustrative trajectories at the top 
+## and counterexample at the bottom
 seqIplot(mvad.seq, group=mvad$gcse5eq, sortv=di$gain)
 
-## Plot sequences sorted by marginality, central trajectories at the bottom.
+## Plot sequences sorted by marginality, central trajectories at the bottom
 seqIplot(mvad.seq, group=mvad$gcse5eq, sortv=di$marginality)
 
-##Scatterplot of the indicators separated by group value (as in Le Roux, et al. 2023)
+##Scatterplot of the indicators separated by group value 
+## as in Le Roux, et al. 2023
 par(mfrow=c(1, 2))
 ## Plot for the "no" category
 plot(di$gain[mvad$gcse5eq=="no"], di$marginality[mvad$gcse5eq=="no"], main="No gcseq5q", 
