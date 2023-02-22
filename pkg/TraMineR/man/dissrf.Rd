@@ -48,7 +48,7 @@ seqrf(seqdata,
   \item{grp.meth}{Character string. One of \code{"prop"}, \code{"first"}, and \code{"random"}. Grouping method. See details.}
   \item{squared}{Logical. Should medoids (and computation of \code{sortv} when applicable) be based on squared dissimilarities? (default is \code{FALSE})}
   \item{pow}{Double. Dissimilarity power exponent (typically 1 or 2) for computation of pseudo R2 and F. When \code{NULL}, \code{pow} is set as 1 when \code{squared = FALSE}, and as 2 otherwise.}
-  \item{...}{additional arguments passed to \code{\link{plot.stslist}}}
+  \item{...}{further arguments passed to or from other methods such as \code{\link{print.stslist}}}
   \item{object}{Object of class \code{dissrf} or \code{seqrf}}
   \item{format}{String. One of \code{"SPS"} (default) or \code{"STS"}. Display format of the medoid sequences.}
   \item{dist.idx}{Indexes of RF groups for which summary statistics of distances to the medoids are displayed. Default is \code{1:10}. Set as 0 to plot statistics for all RF groups.}

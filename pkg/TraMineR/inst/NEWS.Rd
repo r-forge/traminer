@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-7 [2023-01-10] }{
+\section{Changes in version 2.3-7 [2023-02-22] }{
 
     \subsection{New functions}{
         \itemize{
@@ -16,6 +16,13 @@
             \code{seqplot()} and all the \code{seqxxplot()} family functions: \code{ylab} can be a vector of labels by group level.
             \item
             \code{seqplot()} and all the \code{seqxxplot()} family functions support arguments of \code{legend} among the \code{...} list.
+        }
+    }
+    
+    \subsection{Misc.}{
+        \itemize{
+            \item
+            Statement "SystemRequirements: C++11" dropped from DESCRIPTION as requested by CRAN check
         }
     }
 
