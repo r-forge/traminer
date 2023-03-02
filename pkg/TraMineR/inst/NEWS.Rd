@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-7 [2023-02-22] }{
+\section{Changes in version 2.3-7 [2023-03-02] }{
 
     \subsection{New functions}{
         \itemize{
@@ -19,6 +19,13 @@
         }
     }
     
+    \subsection{Bug fixes}{
+        \itemize{
+            \item
+            \code{seqMD()} badly set \code{with.missing=TRUE} in case of sequences with different lengths. Now set as \code{TRUE} only when there are missings in the domain.
+        }
+    }
+
     \subsection{Misc.}{
         \itemize{
             \item

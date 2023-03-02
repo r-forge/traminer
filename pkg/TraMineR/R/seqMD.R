@@ -47,9 +47,12 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 	if (is.null(cweight)) {
 		cweight <- rep(1, nchannels)
 	}
+
+    has.miss <- rep(FALSE,nchannels)
   for (i in 1:nchannels){
     if (length(grep(ch.sep, alphabet(channels[[i]], with.missing=TRUE), fixed=TRUE))>0)
       stop(" [!] ch.sep symbol (",ch.sep,") occurs in alphabet of at least one channel")
+    has.miss[i] <- any(channels[[i]]==attr(channels[[i]],"nr"))
   }
   if (is.list(indel) & length(indel) != nchannels)
 		stop("[!] when a list, indel must be of length equal to number of domains")
@@ -136,7 +139,9 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 			#if (with.missing) {
 			#	stop(" [!] Some individuals have channels of different length. Set 'with.missing=TRUE' for all channels.")
 			#} else {
-				msg.warn("Some individuals have channels of different length. Shorter sequences will be filled with missing values and corresponding channel with.missing set as TRUE")
+				msg.warn("Some individuals have channels of different length.\n",
+                    "       Shorter sequences will be filled with missing values and corresponding channel with.missing set as TRUE\n",
+                    "       Unexpected results may occur when corresponding channel has no other missings!")
 				break
 			#}
 		}
@@ -167,8 +172,10 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 			## If all channels are equal to void, then we accept as void
 			newseqdataNA[,j] <- newseqdataNA[,j] & newCol == void
 			## Setting void as nr
-      if (any(newCol==void)) with.missing[i] <- TRUE
-			newCol[newCol == void] <- nr
+            if (any(newCol==void) && has.miss[i]) {
+                with.missing[i] <- TRUE
+    			newCol[newCol == void] <- nr
+            }
 			if (i > 1) {
 				newseqdata[,j] <- paste(newseqdata[,j], newCol, sep = sep)
 			}
@@ -217,7 +224,7 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
           indel[[i]] <- rep(indel[[i]],alphsize_list[[i]])
         if (length(indel[[i]]) != alphsize_list[[i]]){
           cat("i = ",i,", indel length = ", length(indel[[i]]), ", alphabet size = ", alphsize_list[[i]], "\n alphabet = ", alphabet_list[[i]],"\n" )
-  				stop(" [!] indel length does not much size of alphabet for at least one channel")
+  				stop(" [!] indel length does not match size of alphabet for at least one channel")
         }
       }
       else if (!any(indel=="auto") & !is.list(indel_list)) {
@@ -247,8 +254,8 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
               indel_list[i] <- max(sm[[i]])/2
             else
               indel_list[i] <- indel[i]
-              ##cat("\n indel_list[i] ",indel_list[i], "\n")
-              ##print(sm[[i]])
+              #cat("\n indel_list[i] ",indel_list[[i]], "\n with.missing = ",with.missing,"\n")
+              #print(sm[[i]])
       		checkcost(sm[[i]], channels[[i]], with.missing = with.missing[i], indel = indel_list[[i]])
    			substmat_list[[i]] <- sm[[i]]
   		}

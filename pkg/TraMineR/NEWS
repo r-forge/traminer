@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-7 [2023-02-22]
+Version 2.3-7 [2023-03-02]
 
 New functions:
   - seqplotMD(): plot of multidomain/multichannel sequences
@@ -11,8 +11,13 @@ Changes in existing functions:
   - seqplot() and all the seqxxplot family support
     arguments of legend among the ... list.
     
+Bug fixes:
+  - seqMD() badly set \code{with.missing=TRUE} in case of 
+    sequences with different lengths. Now set as TRUE 
+    only when there are missings in the domain.
+
 Misc.:
-  - Statement "SystemRequirements: C++11" dropped from 
+  - Statement "SystemRequirements: C++11" dropped from
     DESCRIPTION as requested by CRAN check.
 
 
