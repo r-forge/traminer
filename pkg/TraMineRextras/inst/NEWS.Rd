@@ -1,6 +1,18 @@
 \name{NEWS}
 \title{NEWS file for the TraMineRextras package}
 
+
+\section{Changes in version  0.7.7 [2023-02-20]}{
+
+	\subsection{New function}{
+		\itemize{
+			\item
+            \code{dissindic()} computes indicators to select observations that are typical, atypical, 
+	    illustrative of or counterexample of a statistical association between trajectories 
+		and a covariate/typology.
+		}
+	}
+}
 \section{Changes in version 0.7.6 [2023-01-13] }{
 
     \subsection{Changes in existing functions}{

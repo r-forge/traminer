@@ -1,3 +1,11 @@
+                CHANGES IN TraMineRextras VERSION 0.7.7 [2023-02-22]
+
+New functions:
+    o   dissindic() compute indicators to select observations that are typical, atypical, 
+	    illustrative of or counterexample of a statistical association between trajectories 
+		and a covariate/typology.
+
+
                 CHANGES IN TraMineRextras VERSION 0.7.6 [2023-01-13]
 
 Changes in existing functions:

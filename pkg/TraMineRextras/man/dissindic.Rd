@@ -2,10 +2,11 @@
 \alias{dissindic}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Compute the marginality and gain indicators of a relationship between a covariate and a distance matrix.
+Sequence marginality and gain indicators.
+%Compute the marginality and gain indicators of a relationship between a covariate and a distance matrix.
 }
 \description{
-The gain and marginality indicators allows situating cases according to a quantitative relationship between a covariate and a distance matrix. The marginality indicator quantifies the typicality of cases within each group of the explanatory covariate using a measure of distance between cases and gravity centers. The gain indicator aims to identify cases that are either illustrative of, or discordant with, the quantitative association. It is computed as the gain of information when taking the covariate into account.
+The marginality and gain indicators measure the contribution of each observation to a quantitative relationship between a covariate and the sequences using a distance matrix.  These indicators allow situating cases according to this quantitative relationship. The marginality indicator quantifies the typicality of each case within each group of the explanatory covariate using a measure of distance between cases and gravity centers. The gain indicator aims to identify cases that are either illustrative of, or discordant with, the quantitative association. It is computed as the contribution of each case to the explained sum of squares, i.e. the sum of squares explained by the covariate.
 }
 \usage{
 dissindic(diss, group, gower = FALSE, squared = FALSE, weights = NULL)
@@ -20,10 +21,11 @@ dissindic(diss, group, gower = FALSE, squared = FALSE, weights = NULL)
 }
 \details{
 
-The two indicators are computed within the discrepancy analysis framework (see \code{\link{dissmfacw}}). The marginality is computed as a "residual" of the discrepancy analysis. More precisely, a high value means that a sequence (or another object) is far from the center of gravity of its group, i.e. the most typical situation. A low value indicates a sequence (or another object) is close to this gravity center. 
+The two indicators are computed within the discrepancy analysis framework (see \code{\link{dissmfacw}}). The marginality is computed as the "residual" of the discrepancy analysis. A high value means that a sequence (or another object) is far from the center of gravity of its group, i.e. the most typical situation. A low value indicates a sequence (or another object) close to this gravity center. 
 
-By combining the "residuals" of the null model (without covariate) and the marginality, we can identify sequences that are better represented when using the covariate than without it. These values can also be linked to the contributions of a sequence to the between sums of squares, a concept directly linked to the explained discrepancy. The gain therefore measures the statistical gain of information for each case when taking the covariate into account.
+By combining the "residuals" of the null model (without covariate) and the marginality, we can identify sequences that are better represented when using the covariate than without it. These values measure the contributions of a sequence to the between or explained sums of squares, a concept directly linked to the explained discrepancy. The gain therefore measures the statistical gain of information for each case when taking the covariate into account.
 
+The so-called Gower matrix is a transformation of the distance matrix required to compute the explained, residual and total sum of squares. The distance matrix (argument \code{diss}) is automatically transformed to a Gower matrix unless the argument \code{gower=TRUE}. This option can be used to avoid multiple transformation of the distance matrix to the Gower matrix which can be time-consuming, but it requires the user to provide a Gower matrix using the \code{diss} argument. The function \code{gower_matrix} in the TraMineR package can be used to compute it from a distance matrix.
 }
 \value{A \code{data.frame} containing three columns: 
 
