@@ -1,11 +1,19 @@
 ## =========
-Version 2.3-7 [2023-03-02]
+Version 2.3-7 [2023-03-04]
 
 New functions:
   - seqplotMD(): plot of multidomain/multichannel sequences
     by domain and group.
 
 Changes in existing functions:
+  - seqMD(): with.missing can now be NULL (new default),  
+    in which case the with.missing value of each domain is  
+    set as TRUE when the domain has missings and as FALSE 
+    otherwise.
+  - seqMD(): new logical argument 'fill.with.miss', which 
+    offers the option to fill the shorter sequences 
+    with missings in case of non-matching lengths 
+    across domains.
   - seqplot() and all the seqxxplot family: ylab can
     be a vector of labels by group level.
   - seqplot() and all the seqxxplot family support

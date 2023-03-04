@@ -9,8 +9,8 @@ seqdistmc <- function(channels, what="diss", ch.sep="@@@@TraMineRSep@@@@", ...){
 }
 
 seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
-	with.missing=FALSE, full.matrix=TRUE, link="sum", cval=2, miss.cost=2, cweight=NULL,
-  what="MDseq", ch.sep = "+") {
+	with.missing=NULL, full.matrix=TRUE, link="sum", cval=2, miss.cost=2, cweight=NULL,
+  what="MDseq", ch.sep = "+", fill.with.miss = TRUE) {
 
 	## Checking arguments
   if (what=="sm") {
@@ -54,6 +54,7 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
       stop(" [!] ch.sep symbol (",ch.sep,") occurs in alphabet of at least one channel")
     has.miss[i] <- any(channels[[i]]==attr(channels[[i]],"nr"))
   }
+  if (is.null(with.missing)) with.missing <- has.miss
   if (is.list(indel) & length(indel) != nchannels)
 		stop("[!] when a list, indel must be of length equal to number of domains")
   if (length(with.missing) > 1 & length(with.missing) != nchannels )
@@ -139,9 +140,7 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 			#if (with.missing) {
 			#	stop(" [!] Some individuals have channels of different length. Set 'with.missing=TRUE' for all channels.")
 			#} else {
-				msg.warn("Some individuals have channels of different length.\n",
-                    "       Shorter sequences will be filled with missing values and corresponding channel with.missing set as TRUE\n",
-                    "       Unexpected results may occur when corresponding channel has no other missings!")
+				msg.warn("Cases with channels of different length!")
 				break
 			#}
 		}
@@ -168,13 +167,13 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 			}
 			else {
 				newCol <- as.character(seqchan[,j])
-			}
-			## If all channels are equal to void, then we accept as void
-			newseqdataNA[,j] <- newseqdataNA[,j] & newCol == void
-			## Setting void as nr
-            if (any(newCol==void) && has.miss[i]) {
-                with.missing[i] <- TRUE
-    			newCol[newCol == void] <- nr
+			    #}
+    			## If fill.with.miss==TRUES, set void as nr
+                if (fill.with.miss==TRUE & with.missing[i] & any(newCol==void)) {
+        		     newCol[newCol == void] <- nr
+                }
+			    ## If void in all channels, then combined state will be void
+    			newseqdataNA[,j] <- newseqdataNA[,j] & newCol == void
             }
 			if (i > 1) {
 				newseqdata[,j] <- paste(newseqdata[,j], newCol, sep = sep)
@@ -223,7 +222,7 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
         if (length(indel[[i]])==1)
           indel[[i]] <- rep(indel[[i]],alphsize_list[[i]])
         if (length(indel[[i]]) != alphsize_list[[i]]){
-          cat("i = ",i,", indel length = ", length(indel[[i]]), ", alphabet size = ", alphsize_list[[i]], "\n alphabet = ", alphabet_list[[i]],"\n" )
+          cat("domain = ",i,", indel length = ", length(indel[[i]]), ", alphabet size = ", alphsize_list[[i]], "\n alphabet = ", alphabet_list[[i]],"\n" )
   				stop(" [!] indel length does not match size of alphabet for at least one channel")
         }
       }

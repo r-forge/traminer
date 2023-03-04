@@ -11,14 +11,15 @@ seqMD(channels,
   norm="none",
   indel="auto",
   sm=NULL,
-  with.missing=FALSE,
+  with.missing=NULL,
   full.matrix=TRUE,
   link="sum",
   cval=2,
   miss.cost=2,
   cweight=NULL,
   what="MDseq",
-  ch.sep="+"
+  ch.sep="+",
+  fill.with.miss=TRUE
   )
 
 seqdistmc(channels, what="diss", ch.sep="@@@@TraMineRSep@@@@", ...)
@@ -49,8 +50,7 @@ seqdistmc(channels, what="diss", ch.sep="@@@@TraMineRSep@@@@", ...)
    (see \code{\link{seqcost}}). Ignored when \code{method="LCS"}.
    }
 
- \item{with.missing}{Logical or vector of logical. Must be \code{TRUE} for channels with non deleted
-   gaps (missing values). See \code{\link{seqdist}} and \code{\link{seqcost}}.
+ \item{with.missing}{Logical, vector of logical, or \code{NULL} (default). See \code{\link{seqdist}} and \code{\link{seqcost}}.
    }
 
  \item{full.matrix}{Logical. If \code{TRUE} (default), the full distance matrix between MD sequences is returned.
@@ -70,6 +70,8 @@ seqdistmc(channels, what="diss", ch.sep="@@@@TraMineRSep@@@@", ...)
  \item{what}{Character string. What output should be returned? One of \code{"MDseq", "cost", "diss"}. The deprecated value \code{what="sm"} is treated as \code{what="cost"}. \code{MDseq} returns the multidomain sequences expressed in terms of the expanded alphabet, \code{"cost"} the CAT costs, and "diss" the CAT-based multidomain distances.}
 
  \item{ch.sep}{Character string. Separator used for building state names of the expanded alphabet.}
+ 
+ \item{fill.with.miss}{Logical. Should shorter domain sequences be filled with missings to match sequence lengths across domains? Applies only to domains that already have missings.}
 
  \item{...}{arguments passed to \code{seqMD}}
 }
@@ -78,8 +80,7 @@ seqdistmc(channels, what="diss", ch.sep="@@@@TraMineRSep@@@@", ...)
 
 Normalization may be useful when dealing with sequences that are not all of the same length. For details on the applied normalization, see \code{\link{seqdist}}. 
 
-Sequences lengths are supposed to match across domains. If the i-th sequence is shorter in one domain than the longest i-th sequence, it will, when constructing the i-th MD sequence, be filled with missing values to adapt its length to that of the longest sequence unless there are no other missings in the corresponding domain. In this latter case, unexpected results may occur and it can be useful to align sequence lengths across domains with \code{\link{seqlength.align}} before invoking \code{seqMD}.
-}
+Sequences lengths are supposed to match across domains. If \code{fill.with.miss} is \code{TRUE} and the i-th sequence is shorter in one domain than the longest i-th sequence, it will, when constructing the i-th MD sequence, be filled with missing values to adapt its length to that of the longest sequence. However, this applies only for domain that already have missings, i.e., domains with a corresponding \code{with.missing} value set as \code{TRUE}. }
 
 \value{
 When \code{what="MDseq"}, the MD sequences of combined states as a \code{stslist} sequence object.\cr

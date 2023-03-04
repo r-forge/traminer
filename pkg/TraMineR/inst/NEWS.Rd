@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-7 [2023-03-02] }{
+\section{Changes in version 2.3-7 [2023-03-04] }{
 
     \subsection{New functions}{
         \itemize{
@@ -13,6 +13,10 @@
     \subsection{Changes in exiting functions}{
         \itemize{
             \item
+            \code{seqMD()}: \code{with.missing} can now be \code{NULL} (new default), in which case the with.missing value of each domain is set as \code{TRUE} when the domain has missings and as \code{FALSE} otherwise.
+            \item
+            \code{seqMD()}: new logical argument \code{fill.with.miss}, which offers the option to fill the shorter sequences with missings in case of non-matching lengths across domains.
+            \item
             \code{seqplot()} and all the \code{seqxxplot()} family functions: \code{ylab} can be a vector of labels by group level.
             \item
             \code{seqplot()} and all the \code{seqxxplot()} family functions support arguments of \code{legend} among the \code{...} list.
@@ -22,7 +26,7 @@
     \subsection{Bug fixes}{
         \itemize{
             \item
-            \code{seqMD()} badly set \code{with.missing=TRUE} in case of sequences with different lengths. Now set as \code{TRUE} only when there are missings in the domain.
+            \code{seqMD()}: error when sequences had different lengths. 
         }
     }
 
