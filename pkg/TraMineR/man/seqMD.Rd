@@ -91,7 +91,7 @@ When \code{what="diss"}, a matrix of pairwise distances between MD sequences.
 \seealso{ \code{\link{seqcost}}, \code{\link{seqdef}}, \code{\link{seqdist}}. }
 
 \references{
- Ritschard, G., T.F. Liao, and E. Struffolino (2023). Strategies for multidomain sequence analysis in social research. \emph{Sociological Methodology}.
+ Ritschard, G., T.F. Liao, and E. Struffolino (2023). Strategies for multidomain sequence analysis in social research. \emph{Sociological Methodology}. DOI: 10.1177/00811750231163833.
 
  Pollock, G. (2007) Holistic trajectories: a study of combined employment, housing and family careers by using multiple-sequence analysis. \emph{Journal of the Royal Statistical Society: Series A} \bold{170}, Part 1, 167--183.
 }

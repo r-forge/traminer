@@ -47,9 +47,9 @@ citEntry(entry="Article",
     title = "Strategies for multidomain sequence analysis in social research",
     journal = "Sociological Methodology",
     year    = "2023",
-    note    = "In press",
+    note    = "In press. DOI: 10.1177/00811750231163833",
 
-    textVersion="Ritschard, G., Liao, T.F. & Struffolino, E.  (2023). Strategies for multidomain sequence analysis in social research, Sociological Methodology, In press",
+    textVersion="Ritschard, G., Liao, T.F. & Struffolino, E.  (2023). Strategies for multidomain sequence analysis in social research, Sociological Methodology, In press. DOI: 10.1177/00811750231163833",
     header="For multidomain/multichannel sequence analysis:\n"
 )
 

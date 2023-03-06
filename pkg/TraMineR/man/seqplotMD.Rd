@@ -113,7 +113,7 @@ No special handling other than the domain-group titles and the organization of t
 
 
 \references{
-Ritschard, G., T.F. Liao, and E. Struffolino (2023). Strategies for multidomain sequence analysis in social research. \emph{Sociological Methodology}.
+Ritschard, G., T.F. Liao, and E. Struffolino (2023). Strategies for multidomain sequence analysis in social research. \emph{Sociological Methodology}. DOI: 10.1177/00811750231163833.
 }
 
 \examples{
