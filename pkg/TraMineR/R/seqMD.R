@@ -140,7 +140,7 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 			#if (with.missing) {
 			#	stop(" [!] Some individuals have channels of different length. Set 'with.missing=TRUE' for all channels.")
 			#} else {
-				msg.warn("Cases with channels of different length!")
+				msg.warn("Cases with sequences of different length across domains!")
 				break
 			#}
 		}
@@ -245,7 +245,6 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
                 indel_list[i] <- costs$indel
             }
   		}
-  		## Checking correct dimension cost matrix
   		else { ## provided sm
         #message(" [>]   channel ",i)
 
@@ -255,9 +254,10 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
               indel_list[i] <- indel[i]
               #cat("\n indel_list[i] ",indel_list[[i]], "\n with.missing = ",with.missing,"\n")
               #print(sm[[i]])
-      		checkcost(sm[[i]], channels[[i]], with.missing = with.missing[i], indel = indel_list[[i]])
    			substmat_list[[i]] <- sm[[i]]
-  		}
+        }
+  		## Checking correct dimension of indel and cost matrix
+   		checkcost(substmat_list[[i]], channels[[i]], with.missing = with.missing[i], indel = indel_list[[i]])
 
   		## Mutliply by channel weight
   		substmat_list[[i]] <- cweight[i]* substmat_list[[i]]
@@ -348,7 +348,9 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
     }
   }
   if (what == "diss") {
-	   message(" [>] computing distances using additive trick ...")
+       if (any(is.na(newsm)) || any(is.na(newindel)))
+            msg.stop("NA indel and/or substitution CAT costs, cannot compute MD distances!")
+	   message(" [>] computing MD distances using additive trick ...")
       ##cat(" newindel = ",newindel,"\n")
 	   ## Calling seqdist
 	   return(seqdist(newseqdata, method=method, norm=norm, indel=newindel,
