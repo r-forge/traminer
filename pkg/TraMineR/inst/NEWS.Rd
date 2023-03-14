@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-7 [2023-03-06] }{
+\section{Changes in version 2.3-7 [2023-03-14] }{
 
     \subsection{New functions}{
         \itemize{
@@ -22,11 +22,13 @@
             \code{seqplot()} and all the \code{seqxxplot()} family functions support arguments of \code{legend} among the \code{...} list.
         }
     }
-    
+
     \subsection{Bug fixes}{
         \itemize{
             \item
-            \code{seqMD()}: error when sequences had different lengths. 
+            \code{seqMD()}: error when sequences had different lengths.
+            \item
+            \code{"[.stslist"} subsetting with a condition having \code{NA}s generated a sequence of \code{NA}s for each \code{NA} value of the condition. Now \code{NA}s treated as \code{FALSE}.
         }
     }
 
@@ -34,6 +36,8 @@
         \itemize{
             \item
             Statement "SystemRequirements: C++11" dropped from DESCRIPTION as requested by CRAN check
+            \item
+            Using new CITATION commands.
         }
     }
 
