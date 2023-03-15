@@ -40,8 +40,9 @@ print.stslist <- function(x,format='STS', extended=FALSE, ...) {
   }
 
     if (!missing(i) && is.logical(i) && any(is.na(i))) {
-        i <- which(i)
-        msg.warn("which applied to subsetting condition because it has NAs")
+        #i <- which(i)
+        #msg.warn("which applied to subsetting condition because it has NAs")
+        warning("NAs in row subsetting condition: use which(condition) to treat them as FALSE!")
     }
 
     if (!missing(j) && length(j)>1) {

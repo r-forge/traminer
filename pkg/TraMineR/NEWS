@@ -18,12 +18,11 @@ Changes in existing functions:
     be a vector of labels by group level.
   - seqplot() and all the seqxxplot family support
     arguments of legend among the ... list.
+  - "[.stslist" raises a warning when row subsetting 
+    condition has \code{NA}s.
 
 Bug fixes:
   - seqMD(): error when sequences had different lengths.
-  - "[.stslist" subsetting with a condition having NAs
-    generated a sequence of NAs for each NA value of the
-    condition. Now NAs treated as FALSE.
 
 Misc.:
   - Statement "SystemRequirements: C++11" dropped from
