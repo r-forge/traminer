@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-7 [2023-03-15] }{
+\section{Changes in version 2.3-7 [2023-03-23] }{
 
     \subsection{New functions}{
         \itemize{
@@ -29,6 +29,8 @@
         \itemize{
             \item
             \code{seqMD()}: error when sequences had different lengths.
+            \item
+            foreign c function \code{wcorr} called with character string naming while package calls       \code{R_forceSymbols}. (Fix asked for by K. Hornik).
         }
     }
 

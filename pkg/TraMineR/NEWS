@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-7 [2023-03-14]
+Version 2.3-7 [2023-03-23]
 
 New functions:
   - seqplotMD(): plot of multidomain/multichannel sequences
@@ -18,11 +18,14 @@ Changes in existing functions:
     be a vector of labels by group level.
   - seqplot() and all the seqxxplot family support
     arguments of legend among the ... list.
-  - "[.stslist" raises a warning when row subsetting 
+  - "[.stslist" raises a warning when row subsetting
     condition has \code{NA}s.
 
 Bug fixes:
   - seqMD(): error when sequences had different lengths.
+  - foreign c function wcorr called with character string 
+    naming while package calls R_forceSymbols. 
+    (Fix asked for by K. Hornik).
 
 Misc.:
   - Statement "SystemRequirements: C++11" dropped from
