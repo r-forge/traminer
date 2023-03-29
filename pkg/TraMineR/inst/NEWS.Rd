@@ -1,17 +1,23 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-7 [2023-03-23] }{
+\section{Changes in version 2.3-7 [2023-03-29] }{
 
     \subsection{New functions}{
         \itemize{
             \item
             \code{seqplotMD()} plot of multidomain/multichannel sequences by domain and group.
+            \item
+            \code{seqdomassoc()} pairwise state association between domains.
         }
     }
 
     \subsection{Changes in exiting functions}{
         \itemize{
+            \item
+            \code{dissrf()} and \code{seqrf()} \code{sortv="mds"} is now the default and \code{sortv=NULL} selects the original seqdata order.
+            \item
+            \code{seqrfplot()} (\code{seqplot(..., type="rf", ...)}) with option \code{sortv="mds"} (new default in \code{seqrf}) the MDS sorting is done on the whole seqdata instead of independently for each group.
             \item
             \code{seqMD()}: \code{with.missing} can now be \code{NULL} (new default), in which case the with.missing value of each domain is set as \code{TRUE} when the domain has missings and as \code{FALSE} otherwise.
             \item
@@ -27,6 +33,8 @@
 
     \subsection{Bug fixes}{
         \itemize{
+            \item
+            \code{seqrf()}: options \code{sortv="from.start"} and \code{sortv="from.end"} did not work as expected.
             \item
             \code{seqMD()}: error when sequences had different lengths.
             \item

@@ -78,7 +78,7 @@ seqplotMD(channels,
         
     \item{dom.byrow}{Logical. Should domains be displayed by row?}
 
-    \item{dom.crit}{Integer in range \code{[-2,ndom]} where \code{ndom} is number of domains. Applies when a \code{sortv} method is provided among the \code{...} arguments. Domain on which sorting is done. When 0 (default), sorting is done on  multidomain sequences, when -1, sorting is done on first domain then, for ties, successively on the next domains, when -2, sorting is done across domains at each successive position.}
+    \item{dom.crit}{Integer in range \code{[-2,ndom]} where \code{ndom} is number of domains. Applies when  \code{sortv} is provided among the \code{...} arguments and is one of \code{"from.start"} or \code{"from.end"}. Domain on which sorting is done. When 0 (default), sorting is done on  multidomain sequences, when -1, sorting is done on first domain then, for ties, successively on the next domains, when -2, sorting is done across domains at each successive position. Does not apply when \code{sortv="mds"} for \code{"rf"} plots.}
         
     \item{dnames}{String vector. Names of the domains.} 
 
@@ -94,7 +94,9 @@ The function organizes the plot area with either domains in rows, groups in colu
 
 The function takes the matching constraints into account as follows:
 
-- For index plots (\code{"i", "I"}), sequences are displayed in same order for each domain. Likewise, for relative frequency plots (\code{"rf"}) the same order is retained for all domains. When a \code{sortv} vector is provided among the \code{...} list, this same sort order is applied to all domains. If a \code{sortv} method is provided, the sorting is computed on the domain specified by the \code{dom.crit} argument. When there is a \code{which.plot} argument (for \code{type="rf"}) in the \code{...} list, it cannot be \code{"both"}.  
+- For index plots (\code{"i", "I"}), sequences are displayed in same order for each domain.  When a \code{sortv} vector is provided among the \code{...} list, this same sort order is applied to all domains. If a \code{sortv} method is provided, the sorting is computed on the domain specified by the \code{dom.crit} argument. When there is a \code{which.plot} argument (for \code{type="rf"}) in the \code{...} list, it cannot be \code{"both"}.
+
+- Likewise, for relative frequency plots (\code{"rf"}) the same order is retained for all domains. The \code{sortv} argument is handled as for \code{"i"} and \code{"I"}, except for \code{sortv="mds"}, in which case the sorting is done using the provided \code{diss} matrix. 
 
 - For frequency plots (\code{"f"}), sequences displayed correspond to the most frequent MD sequences.
 

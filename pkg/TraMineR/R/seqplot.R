@@ -102,7 +102,36 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = "auto",
 		}
   }
 
+  if (type=="rf"){
+    if (is.null(diss))
+        msg.stop("'diss' required for rf plots")
+	with.missing <- TRUE
 
+	if ("sortv" %in% names(oolist))
+        sortv <- oolist[["sortv"]]
+    else
+        sortv <- "mds"
+    if (length(sortv)==1 && sortv=="mds"){
+        weighted <- TRUE
+        if ("weighted" %in% names(oolist)) weighted <- oolist[["weighted"]]
+        if (weighted) {
+           if ("weights" %in% names(oolist))
+             weights <- oolist[["weights"]]
+           else
+             weights <- attr(seqdata,"weights")
+           if (is.null(weights)) {
+             weighted <- FALSE
+           }
+        }
+
+        mdspow <- 1
+        if ("squared" %in% names(oolist)) mdspow <- 2^oolist[["squared"]]
+        if (weighted)
+            sortv <- wcmdscale(diss^mdspow, k = 1, w=weights)
+        else
+            sortv <- cmdscale(diss^mdspow, k = 1)
+    }
+  }
 
 	## ==============================
 	## Preparing if group is not null
@@ -222,7 +251,9 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = "auto",
 		## Selecting sub sample for x
 		## according to 'group'
 		subdata <- seqdata[gindex[[np]],]
-
+        if ("weights" %in% names(olist) & !is.null(weights)){
+            olist[["weights"]] <- weights[np]
+        }
 		## State distribution plot or Entropy index
 		if (type=="d" || type=="Ht" || type=="dH") {
 			f <- seqstatd
@@ -261,14 +292,10 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = "auto",
 		## Sequence relative frequency plot
 		else if (type=="rf") {
 			f <- seqrf
-			with.missing <- TRUE
-
 			## Selecting sub sample for sort variable
 			## according to 'group'
-			if ("sortv" %in% names(olist)) {
-				if (!length(sortv)==1) {
-					olist[["sortv"]] <- sortv[gindex[[np]]]
-				}
+			if (!is.null(sortv) & !length(sortv)==1) {
+				olist[["sortv"]] <- sortv[gindex[[np]]]
 			}
 
 			if (!"space" %in% names(olist)) {olist <- c(olist, list(space=0))}

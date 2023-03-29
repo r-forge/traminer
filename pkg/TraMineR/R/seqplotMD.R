@@ -65,6 +65,7 @@ seqplotMD <- function(channels, group = NULL, type = "i", main = NULL,
   oolist <- list(...)
 
   sortv <- if ("sortv" %in% names(oolist))  oolist[["sortv"]] else NULL
+  if (type=="rf" && !"sortv" %in% names(oolist)) sortv <- "mds" ## default for rf plot 
   leg.ncol <- if ("ncol" %in% names(oolist)) { oolist[["ncol"]] } else { NULL }
   oolist <- oolist[names(oolist) != "ncol"]
 
@@ -85,13 +86,12 @@ seqplotMD <- function(channels, group = NULL, type = "i", main = NULL,
 
 
   diss <- NULL
-	if ("diss" %in% names(oolist)) { ## should be a MD dist matrix
-    diss <- oolist[["diss"]]
-  }
-	else if ("dist.matrix" %in% names(oolist)) {
-    diss <- oolist[["dist.matrix"]]
-    oolist[["diss"]] <- diss
-  } #  dist.matrix is deprecated
+    if ("diss" %in% names(oolist)) { ## should be a MD dist matrix
+        diss <- oolist[["diss"]]
+    } else if ("dist.matrix" %in% names(oolist)) {
+        diss <- oolist[["dist.matrix"]]
+        oolist[["diss"]] <- diss
+    } #  dist.matrix is deprecated
 
   ## Stuff for rf plot
   use.rf.layout <- FALSE
@@ -207,7 +207,7 @@ seqplotMD <- function(channels, group = NULL, type = "i", main = NULL,
     }
     else MDseq <- NA
 
-    ## if sortv is a string, we compute sortv on one domain or the MD sequences
+    ## if sortv is a string (except "mds"), we compute sortv on one domain or the MD sequences
 	if (!is.null(sortv)) {
         if (length(sortv)==1 && sortv %in% c("from.start", "from.end")) {
 
@@ -233,7 +233,7 @@ seqplotMD <- function(channels, group = NULL, type = "i", main = NULL,
                 }
             }
             else
-                msg.stop("unvalid dom.crit value", dom.crit)
+                msg.stop("invalid dom.crit value", dom.crit)
 
             end <- if (sortv=="from.end") { mxl } else { 1 }
     		beg <- if (sortv=="from.end") { 1 } else { mxl }
@@ -242,11 +242,49 @@ seqplotMD <- function(channels, group = NULL, type = "i", main = NULL,
         	sortv <- order(do.call(order, MDext[,end:beg]))
         	#x <- x[sortv,]
         } else if (length(sortv)!=ncase) {
-            msg.stop("sortv must either contain one value for each sequence ",
+            if (type != "rf"){
+              msg.stop("sortv must either contain one value for each sequence ",
                 "or be one of 'from.start' and 'from.end'")
+            } else if (length(sortv) == 1 && sortv != "mds") {
+              msg.stop("sortv must either contain one value for each sequence ",
+                "or be one of 'mds', 'from.start', and 'from.end'")
+            }
         } else {
         	if (is.factor(sortv)) { sortv <- as.integer(sortv) }
         	#x <- x[order(sortv),]
+        }
+
+        if (length(sortv)==1 && sortv == "mds") {
+          if (type=="rf"){
+            if (is.null(diss))
+                msg.stop("'diss' required for rf plots")
+        	with.missing <- TRUE
+
+##         	if ("sortv" %in% names(oolist))
+##                 sortv <- oolist[["sortv"]]
+##             else
+##                 sortv <- "mds"
+##            if (length(sortv)==1 && sortv=="mds"){
+                weighted <- TRUE
+                if ("weighted" %in% names(oolist)) weighted <- oolist[["weighted"]]
+                if (weighted) {
+                   if ("weights" %in% names(oolist))
+                     weights <- oolist[["weights"]]
+                   else
+                     weights <- attr(channels[[1]],"weights")
+                   if (is.null(weights)) {
+                     weighted <- FALSE
+                   }
+                }
+
+                mdspow <- 1
+                if ("squared" %in% names(oolist)) mdspow <- 2^oolist[["squared"]]
+                if (weighted)
+                    sortv <- wcmdscale(diss^mdspow, k = 1, w=weights)
+                else
+                    sortv <- cmdscale(diss^mdspow, k = 1)
+            #}
+          }
         }
     }
 
