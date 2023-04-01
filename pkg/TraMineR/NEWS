@@ -1,5 +1,12 @@
 ## =========
-Version 2.3-7 [2023-03-29]
+Version 2.3-8 [2023-04-01]
+
+Misc.:
+  - no changes
+
+
+## =========
+Version 2.2-7 [2023-03-31]
 
 New functions:
   - seqplotMD(): plot of multidomain/multichannel sequences

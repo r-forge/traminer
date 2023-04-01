@@ -49,10 +49,17 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 	}
 
     has.miss <- rep(FALSE,nchannels)
+  if (length(with.missing)==1) {
+      with.missing <- rep(with.missing, nchannels)
+  }
   for (i in 1:nchannels){
     if (length(grep(ch.sep, alphabet(channels[[i]], with.missing=TRUE), fixed=TRUE))>0)
       stop(" [!] ch.sep symbol (",ch.sep,") occurs in alphabet of at least one channel")
     has.miss[i] <- any(channels[[i]]==attr(channels[[i]],"nr"))
+    if (!is.null(with.missing) && has.miss[i] != with.missing[i]) {
+      msg.warn(paste(" Bad with.missing value for domain",i,". I set it as",has.miss[i]))
+      ##with.missing[i]=has.miss[i]
+    }
   }
   if (is.null(with.missing)) with.missing <- has.miss
   if (is.list(indel) & length(indel) != nchannels)
@@ -98,9 +105,6 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
   }
   if (length(indel)==1) {
    	indel <- rep(indel, nchannels)
-  }
-  if (length(with.missing)==1) {
-      with.missing <- rep(with.missing, nchannels)
   }
 	## Checking correct numbers of info per channel
   if (what != "MDseq") {
@@ -169,7 +173,7 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
 				newCol <- as.character(seqchan[,j])
 			    #}
     			## If fill.with.miss==TRUES, set void as nr
-                if (fill.with.miss==TRUE & with.missing[i] & any(newCol==void)) {
+                if (fill.with.miss==TRUE & has.miss[i] & any(newCol==void)) {
         		     newCol[newCol == void] <- nr
                 }
 			    ## If void in all channels, then combined state will be void
@@ -233,7 +237,7 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
   		## Substitution matrix generation method is given
   		if	(is.character(sm[[i]])) {
   			message(" [>] computing substitution cost matrix for domain ", i)
-  			costs <- suppressMessages(seqcost(channels[[i]], sm[[i]], with.missing=with.missing[i],
+  			costs <- suppressMessages(seqcost(channels[[i]], sm[[i]], with.missing=has.miss[i],
   				time.varying=timeVarying, cval=cval, miss.cost=miss.cost))
             substmat_list[[i]] <- costs$sm
             if (any(indel=="auto")) {
@@ -257,7 +261,7 @@ seqMD <- function(channels, method=NULL, norm="none", indel="auto", sm=NULL,
    			substmat_list[[i]] <- sm[[i]]
         }
   		## Checking correct dimension of indel and cost matrix
-   		checkcost(substmat_list[[i]], channels[[i]], with.missing = with.missing[i], indel = indel_list[[i]])
+   		checkcost(substmat_list[[i]], channels[[i]], with.missing = has.miss[i], indel = indel_list[[i]])
 
   		## Mutliply by channel weight
   		substmat_list[[i]] <- cweight[i]* substmat_list[[i]]
