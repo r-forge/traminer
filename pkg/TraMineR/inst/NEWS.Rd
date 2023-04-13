@@ -1,12 +1,12 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-8 [2023-04-01] }{
+\section{Changes in version 2.3-8 [2023-04-13] }{
 
-    \subsection{Misc.}{
+    \subsection{Changes in exiting functions}{
         \itemize{
             \item
-            No changes
+            \code{seqST()} When number \code{phi} of subsequences is \code{NaN}, it is set as \code{.Machine$double.xmax} to compute turbulence and a warning is raised.
         }
     }
 }

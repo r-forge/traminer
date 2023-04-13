@@ -1,8 +1,11 @@
 ## =========
-Version 2.3-8 [2023-04-01]
+Version 2.3-8 [2023-04-13]
 
 Misc.:
-  - no changes
+  - seqST() When number phi of subsequences is NaN, it is 
+    set as .Machine$double.xmax to compute turbulence and 
+    a warning is raised.
+
 
 
 ## =========
