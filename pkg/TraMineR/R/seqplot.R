@@ -234,7 +234,6 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = "auto",
         xaxis[lout$axisp] <- TRUE
 
         yaxis <- as.list(rep(FALSE,nplot))
-        print(c(yaxes,fyaxis))
         if (!isFALSE(yaxes)){
             if (yaxes == "left"){
                 #print(lout$laymat[,1])

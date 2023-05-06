@@ -1,12 +1,14 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-8 [2023-05-05] }{
+\section{Changes in version 2.3-8 [2023-05-06] }{
 
     \subsection{Changes in exiting functions}{
         \itemize{
             \item
             \code{seqST()} When number \code{phi} of subsequences is \code{NaN}, it is set as \code{.Machine$double.xmax} to compute turbulence and a warning is raised.
+            \item
+            \code{seqplot()} and \code{seqplotMD()}: when \code{type="f"}, the \code{yaxis} argument can now also be \code{"pct"} or \code{"left.pct"}.
         }
     }
     
