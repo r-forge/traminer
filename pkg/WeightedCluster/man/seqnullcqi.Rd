@@ -13,7 +13,7 @@
 seqnullcqi(seqdata, clustrange, R, model=c("combined", "duration", "sequencing", 
                     "stateindep", "Markov", "userpos"), seqdist.args=list(), 
 					kmedoid = FALSE, hclust.method="ward.D", 
-					ncores=1, ...)
+					parallel=FALSE, ...)
 		   
 \method{plot}{seqnullcqi}(x, stat, type = c("line", "density", "boxplot", "seqdplot"),
                           quant = 0.95, norm = TRUE, legendpos = "topright",
@@ -95,7 +95,7 @@ clustqual <- as.clustrange(hc, diss=diss, ncluster=7)
 # Compute cluster quality measure for the null model "combined"
 # seqdist.args should be the same as for seqdist above except the sequence data.
 # Clustering methods should be the same as above.
-bcq <- seqnullcqi(bf.seq, clustqual, R=10, model=c("combined"), 
+bcq <- seqnullcqi(bf.seq, clustqual, R=5, model=c("combined"), 
 				seqdist.args=list(method="HAM"),
 				hclust.method="ward.D")
 

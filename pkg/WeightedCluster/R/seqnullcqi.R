@@ -220,9 +220,9 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 		if(!is.null(oldglobal)){
 			on.exit(handlers(global=oldglobal), add = TRUE)
 		}
-		p <- progressr::progressor(R)
+		p <- progressor(R)
 		#parObject <- foreach::foreach(loop=1:R,  .packages = c('TraMineR', 'WeightedCluster'), .options.future = list(seed = TRUE)) %dofuture% {#on stocke chaque
-		parObject <- foreach::foreach(loop=1:R, .options.future = list(seed = TRUE)) %dofuture% {#on stocke chaque
+		parObject <- foreach(loop=1:R, .options.future = list(seed = TRUE)) %dofuture% {#on stocke chaque
 			suppressMessages(ss <- seqnull(seqdata, model=model, ...))
 			sarg <- seqdist.args
 			sarg$seqdata <- ss
