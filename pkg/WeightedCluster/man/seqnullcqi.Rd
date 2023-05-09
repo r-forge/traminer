@@ -38,7 +38,7 @@ seqnullcqi(seqdata, clustrange, R, model=c("combined", "duration", "sequencing",
 	\item{legendpos}{Character. legend position, see \code{\link{legend}}.}
 	\item{alpha}{Transparency parameter for the lines to be drawn (only for \code{type="line"}).}
 	\item{digits}{Number of digits to be printed.}
-	\item{ncores}{Number of thread to use. Parallel processing is used if \code{ncores>1}. Parallel processing requires the packages \code{doSNOW} and \code{process} to be installed.}
+	\item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link{plan}} is used. If \code{TRUE}, \code{\link{multisession}} \code{\link{plan}} is initialized using default values.}
 	\item{\dots}{Additionnal parameters passed to \code{\link{seqnull}} (for \code{seqnullcqi}) or \code{\link{plot}} or \code{\link{print}}.}
 }
 \details{

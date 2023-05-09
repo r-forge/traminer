@@ -177,7 +177,7 @@ plot.seqnullcqi <- function(x, stat, type=c("line", "density", "boxplot", "seqdp
 }
 
 seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "sequencing", "stateindep", "Markov", "userpos"),
-						seqdist.args=list(), kmedoid=FALSE, hclust.method="ward.D", ncores=1, ...){
+						seqdist.args=list(), kmedoid=FALSE, hclust.method="ward.D", parallel=NULL, ...){
 	if(!inherits(clustrange, "clustrange")){
 		stop(" [!] Original cluster quality measures should be provided as a clustrange object. See ?as.clustrange().\n")
 	}
@@ -199,53 +199,66 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 	nc <- list()
 	allseq <- list()
 	oldseqdist.args <- seqdist.args
-	if(ncores>1){
-		if(!requireNamespace("doSNOW", quietly=TRUE) || !requireNamespace("progress", quietly=TRUE) || !requireNamespace("parallel", quietly=TRUE) ||!requireNamespace("foreach", quietly=TRUE)){
-			message(" [!] the following packages are required for parallel computation: parallel, foreach, doSNOW and progress\n")
-			ncores <- 1
-		}
+	if(!is.null(parallel)){
+		 
+		oplan <- plan(multisession)
+		on.exit(plan(oplan), add=TRUE)
 	}
-	if(ncores>1){
-		cl <- parallel::makeCluster(ncores)
-		on.exit(parallel::stopCluster(cl))
-		doSNOW::registerDoSNOW(cl)
-		pb <- progress::progress_bar$new(format = "(:spin) [:bar] :percent | Elapsed: :elapsed | ETA: :eta", total = R)
+	#if(ncores>1){
+		#cl <- parallel::makeCluster(ncores)
+		#on.exit(parallel::stopCluster(cl))
+		#doSNOW::registerDoSNOW(cl)
+		#pb <- progress::progress_bar$new(format = "(:spin) [:bar] :percent | Elapsed: :elapsed | ETA: :eta", total = R)
 		  #pb <- txtProgressBar(max = R, style = 3)
 		  #progress <- function(n) setTxtProgressBar(pb, n)
-		opts <- list(progress = function(n) pb$tick())
-		`%dopar%` <- foreach::`%dopar%`
-		parObject <- foreach::foreach(loop=1:R,  .packages = c('TraMineR', 'WeightedCluster'), .options.snow = opts) %dopar% {#on stocke chaque
+		#opts <- list(progress = function(n) pb$tick())
+		#`%dopar%` <- foreach::`%dopar%`
+		old_handlers <- handlers(handler_progress(format   = "(:spin) [:bar] :percent | Elapsed: :elapsed | ETA: :eta | :message"))
+		if(!is.null(old_handlers)){
+			on.exit(handlers(old_handlers), add = TRUE)
+		}
+		oldglobal <- handlers(global=TRUE)
+		if(!is.null(oldglobal)){
+			on.exit(handlers(global=oldglobal), add = TRUE)
+		}
+		p <- progressr::progressor(R)
+		#parObject <- foreach::foreach(loop=1:R,  .packages = c('TraMineR', 'WeightedCluster'), .options.future = list(seed = TRUE)) %dofuture% {#on stocke chaque
+		parObject <- foreach::foreach(loop=1:R, .options.future = list(seed = TRUE)) %dofuture% {#on stocke chaque
 			suppressMessages(ss <- seqnull(seqdata, model=model, ...))
-			seqdist.args$seqdata <- ss
-			suppressMessages(diss <- do.call(seqdist, seqdist.args))
+			sarg <- seqdist.args
+			sarg$seqdata <- ss
+			suppressMessages(diss <- do.call(seqdist, sarg))
 			if(kmedoid){
 				nc <- wcKMedRange(diss=diss, kvals=2:ncluster)$stats
 			}else{
 				hc <- hclust(as.dist(diss), method="ward.D")
 				nc <- as.clustrange(hc, diss=diss, ncluster=ncluster)$stats
 			}
+			rm(diss)
+			gc()
+			p(message=sprintf("Iteration %d", loop))
 			list(allseq=ss, nc=nc)
 		}
 		
 		allseq <- lapply(parObject, function(x)x$allseq)
 		nc <- lapply(parObject, function(x)x$nc)
 		
-	}
-	else{
+	# }
+	# else{
 		
-		for(i in 1:R){
-			suppressMessages(ss <- seqnull(seqdata, model=model, ...))
-			seqdist.args$seqdata <- ss
-			allseq[[i]] <- ss
-			suppressMessages(diss <- do.call(seqdist, seqdist.args))
-			if(kmedoid){
-				nc[[i]] <- wcKMedRange(diss=diss, kvals=2:ncluster)$stats
-			}else{
-				hc <- hclust(as.dist(diss), method="ward.D")
-				nc[[i]] <- as.clustrange(hc, diss=diss, ncluster=ncluster)$stats
-			}
-		}
-	}
+		# for(i in 1:R){
+			# suppressMessages(ss <- seqnull(seqdata, model=model, ...))
+			# seqdist.args$seqdata <- ss
+			# allseq[[i]] <- ss
+			# suppressMessages(diss <- do.call(seqdist, seqdist.args))
+			# if(kmedoid){
+				# nc[[i]] <- wcKMedRange(diss=diss, kvals=2:ncluster)$stats
+			# }else{
+				# hc <- hclust(as.dist(diss), method="ward.D")
+				# nc[[i]] <- as.clustrange(hc, diss=diss, ncluster=ncluster)$stats
+			# }
+		# }
+	# }
 	stnames <- colnames(nc[[1]])
 	stats <- list()
 	for(st in stnames){
