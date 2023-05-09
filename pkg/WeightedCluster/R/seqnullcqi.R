@@ -177,7 +177,7 @@ plot.seqnullcqi <- function(x, stat, type=c("line", "density", "boxplot", "seqdp
 }
 
 seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "sequencing", "stateindep", "Markov", "userpos"),
-						seqdist.args=list(), kmedoid=FALSE, hclust.method="ward.D", parallel=NULL, ...){
+						seqdist.args=list(), kmedoid=FALSE, hclust.method="ward.D", parallel=FALSE, ...){
 	if(!inherits(clustrange, "clustrange")){
 		stop(" [!] Original cluster quality measures should be provided as a clustrange object. See ?as.clustrange().\n")
 	}
@@ -199,8 +199,7 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 	nc <- list()
 	allseq <- list()
 	oldseqdist.args <- seqdist.args
-	if(!is.null(parallel)){
-		 
+	if(parallel){
 		oplan <- plan(multisession)
 		on.exit(plan(oplan), add=TRUE)
 	}
