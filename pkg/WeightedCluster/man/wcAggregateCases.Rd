@@ -2,6 +2,7 @@
 \alias{wcAggregateCases}
 \alias{wcAggregateCases.matrix}
 \alias{wcAggregateCases.data.frame}
+\alias{wcAggregateCases.stslist}
 \alias{print.wcAggregateCases}
 \title{
 Aggregate identical cases.

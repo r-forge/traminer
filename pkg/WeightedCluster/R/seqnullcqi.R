@@ -212,9 +212,11 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 		  #progress <- function(n) setTxtProgressBar(pb, n)
 		#opts <- list(progress = function(n) pb$tick())
 		#`%dopar%` <- foreach::`%dopar%`
-		old_handlers <- handlers(handler_progress(format   = "(:spin) [:bar] :percent | Elapsed: :elapsed | ETA: :eta | :message"))
-		if(!is.null(old_handlers)){
-			on.exit(handlers(old_handlers), add = TRUE)
+		if (requireNamespace("progress", quietly = TRUE)) {
+			old_handlers <- handlers(handler_progress(format   = "(:spin) [:bar] :percent | Elapsed: :elapsed | ETA: :eta | :message"))
+			if(!is.null(old_handlers)){
+				on.exit(handlers(old_handlers), add = TRUE)
+			}
 		}
 		oldglobal <- handlers(global=TRUE)
 		if(!is.null(oldglobal)){
