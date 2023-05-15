@@ -13,12 +13,14 @@ Function to aggregate identical cases.
 wcAggregateCases(x, weights = NULL, ...)
 \method{wcAggregateCases}{data.frame}(x, weights=NULL, ...) 
 \method{wcAggregateCases}{matrix}(x, weights=NULL, ...) 
+\method{wcAggregateCases}{stslist}(x, weights=NULL, weighted=TRUE, ...)
 \method{print}{wcAggregateCases}(x,  ...) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 	\item{x}{The object to aggregate.}
 	\item{weights}{Numeric. An optional case weights vector.}
+	\item{weighted}{Logical. If \code{TRUE}, the \code{weights} are taken from the sequence object (see \code{\link{seqdef}}).}
 	\item{\dots}{Optional additionnal arguments.}
 }
 %\details{

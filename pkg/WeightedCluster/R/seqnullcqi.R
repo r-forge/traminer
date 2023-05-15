@@ -235,7 +235,8 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 			}
 			rm(diss)
 			gc()
-			p(message=sprintf("Iteration %d", loop))
+			#p(message=sprintf("Iteration %d", loop))
+			p()
 			list(allseq=ss, nc=nc)
 		}
 		
