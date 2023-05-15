@@ -217,6 +217,8 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 			if(!is.null(old_handlers)){
 				on.exit(handlers(old_handlers), add = TRUE)
 			}
+		}else{
+			message(" [>] Install the progress package to see estimated remaining time.")
 		}
 		oldglobal <- handlers(global=TRUE)
 		if(!is.null(oldglobal)){
