@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-8 [2023-05-06] }{
+\section{Changes in version 2.3-8 [2023-06-13] }{
 
     \subsection{Changes in exiting functions}{
         \itemize{
@@ -9,14 +9,16 @@
             \code{seqST()} When number \code{phi} of subsequences is \code{NaN}, it is set as \code{.Machine$double.xmax} to compute turbulence and a warning is raised.
             \item
             \code{seqplot()} and \code{seqplotMD()}: when \code{type="f"}, the \code{yaxis} argument can now also be \code{"pct"} or \code{"left.pct"}.
+            \item
+            \code{seqrep()} and \code{dissrep()}: returned object gains an attribute \code{rep.group} with the representative to which each object is assigned.
         }
     }
-    
+
     \subsection{Bug fixes}{
          \itemize{
             \item
             \code{seqfplot()} and \code{seqplot(type="f")}: option \code{yaxis="pct"} did no longer work after update to v 2.2-7.
-         } 
+         }
     }
 }
 

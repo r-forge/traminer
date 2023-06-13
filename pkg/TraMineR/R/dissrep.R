@@ -170,6 +170,7 @@ dissrep <- function(diss, criterion = "density", score = NULL, decreasing = TRUE
 		nb <- sum((dist.repseq < pradius)*weights, na.rm=TRUE)
 		DC <- sum(dc.tot*weights)
 		V <- DC/sum(weights)
+        minidx <- as.vector(dist.repseq)
 	}
 
 	quality <- (sum(dc.tot*weights)-sum(dist.repseq*weights, na.rm=TRUE))/sum(dc.tot*weights)
@@ -190,6 +191,9 @@ dissrep <- function(diss, criterion = "density", score = NULL, decreasing = TRUE
 	colnames(stats) <- c("na", "na(%)", "nb", "nb(%)", "SD", "MD", "DC", "V", "Q")
 	rownames(stats) <- c(paste("r",1:nbkeep,sep=""), "Total")
 
+    ## list of cases represented by each representatives
+    #lidx <- apply(dist.repseq,2,function(x) {which(!is.na(x))})
+
 	## ============
 	## Final object
 	## ============
@@ -201,6 +205,7 @@ dissrep <- function(diss, criterion = "density", score = NULL, decreasing = TRUE
 	attr(res, "dmax") <- dmax
 	attr(res, "Scores") <- score
 	attr(res, "Distances") <- dist.repseq
+    attr(res, "Rep.group") <- minidx
 	attr(res, "Statistics") <- stats
 	attr(res, "Quality") <- quality
 

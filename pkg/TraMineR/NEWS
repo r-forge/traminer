@@ -1,16 +1,19 @@
 ## =========
-Version 2.3-8 [2023-05-06]
+Version 2.3-8 [2023-06-13]
 
 Changes in existing functions:
   - seqST() When number phi of subsequences is NaN, it is
     set as .Machine$double.xmax to compute turbulence and
     a warning is raised.
-  - seqplot() and seqplotMD(): when \code{type="f"}, 
-    the \code{yaxis} argument can now also be \code{"pct"} 
-    or \code{"left.pct"}.
-    
+  - seqplot() and seqplotMD(): when type="f",
+    the yaxis argument can now also be "pct" or "left.pct".
+  - seqrep() and dissrep(): returned object gains an attribute
+    rep.group with the representative to which each object 
+    is assigned.
+
+
 Bug fixes:
-  - seqfplot() and seqplot(type="f"): option yaxis="pct" 
+  - seqfplot() and seqplot(type="f"): option yaxis="pct"
     did no longer work after update to v 2.2-7.
 
 
