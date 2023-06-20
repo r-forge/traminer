@@ -249,7 +249,7 @@ seqplot <- function(seqdata, group = NULL, type = "i", main = "auto",
                     yaxis <- as.list(rep(TRUE,nplot))
             }
         }
-        print(yaxis)
+        #print(yaxis)
 
 		legpos <- lout$legpos
 	}
