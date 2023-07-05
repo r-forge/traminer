@@ -18,9 +18,11 @@ clustassoc(clustrange, diss, covar, weights = NULL)
   \item{clustrange}{A \code{clustrange} object regrouping the different clustering solutions to be evaluated. }
   \item{diss}{A dissimilarity matrix or a dist object (see \code{\link{dist}}).}
   \item{covar}{Vector (Numeric or factor): the covariate of interest. The type of the vector matters for the computation of the BIC (see details). If Numeric, a linear regression is used, while a multinomial regression is used for categorical/factor variables.}
-  \item{stat}{The information to be plotted according to the number of groups. \code{"Unaccounted"} (default) plots the share of the association that is NOT accounted for by the clustering solution. \code{"Remaining"} plots the share of the overall variability/discrepancy of the object remaining when controlling for the clustering. \code{"BIC"} plots the BIC of a regression predicting the covariate using the clustering solution (see details).}
-  \item{type}{character indicating the type of plotting (see \code{\link{plot.default}}). \code{"b"} plots points and lines. }
   \item{weights}{Optional numerical vector containing weights.}
+  \item{x}{A \code{clustassoc} object to be plotted.}
+  \item{stat}{The information to be plotted according to the number of groups. \code{"Unaccounted"} (default) plots the share of the association that is NOT accounted for by the clustering solution. \code{"Remaining"} plots the share of the overall variability/discrepancy of the object remaining when controlling for the clustering. \code{"BIC"} plots the BIC of a regression predicting the covariate using the clustering solution (see details).}
+  \item{type}{character indicating the type of plotting (see \code{\link{plot.default}}). \code{"b"} plots points and lines.}
+  \item{\dots}{Additionnal parameters passed to/from methods.}
 }
 \details{
 The \code{clustassoc} measures to which extent a clustering solution can account for the relationship between a covariate and the objects of interest. It can be used to guide the choice of the number of groups of the clustering to ensure that it captures the relevant information to account for a statistical relationship of interest. 
@@ -35,9 +37,9 @@ The function also compute the BIC of a regression predicting the covariate using
 A \code{clustassoc} object containing the following information for each clustering:
     \item{Unaccounted}{The share of the original association that is NOT accounted for by the clustering solution.}
     \item{Remaining}{The remaining strength of the association (share of the variability of the object) that is not accounted for by the clustering solution.}
- \item{BIC}{The BIC of a model explaining the covariate using the clustering as explanatory variable. }
- \item{Remaining}{The remaining strength of the association (share of the variability of the object) that is not accounted for by the clustering solution.}
- \item{numcluster}{The number of clusters (and 1 means no clustering).}
+    \item{BIC}{The BIC of a model explaining the covariate using the clustering as explanatory variable. }
+    \item{Remaining}{The remaining strength of the association (share of the variability of the object) that is not accounted for by the clustering solution.}
+    \item{numcluster}{The number of clusters (and 1 means no clustering).}
 %% ...
 }
 \references{
@@ -77,7 +79,8 @@ wardCluster <- hclust(as.dist(diss), method="ward.D")
 wardRange <- as.clustrange(wardCluster, diss=diss, ncluster=5)
 
 ## Compute clustassoc
-## How many groups are required to account for the relationship between trajectories and the gcse5eq covariate 
+## How many groups are required to account for the relationship 
+## between trajectories and the gcse5eq covariate 
 assoc <- clustassoc(wardRange, covar=mvad$gcse5eq, diss=diss)
 
 ## Plot unaccounted share of the assocation 
