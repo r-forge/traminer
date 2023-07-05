@@ -19,8 +19,8 @@ clustassoc(clustrange, diss, covar, weights = NULL)
   \item{diss}{A dissimilarity matrix or a dist object (see \code{\link{dist}}).}
   \item{covar}{Vector (Numeric or factor): the covariate of interest. The type of the vector matters for the computation of the BIC (see details). If Numeric, a linear regression is used, while a multinomial regression is used for categorical/factor variables.}
   \item{stat}{The information to be plotted according to the number of groups. \code{"Unaccounted"} (default) plots the share of the association that is NOT accounted for by the clustering solution. \code{"Remaining"} plots the share of the overall variability/discrepancy of the object remaining when controlling for the clustering. \code{"BIC"} plots the BIC of a regression predicting the covariate using the clustering solution (see details).}
-  \item{type}{character indicating the type of plotting (see \code{\link{plot.default}). \code{"b"} plots points and lines. }
-    \item{weights}{Optional numerical vector containing weights.}
+  \item{type}{character indicating the type of plotting (see \code{\link{plot.default}}). \code{"b"} plots points and lines. }
+  \item{weights}{Optional numerical vector containing weights.}
 }
 \details{
 The \code{clustassoc} measures to which extent a clustering solution can account for the relationship between a covariate and the objects of interest. It can be used to guide the choice of the number of groups of the clustering to ensure that it captures the relevant information to account for a statistical relationship of interest. 
