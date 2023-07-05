@@ -44,11 +44,11 @@ A \code{clustassoc} object containing the following information for each cluster
 }
 \references{
 
-Unterlerchner, L., M. Studer and A. Gomensoro 2023. Back to the Features. Investigating the Relationship Between Educational Pathways and Income Using Sequence Analysis and Feature Extraction and Selection Approach. \emph{Swiss Journal of Sociology}.
+Unterlerchner, L., M. Studer and A. Gomensoro (2023). Back to the Features. Investigating the Relationship Between Educational Pathways and Income Using Sequence Analysis and Feature Extraction and Selection Approach. \emph{Swiss Journal of Sociology}.
 
 Studer, M. 2013. WeightedCluster Library Manual: A Practical Guide to Creating Typologies of Trajectories in the Social Sciences with R.\emph{LIVES Working Papers 2013(24)}: 1–32. 
 
-Studer, M., G. Ritschard, A. Gabadinho and N. S. Müller. 2011. Discrepancy Analysis of State Sequences. \emph{Sociological Methods & Research 40(3)}: 471–510. 
+Studer, M., G. Ritschard, A. Gabadinho and N. S. Mueller (2011). Discrepancy analysis of state sequences, \emph{Sociological Methods and Research}, Vol. 40(3), 471-510, \doi{10.1177/0049124111415372}.
 
 Han, Y., A. C. Liefbroer and C. H. Elzinga. 2017. Comparing Methods of Classifying Life Courses: Sequence Analysis and Latent Class Analysis. \emph{Longitudinal and Life Course Studies 8(4)}: 319–41. 
 

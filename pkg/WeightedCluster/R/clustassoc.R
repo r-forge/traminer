@@ -1,9 +1,4 @@
 clustassoc <- function(clustrange, diss, covar,  weights = NULL){
-		if (inherits(diss, "dist")) {
-		diss <- TraMineR:::dist2matrix(diss)
-	} else if(!is.matrix(diss)) {
-		diss <- as.matrix(diss)
-	}
 	if(any(dim(diss)!=length(covar))){
 		stop(" [!] diss should be a dissimilarity matrix or a dist object and covar should be a variable with one value per observation.")
 	}
