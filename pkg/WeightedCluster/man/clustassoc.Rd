@@ -50,7 +50,7 @@ Studer, M. 2013. WeightedCluster Library Manual: A Practical Guide to Creating T
 
 Studer, M., G. Ritschard, A. Gabadinho and N. S. Mueller (2011). Discrepancy analysis of state sequences, \emph{Sociological Methods and Research}, Vol. 40(3), 471-510, \doi{10.1177/0049124111415372}.
 
-Han, Y., A. C. Liefbroer and C. H. Elzinga. 2017. Comparing Methods of Classifying Life Courses: Sequence Analysis and Latent Class Analysis. \emph{Longitudinal and Life Course Studies 8(4)}: 319–41. 
+Han, Y., A. C. Liefbroer and C. H. Elzinga. 2017. Comparing Methods of Classifying Life Courses: Sequence Analysis and Latent Class Analysis. \emph{Longitudinal and Life Course Studies 8(4)}: 319-41. 
 
 }
 \author{
