@@ -30,7 +30,7 @@ clustassoc <- function(clustrange, diss, covar,  weights = NULL){
 	rownames(stat)[1] <- "No Clustering"
 	#stat$BICgain <- stat$BIC-stat$BIC[1]
 	stat$numcluster <- c(1, clustrange$kvals)
-	class(stat) <- c(class(stat), "clustassoc")
+	class(stat) <- c("clustassoc", class(stat))
 	return(stat)
 }
 

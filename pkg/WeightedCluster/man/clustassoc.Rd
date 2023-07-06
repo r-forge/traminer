@@ -7,7 +7,7 @@
 }
 \description{
 
- The \code{clustassoc} measures to which extent a clustering solution can account for the relationship between a covariate and the objects of interest, i.e. the sequences or any other object described by a dissimilarity matrix. It can be used to guide the choice of the number of groups of the clustering to ensure that it captures the relevant information to account for a statistical relationship of interest. This is useful when the clustering is used in subsequent analyses, such as regressions. In this case, the within-cluster variation is ignored, as objects clustered together are described by a single value. Ensuring that the association is accounted for by the clustering can avoid drawing wrong conclusions (see Unterlerchner et al. 2023). 
+ The \code{clustassoc} measures to which extent a clustering solution can account for the relationship between a covariate and the objects of interest, i.e. the sequences or any other object described by a dissimilarity matrix. It can be used to guide the choice of the number of groups ensuring that the clustering captures the relevant information to account for a statistical relationship of interest. This is useful when the clustering is used in subsequent analyses, such as regressions. In this case, the within-cluster variation is ignored, as objects clustered together are described by a single value. Ensuring that the association is accounted for by the clustering can avoid drawing wrong conclusions (see Unterlerchner et al. 2023). 
 }
 \usage{
 clustassoc(clustrange, diss, covar, weights = NULL)
@@ -46,7 +46,7 @@ A \code{clustassoc} object containing the following information for each cluster
 
 Unterlerchner, L., M. Studer and A. Gomensoro (2023). Back to the Features. Investigating the Relationship Between Educational Pathways and Income Using Sequence Analysis and Feature Extraction and Selection Approach. \emph{Swiss Journal of Sociology}.
 
-Studer, M. 2013. WeightedCluster Library Manual: A Practical Guide to Creating Typologies of Trajectories in the Social Sciences with R.\emph{LIVES Working Papers 2013(24)}: 1–32. 
+Studer, M. 2013. WeightedCluster Library Manual: A Practical Guide to Creating Typologies of Trajectories in the Social Sciences with R.\emph{LIVES Working Papers 2013(24)}: 1-32. 
 
 Studer, M., G. Ritschard, A. Gabadinho and N. S. Mueller (2011). Discrepancy analysis of state sequences, \emph{Sociological Methods and Research}, Vol. 40(3), 471-510, \doi{10.1177/0049124111415372}.
 
@@ -83,7 +83,7 @@ wardRange <- as.clustrange(wardCluster, diss=diss, ncluster=5)
 ## between trajectories and the gcse5eq covariate 
 assoc <- clustassoc(wardRange, covar=mvad$gcse5eq, diss=diss)
 
-## Plot unaccounted share of the assocation 
+## Plot unaccounted share of the association 
 ## A value close to zero means that the relationship is accounted for.
 ## Here at least 2-4 groups are required
 plot(assoc)
