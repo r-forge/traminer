@@ -13,6 +13,9 @@ disstreeleaf(tree, label=FALSE)
   \item{tree}{The tree, a \code{disstree} or \code{DissTreeNode} object.}
   \item{label}{Logical. If \code{TRUE}, the returned leaf memberships are labelled with the corresponding classifications rules.}
 }
+\details{
+Using \code{label=TRUE}, the levels of the returned factor give the rules defining the leaves.
+}
 
 
 \seealso{\code{\link{disstree}} for examples}

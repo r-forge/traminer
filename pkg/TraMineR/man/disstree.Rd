@@ -74,6 +74,8 @@ algorithm. \emph{Journal of the Royal Statistical Society A} \bold{170}(4), 1061
    \cr
    \code{\link{disstreedisplay}} is a more general interface to generate such representation for other type of objects.
    \cr
+   \code{\link{disstreeleaf}} to get leaf membership of each case.
+   \cr
    \code{\link{dissvar}} to compute discrepancy using dissimilarities and for a basic introduction to discrepancy analysis.
    \cr
    \code{\link{dissassoc}} to test association between objects represented by their dissimilarities and a covariate.

@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-8 [2023-06-13] }{
+\section{Changes in version 2.3-8 [2023-08-04] }{
 
     \subsection{Changes in exiting functions}{
         \itemize{
@@ -11,6 +11,8 @@
             \code{seqplot()} and \code{seqplotMD()}: when \code{type="f"}, the \code{yaxis} argument can now also be \code{"pct"} or \code{"left.pct"}.
             \item
             \code{seqrep()} and \code{dissrep()}: returned object gains an attribute \code{rep.group} with the representative to which each object is assigned.
+            \item
+            \code{seqtreedisplay()} and \code{seqtree2dot()}: argument \code{axes} is deprecated and replaced by \code{xaxis} to be conformable with \code{seqplot}.
         }
     }
 
@@ -18,6 +20,8 @@
          \itemize{
             \item
             \code{seqfplot()} and \code{seqplot(type="f")}: option \code{yaxis="pct"} did no longer work after update to v 2.2-7.
+            \item
+            \code{disstreedisplay()} and \code{seqtreedisplay()} did not find the GraphViz path.
          }
     }
 }
