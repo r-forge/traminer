@@ -1,7 +1,16 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-8 [2023-08-04] }{
+\section{Changes in version 2.3-8 [2023-09-02] }{
+
+    \subsection{New functions}{
+        \itemize{
+            \item
+            \code{disstree.get.rules()} character string vector of the classification rules of a \code{disstree} as R commands.
+            \item
+            \code{disstree.assign()} determines the index of the rules that apply to the provided profiles.
+        }
+    }
 
     \subsection{Changes in exiting functions}{
         \itemize{
@@ -13,6 +22,10 @@
             \code{seqrep()} and \code{dissrep()}: returned object gains an attribute \code{rep.group} with the representative to which each object is assigned.
             \item
             \code{seqtreedisplay()} and \code{seqtree2dot()}: argument \code{axes} is deprecated and replaced by \code{xaxis} to be conformable with \code{seqplot}.
+            \item
+            \code{disstreedisplay()} and \code{seqtreedisplay()} now raise an error when the file \code{filename} of the image cannot be created.
+            \item
+            \code{disstreeleaf()} gains an argument \code{collapse} to control separator within classes of categories.
         }
     }
 
@@ -22,6 +35,8 @@
             \code{seqfplot()} and \code{seqplot(type="f")}: option \code{yaxis="pct"} did no longer work after update to v 2.2-7.
             \item
             \code{disstreedisplay()} and \code{seqtreedisplay()} did not find the GraphViz path.
+            \item
+            \code{disstreedisplay()} and \code{seqtreedisplay()} uselessly printed \code{TRUE} when filename was not \code{NULL}.
          }
     }
 }

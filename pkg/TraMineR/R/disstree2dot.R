@@ -92,7 +92,9 @@ disstreedisplay <- function(tree, filename = NULL, image.data = NULL,
 							cex.quality=cex.quality, legend.text=legend.text, show.tree=show.tree, show.depth=show.depth, ...)
 	setwd(actualdir)
 	if(!is.null(filename)){
-		file.copy(file.path(tmpdir, paste(tmpdisstree, image.format, sep=".")), filename, overwrite=TRUE)
+		success <- file.copy(file.path(tmpdir, paste(tmpdisstree, image.format, sep=".")), filename, overwrite=TRUE)
+		if ( !success )
+			stop("Cannot copy tmpdisstree.",image.format," as ",filename,"!")
 	}
 
 }
@@ -225,7 +227,9 @@ seqtreedisplay <- function(tree, filename = NULL, seqdata = tree$info$object,
 							seqdata=seqdata, sortv=sortv, diss=diss, xaxis=xaxis, with.legend=FALSE, ...)
 	setwd(actualdir)
 	if(!is.null(filename)){
-		file.copy(file.path(tmpdir, paste(tmpdisstree, image.format, sep=".")), filename, overwrite=TRUE)
+		success <- file.copy(file.path(tmpdir, paste(tmpdisstree, image.format, sep=".")), filename, overwrite=TRUE)
+		if ( !success )
+			stop("Cannot copy tmpdisstree.",image.format," as ",filename,"!")
 	}
 	return(invisible())
 }
