@@ -127,6 +127,8 @@ following additional attributes:
   \item{Scores}{a vector with the representative score of each sequence in the original set given the chosen criterion.}
   \item{Distances}{a matrix with the distance of each sequence to its nearest representative.}
   \item{Rep.group}{vector with, for each sequence, the representative that represents it.}
+  \item{idx.rep}{index of first occurrence of representatives in original data.}
+  \item{idx.rep.list}{indexes of occurrences of representatives in original data.}
   \item{Statistics}{a data frame with quality measures for each representative sequence: number \eqn{na} of sequences
       attributed to the representative, number \eqn{nb} of sequences in the representative's neighborhood, mean distance \eqn{MD} to the
       representative and a few other indexes.}
@@ -168,6 +170,8 @@ seqdplot(biofam.seq, group=attr(biofam.rep,"Rep.group"), border=NA)
 
 ## indexes of sequences represented by 1st representative
 r1.grp <- which(attr(biofam.rep,"Rep.group")==1)
+## indexes of occurrences of the first representative sequence
+attr(biofam.rep,"idx.rep.list")[[1]]
 }
 
 \author{Alexis Gabadinho and Gilbert Ritschard}
