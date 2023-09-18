@@ -137,7 +137,8 @@ For \emph{decorated parallel coordinate plots} (\code{type="pc"}) see the specif
 \seealso{
  \code{\link{plot.stslist.statd}}, \code{\link{plot.stslist.freq}}, \code{\link{plot.stslist}}, \code{\link{plot.stslist.modst}}, \code{\link{plot.stslist.meant}}, \code{\link{plot.stslist.rep}}, \code{\link{seqrep}},
  \code{\link{seqpcplot}},
- \code{\link[TraMineRextras]{seqsplot}}.
+ \code{\link[TraMineRextras]{seqsplot}},
+ \code{\link{seqplotMD}}.
 }
 
 

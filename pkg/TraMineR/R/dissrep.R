@@ -177,14 +177,10 @@ dissrep <- function(diss, criterion = "density", score = NULL, decreasing = TRUE
 
     ## List of ids of representatives in original data
     dist.to.rep <- apply(dist.repseq,1, min, na.rm=TRUE)
-    idx.rep <- integer(length=nbkeep)
-    idx.rep.list <- list()
+    idx.rep <- list()
     for  (i in 1:nbkeep){
-        idx.rep.list[[i]] <- which(minidx==i & dist.to.rep==0)
-        idx.rep[i] <- idx.rep.list[[i]][1]
+        idx.rep[[i]] <- which(minidx==i & dist.to.rep==0)
     }
-    names(idx.rep) <- rownames(dist.repseq)[idx.rep]
-
 
 	quality <- (sum(dc.tot*weights)-sum(dist.repseq*weights, na.rm=TRUE))/sum(dc.tot*weights)
 
@@ -220,7 +216,6 @@ dissrep <- function(diss, criterion = "density", score = NULL, decreasing = TRUE
 	attr(res, "Distances") <- dist.repseq
     attr(res, "Rep.group") <- minidx
     attr(res, "idx.rep") <- idx.rep
-    attr(res, "idx.rep.list") <- idx.rep.list
 	attr(res, "Statistics") <- stats
 	attr(res, "Quality") <- quality
 

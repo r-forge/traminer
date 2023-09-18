@@ -1,7 +1,17 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-8 [2023-09-18] }{
+\section{Changes in version 2.3-9 [2023-09-18] }{
+
+    \subsection{Misc.}{
+        \itemize{
+            \item
+            No changes
+        }
+    }
+}
+
+\section{Changes in version 2.2-8 [2023-09-18] }{
 
     \subsection{New functions}{
         \itemize{
@@ -19,7 +29,7 @@
             \item
             \code{seqplot()} and \code{seqplotMD()}: when \code{type="f"}, the \code{yaxis} argument can now also be \code{"pct"} or \code{"left.pct"}.
             \item
-            \code{seqrep()} and \code{dissrep()}: returned object gains attributes \code{Rep.group} with the representative to which each object is assigned, \code{idx.rep} with index of first occurrence of     representatives, and \code{idx.rep.list} with indexes of all occurrences of the representatives.
+            \code{seqrep()} and \code{dissrep()}: returned object gains attributes \code{Rep.group} with the representative to which each object is assigned, and \code{idx.rep} a list with indexes of all occurrences of each representative.
             \item
             \code{seqtreedisplay()} and \code{seqtree2dot()}: argument \code{axes} is deprecated and replaced by \code{xaxis} to be conformable with \code{seqplot}.
             \item

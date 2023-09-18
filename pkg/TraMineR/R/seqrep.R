@@ -70,7 +70,6 @@ seqrep <- function(seqdata, criterion = "density", score = NULL,
 	attr(res, "Distances") <- attr(rep,"Distances")
 	attr(res, "Rep.group") <- attr(rep,"Rep.group")
     attr(res, "idx.rep") <- attr(rep, "idx.rep")
-    attr(res, "idx.rep.list") <- attr(rep, "idx.rep.list")
 	attr(res, "Statistics") <- attr(rep,"Statistics")
 	attr(res, "Quality") <- attr(rep,"Quality")
 	attr(res, "weighted") <- weighted

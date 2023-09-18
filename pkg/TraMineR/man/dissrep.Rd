@@ -83,10 +83,9 @@ the indexes of the representative objects with the following additional attribut
   \item{Scores}{vector with the representative score of each object given the chosen criterion.}
   \item{Distances}{matrix with the distance of each object to its nearest representative.}
   \item{Rep.group}{vector with, for each object, the representative that represents it.}
-  \item{idx.rep}{index of first occurrence of representatives in original data.}
-  \item{idx.rep.list}{indexes of occurrences of representatives in original data.}
-  \item{Statistics}{a data frame with quality measures for each representative: number of objects attributed to the representative,
-number of object in the representative's neighborhood, mean distance
+  \item{idx.rep}{list with indexes of occurrences of each representative in original data.}
+  \item{Statistics}{a data frame with quality measures for each representative: number of objects assigned to the representative,
+number of objects in the representative's neighborhood, mean distance
 to the representative.}
   \item{Quality}{overall quality measure.}
 
@@ -117,8 +116,8 @@ biofam.om <- seqdist(biofam.seq, method="OM", sm=costs)
 biofam.rep <- dissrep(biofam.om)
 biofam.rep
 summary(biofam.rep)
-## indexes of first occurrence of representatives in original data
-attr(biofam.rep,"idx.rep")
+## indexes of first occurrence of second representatives in original data
+attr(biofam.rep,"idx.rep")[[2]][1]
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

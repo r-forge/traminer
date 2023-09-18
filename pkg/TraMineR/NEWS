@@ -1,5 +1,13 @@
 ## =========
-Version 2.3-8 [2023-09-18]
+Version 2.3-9 [2023-09-18]
+
+Misc.:
+
+  - No changes
+
+
+## =========
+Version 2.2-8 [2023-09-18]
 
 New functions:
 
@@ -16,9 +24,8 @@ Changes in existing functions:
     the yaxis argument can now also be "pct" or "left.pct".
   - seqrep() and dissrep(): returned object gains attributes
     Rep.group with the representative to which each object
-    is assigned, idx.rep with index of first occurrence of 
-    representatives, and idx.rep.list with indexes of all 
-    occurrences of the representatives.
+    is assigned, and idx.rep a list with indexes of all
+    occurrences of each representative.
   - seqtreedisplay() and seqtree2dot(): argument 'axes'
     is deprecated and replaced by 'xaxis' to be
     conformable with seqplot.
