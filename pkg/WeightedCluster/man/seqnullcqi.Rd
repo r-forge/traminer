@@ -13,7 +13,7 @@
 seqnullcqi(seqdata, clustrange, R, model=c("combined", "duration", "sequencing", 
                     "stateindep", "Markov", "userpos"), seqdist.args=list(), 
 					kmedoid = FALSE, hclust.method="ward.D", 
-					parallel=FALSE, ...)
+					parallel=FALSE, progressbar=FALSE, ...)
 		   
 \method{plot}{seqnullcqi}(x, stat, type = c("line", "density", "boxplot", "seqdplot"),
                           quant = 0.95, norm = TRUE, legendpos = "topright",
@@ -39,6 +39,7 @@ seqnullcqi(seqdata, clustrange, R, model=c("combined", "duration", "sequencing",
 	\item{alpha}{Transparency parameter for the lines to be drawn (only for \code{type="line"}).}
 	\item{digits}{Number of digits to be printed.}
 	\item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link{plan}} is used. If \code{TRUE}, \code{\link{multisession}} \code{\link{plan}} is initialized using default values.}
+	\item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link{handlers}} is initialized.}
 	\item{\dots}{Additionnal parameters passed to \code{\link{seqnull}} (for \code{seqnullcqi}) or \code{\link{plot}} or \code{\link{print}}.}
 }
 \details{
