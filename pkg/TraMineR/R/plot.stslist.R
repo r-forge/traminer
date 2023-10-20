@@ -12,6 +12,8 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
   sep.ylab <- (isFALSE(yaxis) && (is.null(ylab) || !is.na(ylab)))
   cex.lab <- par("cex.lab")
   if ("cex.lab" %in% names(list(...))) cex.lab <- list(...)[["cex.lab"]]
+  las <- par("las")
+  if ("las" %in% names(list(...))) las <- list(...)[["las"]]
 
 	n <- nrow(x)
 	seql <- ncol(x)
@@ -109,17 +111,17 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
 		horiz=TRUE,
 		yaxt="n",
 		axes=FALSE,
-		las=1,
+		#las=1,
 		...
 	)
 
 	## Plotting the x axis
 	if (xaxis) {
 		tpos <- seq(from=1, to=seql, by=xtstep)
-    if (tick.last & tpos[length(tpos)] < seql) tpos <- c(tpos,seql)
+        if (tick.last & tpos[length(tpos)] < seql) tpos <- c(tpos,seql)
 		axis(1, at=tpos-0.5, labels=xtlab[tpos],
 		# mgp=c(3,0.5,0),
-		cex.axis=cex.axis)
+		cex.axis=cex.axis, las=las)
 	}
 
 	## Plotting the y axis

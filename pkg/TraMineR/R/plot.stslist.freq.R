@@ -11,6 +11,8 @@ plot.stslist.freq <- function(x, cpal = NULL, missing.color = NULL, pbarw = TRUE
   sep.ylab <- (isFALSE(yaxis) && (is.null(ylab) || !is.na(ylab)))
   cex.lab <- par("cex.lab")
   if ("cex.lab" %in% names(list(...))) cex.lab <- list(...)[["cex.lab"]]
+  las <- par("las")
+  if ("las" %in% names(list(...))) las <- list(...)[["las"]]
 
   if (!is.logical(yaxis) && !yaxis %in% c("cum","pct"))
     msg.stop("Bad yaxis value!")
@@ -83,7 +85,7 @@ plot.stslist.freq <- function(x, cpal = NULL, missing.color = NULL, pbarw = TRUE
 	if (xaxis) {
 		tpos <- seq(1, seql, xtstep)
     if (tick.last & tpos[length(tpos)] < seql) tpos <- c(tpos,seql)
-		axis(1, at=tpos-0.5, labels=xtlab[tpos], cex.axis=cex.axis)
+		axis(1, at=tpos-0.5, labels=xtlab[tpos], cex.axis=cex.axis, las=las)
 	}
 
 	## Plotting the y axis

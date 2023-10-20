@@ -9,6 +9,9 @@ plot.stslist.rep <- function(x, cpal = NULL, missing.color = NULL, pbarw = TRUE,
 
   TraMineR.check.depr.args(alist(cex.with.axis = cex.plot))
 
+  las <- par("las")
+  if ("las" %in% names(list(...))) las <- list(...)[["las"]]
+
 	## Extracting attributes
 	n <- attr(x,"nbseq")
     nn <- length(attr(x,"Scores"))
@@ -137,7 +140,7 @@ plot.stslist.rep <- function(x, cpal = NULL, missing.color = NULL, pbarw = TRUE,
 		axis(1, at=tpos-0.5, labels=xtlab[tpos],
 			pos=-0.04,
 			## mgp=c(.5,.5,0),
-			cex.axis=cex.with.axis)
+			cex.axis=cex.with.axis, las=las)
 	}
 
 	## y (percents) axis

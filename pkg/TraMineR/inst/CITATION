@@ -52,7 +52,7 @@ bibentry(bibtype="Article",
     pages   = "288-322",
     doi    = "10.1177/00811750231163833",
 
-    textVersion="Ritschard, G., Liao, T.F. & Struffolino, E.  (2023). Strategies for multidomain sequence analysis in social research, Sociological Methodology, 53(2). DOI: https://doi.org/10.1177/00811750231163833",
+    textVersion="Ritschard, G., Liao, T.F. & Struffolino, E.  (2023). Strategies for multidomain sequence analysis in social research, Sociological Methodology, 53(2), 288-322. DOI: https://doi.org/10.1177/00811750231163833",
     header="For multidomain/multichannel sequence analysis:\n"
 )
 

@@ -1,12 +1,12 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-9 [2023-09-18] }{
+\section{Changes in version 2.3-9 [2023-10-20] }{
 
-    \subsection{Misc.}{
+    \subsection{Changes in existing functions}{
         \itemize{
             \item
-            No changes
+            Plot functions now support the \code{las} argument to control orientation of ticks labels on the x-axis, except for \code{plot.subseqelist} where \code{las} applies to the y-axis.
         }
     }
 }

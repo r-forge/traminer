@@ -93,6 +93,7 @@ seqpcplot_private <- function(seqdata, weights = NULL, group,
       mtext <- "colored: "
     }
 
+
     ## set seed
     if (!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
     oldSeed <- get(".Random.seed", mode="numeric", envir=globalenv())
@@ -855,6 +856,9 @@ seqpcplot_private <- function(seqdata, weights = NULL, group,
 
 plot.seqpcplot <- function(x, add = NULL, which = NULL, ...) {
 
+  las <- par("las")
+  if ("las" %in% names(list(...))) las <- list(...)[["las"]]
+
   if (!is.null(add)) x$add <- add; rm(add)
 
   if (!is.null(which)) {
@@ -882,7 +886,7 @@ plot.seqpcplot <- function(x, add = NULL, which = NULL, ...) {
 
       do.call(plot, args = plist)
       if (x$xaxis & (((x$axes == "all") & ((par("mar")[1] > 0) | (x$ngroup - i < x$nxl))) | ((x$axes == "bottom") & (x$ngroup - i < x$nxl)))) {
-        axis(1, 1:x$nx, x$xlevs)
+        axis(1, 1:x$nx, x$xlevs, las=las)
       }
       if (x$yaxis & ((par("mar")[2] > 0) | (((i-1) %% x$nxl) == 0))) {
         axis(2, 1:x$ny, x$ylevs, las = 2)

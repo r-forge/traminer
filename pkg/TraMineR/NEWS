@@ -1,9 +1,12 @@
 ## =========
-Version 2.3-9 [2023-09-18]
+Version 2.3-9 [2023-10-20]
 
-Misc.:
+Changes in existing functions:
 
-  - No changes
+  - Plot functions now support the las argument to control 
+    orientation of ticks labels on the x-axis, except for 
+    plot.subseqelist where las applies to the y-axis.
+
 
 
 ## =========

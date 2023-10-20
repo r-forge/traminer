@@ -11,6 +11,8 @@ plot.stslist.modst <- function(x, cpal = NULL, ylab = NULL, yaxis = TRUE,
   sep.ylab <- (isFALSE(yaxis) && (is.null(ylab) || !is.na(ylab)))
   cex.lab <- par("cex.lab")
   if ("cex.lab" %in% names(list(...))) cex.lab <- list(...)[["cex.lab"]]
+  las <- par("las")
+  if ("las" %in% names(list(...))) las <- list(...)[["las"]]
 
 	seql <- ncol(x)
 	statl <- attr(x,"alphabet")
@@ -86,7 +88,7 @@ plot.stslist.modst <- function(x, cpal = NULL, ylab = NULL, yaxis = TRUE,
     if (tick.last & tpos[length(tpos)] < seql) tpos <- c(tpos,seql)
 		axis(1, at=tpos-0.5, labels=xtlab[tpos], pos=-0.02,
 		# mgp=c(3,0.5,0),
-		cex.axis=cex.axis)
+		cex.axis=cex.axis, las=las)
 	}
 
 	## Axis for the state frequencies

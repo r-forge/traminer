@@ -15,6 +15,8 @@ plot.stslist.statd <- function(x, type = "d", cpal = NULL, ylab = NULL,
   sep.ylab <- (isFALSE(yaxis) && (is.null(ylab) || !is.na(ylab)))
   cex.lab <- par("cex.lab")
   if ("cex.lab" %in% names(list(...))) cex.lab <- list(...)[["cex.lab"]]
+  las <- par("las")
+  if ("las" %in% names(list(...))) las <- list(...)[["las"]]
 
 	n <- attr(x,"nbseq")
 	weighted <- attr(x, "weighted")
@@ -95,7 +97,7 @@ plot.stslist.statd <- function(x, type = "d", cpal = NULL, ylab = NULL,
  ##		}
 
 		if (xaxis) {
-			axis(1, at=x.lab.pos, labels=xtlab[tpos], pos=-0.02, cex.axis=cex.axis)
+			axis(1, at=x.lab.pos, labels=xtlab[tpos], pos=-0.02, cex.axis=cex.axis, las=las)
 		}
 
         if (type == "dH") {
@@ -135,7 +137,7 @@ plot.stslist.statd <- function(x, type = "d", cpal = NULL, ylab = NULL,
 		## Plotting the x axis
 		if (xaxis) {
 			#tpos <- seq(1,seql, xtstep)
-			axis(1, at=tpos, labels=xtlab[tpos], pos=-0.02, cex.axis=cex.axis)
+			axis(1, at=tpos, labels=xtlab[tpos], pos=-0.02, cex.axis=cex.axis, las=las)
 		}
 	}
 
