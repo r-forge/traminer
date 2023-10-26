@@ -1,12 +1,11 @@
 ## =========
-Version 2.3-9 [2023-10-20]
+Version 2.3-9 [2023-10-26]
 
 Changes in existing functions:
 
-  - Plot functions now support the las argument to control 
-    orientation of ticks labels on the x-axis, except for 
-    plot.subseqelist where las applies to the y-axis.
-
+  - All TraMineR plot functions: improved support of 
+    graphical parameters. (E.g., las and cex.axis can 
+    now be used to control the display of tick labels.)
 
 
 ## =========

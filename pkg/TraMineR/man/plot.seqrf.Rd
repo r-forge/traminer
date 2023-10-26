@@ -32,7 +32,7 @@ Plots the medoids of the RF groups of sequences and/or the boxplots of the distr
   \item{frame.plot}{logical. Should a frame be plotted around the grouped boxplots?}
   \item{info}{string. One of \code{"all"} (default), \code{"subtitle"}, \code{"stat"}, and \code{"none"}.}
   \item{skipar}{logical. Should \code{plot} skip internal \code{par} and \code{layout} commands. May be necessary to combine \code{"medoids"} or \code{"diss.to.med"} plots with \code{layout} or \code{par(mfrow=...)}}
-  \item{...}{additional arguments passed to \code{\link{plot.stslist}}}
+  \item{...}{further arguments passed to \code{\link{plot.stslist}} including graphical parameters (\code{\link{par}})}
 }
 
 \details{
