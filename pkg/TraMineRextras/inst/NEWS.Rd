@@ -1,13 +1,22 @@
 \name{NEWS}
 \title{NEWS file of the TraMineRextras package}
 
-\section{Changes in version 0.7.7 [2023-03-07] }{
+\section{Changes in version 0.7.7 [2023-10-27] }{
 
-    \subsection{Misc.}{
+    \subsection{Changes in existing functions}{
     	\itemize{
     		\item
-            No changes.
+            All TraMineRextras plot functions: improved support of
+            graphical parameters. (E.g., \code{las} and \code{cex.axis} can
+            now be used to control the display of tick labels.)
     	}
+    }
+
+    \subsection{Bug fixes}{
+        \itemize{
+            \item
+            seqimplic.Rd: no description for argument \code{ylim}.
+        }
     }
 }
 
