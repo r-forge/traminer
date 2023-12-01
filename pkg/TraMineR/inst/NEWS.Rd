@@ -1,12 +1,16 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-9 [2023-10-26] }{
+\section{Changes in version 2.3-9 [2023-12-01] }{
 
     \subsection{Changes in existing functions}{
         \itemize{
             \item
             All TraMineR plot functions: improved support of graphical parameters. (E.g., \code{las} and \code{cex.axis} can now be used to control the display of tick labels.)
+            \item
+            \code{seqdist()} transforms \code{kweights} into vector \code{rep(kweights,ncol(seqdata))} when it is scalar.
+            \item
+            \code{seqdist()} raises a warning when the vector \code{kweights} is shorter than the number of columns in \code{seqdata}.
         }
     }
 }

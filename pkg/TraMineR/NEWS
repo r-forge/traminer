@@ -1,11 +1,16 @@
 ## =========
-Version 2.3-9 [2023-10-26]
+Version 2.3-9 [2023-12-01]
 
 Changes in existing functions:
 
-  - All TraMineR plot functions: improved support of 
-    graphical parameters. (E.g., las and cex.axis can 
+  - All TraMineR plot functions: improved support of
+    graphical parameters. (E.g., las and cex.axis can
     now be used to control the display of tick labels.)
+  - seqdist() transforms kweights into vector
+    rep(kweights, ncol(seqdata)) when it is scalar.
+  - seqdist() raises a warning when the vector
+    kweights is shorter than the number of columns
+    in seqdata.
 
 
 ## =========

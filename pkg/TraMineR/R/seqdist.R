@@ -263,6 +263,12 @@ seqdist <- function(seqdata, method, refseq = NULL, norm = "none", indel = "auto
   else if (method %in% c("NMS", "NMSMST", "SVRspell")) {
     if (!is.vector(kweights, mode = "numeric") || any(kweights < 0))
       msg.stop("'kweights' must be a vector of positive numbers")
+    if (length(kweights) == 1){
+      kweights <- rep(kweights, ncol(seqdata))
+      msg.warn("scalar kweights transformed into vector rep(kweights, ncol(seqdata))")
+    }
+    if (length(kweights) < ncol(seqdata))
+      msg.warn("length(kweights) < ncol(seqdata), longer subsequences will be ignored!")
   }
   # TWED
   else if (method == "TWED") {
