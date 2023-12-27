@@ -65,9 +65,9 @@ This is the default plot method for state sequence objects (produced by the \cod
 
 This method is invoked by several advanced plot functions such as  \code{seqiplot} and \code{seqIplot} (\code{\link{seqplot}} with \code{type="i"} or \code{"I"}), which, in addition to index plots, automatically display the state color legend and allow plotting by group.
 
-When a \code{sortv} variable is provided, the sequences are sorted bottom-up according to its values. With \code{sortv = "from.start"}, sequence are sorted by the elements of the alphabet at the successive positions starting from the beginning of the sequences. The {"from.end"} method proceeds similarly, but backward from the last position.
+When a \code{sortv} variable is provided, the sequences are sorted bottom-up according to its values. With \code{sortv = "from.start"}, sequence are sorted by the elements of the alphabet at the successive positions starting from the beginning of the sequences. Method \code{"from.end"} proceeds similarly, but backward from the last position.
 
-%The interest of sequence index plots has for instance been stressed by \cite{Scherer (2001)} and \cite{Brzinsky-Fay et al. (2006)}. 
+%The interest of sequence index plots has for instance been stressed by \cite{Scherer (2001)} and \cite{Brzinsky-Fay et al. (2006)}.
 Index plots of thousands of sequences result in very heavy graphic files when stored in vectorial (PDF or POSTSCRIPT) format because each sequence, even if hidden, is drawn individually. To reduce the file size, we suggest saving the figures in bitmap format by using for instance \code{\link{png}} instead of \code{\link{postscript}} or \code{\link{pdf}}.
 }
 

@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-9 [2023-12-02]
+Version 2.3-9 [2023-12-27]
 
 Changes in existing functions:
 
@@ -11,13 +11,14 @@ Changes in existing functions:
   - seqdist() raises a warning when the vector
     kweights is shorter than the number of columns
     in seqdata.
-    
+
 Bug fixes:
 
   - seqdist()}: error when all DSS have length 1 and
     method is one of OMspell, NMSMST, and SVRspell.
-  - seqdist()}: error when all DSS are identical and 
+  - seqdist()}: error when all DSS are identical and
     of length 1 when method is OMstran.
+  - issues with lost braces in .Rd files (NOTE in CRAN check)
 
 
 ## =========
