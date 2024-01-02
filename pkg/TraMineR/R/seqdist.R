@@ -835,7 +835,8 @@ seqdist <- function(seqdata, method, refseq = NULL, norm = "none", indel = "auto
     # TODO Integrate into C++ code instead of using OMstran()
     # OMstran() calls seqdist() with 'method = "OM"'
 
-    if (length(seqstatl(seqdata))==1){ ## one (or two identical if seqref!="none") constant sequences
+    if (length(seqstatl(seqdata))==1){  ## only identical constant sequences
+                                        ## dist is 0 as with "HAM"
         refseq.arg <- if (refseq.type == "none") refseq else refseq.id
         result <- suppressMessages(seqdist(seqdata, method="HAM", refseq = refseq.arg))
         rm(refseq.arg)

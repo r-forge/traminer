@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-9 [2023-12-27]
+Version 2.3-9 [2024-01-02]
 
 Changes in existing functions:
 
@@ -14,10 +14,14 @@ Changes in existing functions:
 
 Bug fixes:
 
-  - seqdist()}: error when all DSS have length 1 and
+  - seqdef(): lack of separation between found tokens 
+    not listed in the alphabet.
+  - seqdist(): error when all DSS have length 1 and
     method is one of OMspell, NMSMST, and SVRspell.
-  - seqdist()}: error when all DSS are identical and
+  - seqdist(): error when all DSS are identical and
     of length 1 when method is OMstran.
+  - seqdist() with method="OMstran": returned distance 
+    matrix was not labeled with sequence rownames.
   - issues with lost braces in .Rd files (NOTE in CRAN check)
 
 

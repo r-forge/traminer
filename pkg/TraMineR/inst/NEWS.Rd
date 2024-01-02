@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-9 [2023-12-27] }{
+\section{Changes in version 2.3-9 [2024-01-02] }{
 
     \subsection{Changes in existing functions}{
         \itemize{
@@ -16,9 +16,13 @@
     \subsection{Bug fixes}{
         \itemize{
             \item
+            \code{seqdef()}: lack of separation between found tokens not listed in the alphabet.
+            \item
             \code{seqdist()}: error when all DSS have length 1 and \code{method} is one of OMspell, NMSMST, and SVRspell.
             \item
             \code{seqdist()}: error when all DSS are identical with length 1 and \code{method} is OMstran.
+            \item
+            \code{seqdist()} with \code{method="OMstran"}: returned distance matrix was not labeled with sequence rownames.
             \item
             Issues with lost braces in .Rd files (NOTE in CRAN check)
         }
