@@ -1,4 +1,4 @@
-                CHANGES IN TraMineRextras VERSION 0.7.7 [2023-10-27]
+                CHANGES IN TraMineRextras VERSION 0.7.7 [2024-01-08]
 
 Changes in existing functions:
     o   All TraMineRextras plot functions: improved support of 
@@ -6,7 +6,8 @@ Changes in existing functions:
         now be used to control the display of tick labels.)
         
 Bug fixes:
-    o   seqimplic.Rd: no description for argument 'ylim'.
+    o   seqimplic.Rd: lack of description for argument 'ylim'.
+    o   seqpolyads(): time reported when core > 1 was not reliable.
     
 
                 CHANGES IN TraMineRextras VERSION 0.6.6 [2023-03-07]

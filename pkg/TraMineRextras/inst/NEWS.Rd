@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file of the TraMineRextras package}
 
-\section{Changes in version 0.7.7 [2023-10-27] }{
+\section{Changes in version 0.7.7 [2024-01-08] }{
 
     \subsection{Changes in existing functions}{
     	\itemize{
@@ -15,7 +15,9 @@
     \subsection{Bug fixes}{
         \itemize{
             \item
-            seqimplic.Rd: no description for argument \code{ylim}.
+            seqimplic.Rd: lack of description for argument \code{ylim}.
+            \item
+            \code{seqpolyads()}: time reported when \code{core > 1} was not reliable
         }
     }
 }
