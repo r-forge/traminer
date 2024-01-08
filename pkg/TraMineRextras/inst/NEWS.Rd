@@ -18,6 +18,11 @@
             seqimplic.Rd: lack of description for argument \code{ylim}.
             \item
             \code{seqpolyads()}: time reported when \code{core > 1} was not reliable
+            \item
+            \code{convert.g()}: error when \code{path=NULL}.
+            \item
+            \code{convert.g()} adapted to changes in ImageMagick.
+
         }
     }
 }

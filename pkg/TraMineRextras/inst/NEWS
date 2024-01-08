@@ -8,6 +8,8 @@ Changes in existing functions:
 Bug fixes:
     o   seqimplic.Rd: lack of description for argument 'ylim'.
     o   seqpolyads(): time reported when core > 1 was not reliable.
+    o   convert.g(): error when path=NULL.
+    o   convert.g() adapted to changes in ImageMagick.
     
 
                 CHANGES IN TraMineRextras VERSION 0.6.6 [2023-03-07]
