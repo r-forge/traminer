@@ -1,4 +1,9 @@
-                CHANGES IN TraMineRextras VERSION 0.7.7 [2024-01-08]
+                CHANGES IN TraMineRextras VERSION 0.7.8 [2024-01-08]
+                
+Misc.:
+    o   No changes                
+                
+                CHANGES IN TraMineRextras VERSION 0.6.7 [2024-01-08]
 
 Changes in existing functions:
     o   All TraMineRextras plot functions: improved support of 
