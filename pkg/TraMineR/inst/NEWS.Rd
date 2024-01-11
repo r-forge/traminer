@@ -8,6 +8,7 @@
             \item
             No changes
         }
+    }
 }
 
 \section{Changes in version 2.2-9 [2024-01-08] }{
