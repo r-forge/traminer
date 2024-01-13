@@ -1,12 +1,13 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-10 [2024-01-08] }{
+\section{Changes in version 2.3-10 [2024-01-13] }{
 
-    \subsection{Misc.}{
+    \subsection{Changes in existing functions}{
         \itemize{
             \item
-            No changes
+            \code{seqdist()} new argument \code{opt.args} to test
+            non-documented arguments at development stage.
         }
     }
 }

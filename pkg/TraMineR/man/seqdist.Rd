@@ -15,7 +15,8 @@ seqdist(seqdata, method, refseq = NULL, norm = "none", indel = "auto", sm = NULL
   tpow = 1.0, expcost = 0.5, context, link = "mean", h = 0.5, nu,
   transindel = "constant", otto, previous = FALSE, add.column = TRUE,
   breaks = NULL, step = 1, overlap = FALSE, weighted = TRUE,
-  global.pdotj = NULL, prox = NULL, check.max.size=TRUE)
+  global.pdotj = NULL, prox = NULL, check.max.size=TRUE,
+  opt.args = list())
 }
 \arguments{
   \item{seqdata}{
@@ -132,7 +133,7 @@ seqdist(seqdata, method, refseq = NULL, norm = "none", indel = "auto", sm = NULL
     Default: vector of \code{1}s.
     The weights applied to subsequences when \code{method} is one of \code{"NMS"},
     \code{"NMSMST"}, or \code{"SVRspell"}. It contains at position \eqn{k} the
-    weight applied to the subsequences of length \eqn{k}. It must be positive. 
+    weight applied to the subsequences of length \eqn{k}. It must be positive.
     Its length should be equal to the number of columns of \code{seqdata}. If shorter,
     longer subsequences are ignored. If a scalar, it is transformed into
     \code{rep(kweights,ncol(sedata))}.
@@ -243,6 +244,9 @@ seqdist(seqdata, method, refseq = NULL, norm = "none", indel = "auto", sm = NULL
   }
   \item{check.max.size}{
     Logical. Should \code{seqdist} stop when maximum allowed number of unique sequences is exceeded? Caution, setting \code{FALSE} may produce unexpected results or even crash R.
+  }
+  \item{opt.args}{
+    List. List of additional non-documented arguments for development usage.
   }
 }
 \details{

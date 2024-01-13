@@ -1,8 +1,11 @@
 ## =========
-Version 2.3-10 [2024-01-08]
+Version 2.3-10 [2024-01-13]
 
-Misc.:
-  - No changes.
+Changes in existing functions:
+
+  - seqdist() new argument opt.args to test 
+    non-documented arguments at development stage.
+
 
 ## =========
 Version 2.2-9 [2024-01-08]

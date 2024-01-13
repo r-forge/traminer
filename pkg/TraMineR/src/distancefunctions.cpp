@@ -13,6 +13,7 @@
 #include "NMSMSTSoftdistance.h"
 #include "NMSMSTSoftdistanceII.h"
 #include "NMSDURSoftdistance.h"
+#include "OMPerdistanceII.h"
 
 /**
 
@@ -50,6 +51,8 @@ DistanceCalculator* getDistanceCalculatorObject(SEXP Ssequences, SEXP seqdim, SE
 			ds = new NMSDURSoftdistance(normS, Ssequences, seqdim, lenS);
 		} else if(disttype==14){
 			ds = new TWEDdistance(normS, Ssequences, seqdim, lenS);
+		} else if(disttype==15){
+			ds = new OMPerdistanceII(normS, Ssequences, seqdim, lenS);
 		} else {
 			error("Unsupported distance type");
 		}
