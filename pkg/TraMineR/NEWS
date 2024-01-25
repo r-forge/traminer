@@ -1,9 +1,14 @@
 ## =========
-Version 2.3-10 [2024-01-13]
+Version 2.3-10 [2024-01-25]
+
+New functions:
+
+  - dissmergegroups() merges groups so as to minimize
+    loss of partition quality.
 
 Changes in existing functions:
 
-  - seqdist() new argument opt.args to test 
+  - seqdist() new argument opt.args to test
     non-documented arguments at development stage.
 
 

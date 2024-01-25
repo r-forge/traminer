@@ -1,7 +1,14 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-10 [2024-01-13] }{
+\section{Changes in version 2.3-10 [2024-01-25] }{
+
+    \subsection{New functions}{
+        \itemize{
+            \item
+            \code{dissmergegroups()} merges groups so as to minimize loss of partition quality.
+        }
+    }
 
     \subsection{Changes in existing functions}{
         \itemize{
