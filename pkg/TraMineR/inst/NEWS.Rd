@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-10 [2024-01-25] }{
+\section{Changes in version 2.3-10 [2024-03-03] }{
 
     \subsection{New functions}{
         \itemize{
@@ -15,6 +15,8 @@
             \item
             \code{seqdist()} new argument \code{opt.args} to test
             non-documented arguments at development stage.
+            \item
+            \code{seqdef()} now raises an error when it finds negative of \code{NA} weights.
         }
     }
 }

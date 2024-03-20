@@ -1,4 +1,5 @@
-% Author for TraMineR 2: Pierre-Alexandre Fonta (2016-2017)
+% Author for TraMineR 2: Pierre-Alexandre Fonta (2016-2017) and Gilbert Ritschard
+% for later revisions
 
 \name{seqdist}
 \alias{seqdist}
@@ -7,7 +8,7 @@
   Computes pairwise dissimilarities between sequences or dissimilarity from
   a reference sequence. Several dissimilarity measures can be chosen, including
   optimal matching (OM) and many of its variants, distance based on the count
-  of common attributes, and distances between sequence state distributions.
+  of common attributes, and distances between state distributions within sequences.
 }
 \usage{
 seqdist(seqdata, method, refseq = NULL, norm = "none", indel = "auto", sm = NULL,
@@ -205,10 +206,10 @@ seqdist(seqdata, method, refseq = NULL, norm = "none", indel = "auto", sm = NULL
     lengths, should the last (first) valid state be duplicated.
   }
   \item{breaks}{
-    \code{NULL}, List of pairs Integers.
+    List of ordered pairs of integers.
     Default: \code{NULL}.
     The list of the possibly overlapping intervals when \code{method = "CHI2"}
-    or \code{method = "EUCLID"}.
+    or \code{method = "EUCLID"}. Each interval is defined by the pair \code{c(t1,t2)} of the start \code{t1} and end \code{t2} positions of the interval.
   }
   \item{step}{
     Integer.
@@ -361,8 +362,8 @@ seqdist(seqdata, method, refseq = NULL, norm = "none", indel = "auto", sm = NULL
   When \code{refseq} is a \code{list} of two sets of indexes, the matrix
   of distances from the first set of sequences (rows) to the second set (columns).
 
-  Otherwise, a vector with distances between the sequences in the
-  state sequence object and the reference sequence specified with \code{refseq}.
+  Otherwise, a vector with distances from the sequences in the
+  state sequence object to the reference sequence specified with \code{refseq}.
 }
 \references{
   Studer, M. and G. Ritschard (2016), "What matters in differences between life
@@ -399,7 +400,6 @@ seqdist(seqdata, method, refseq = NULL, norm = "none", indel = "auto", sm = NULL
 }
 \author{
   Matthias Studer, Gilbert Ritschard, Pierre-Alexandre Fonta, Alexis Gabadinho, Nicolas S. Müller.
-  .
 }
 \seealso{
   \code{\link{seqcost}}, \code{\link{seqsubm}}, \code{\link{seqdef}}, and \code{\link{seqMD}} for

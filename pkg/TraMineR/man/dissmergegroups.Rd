@@ -25,13 +25,13 @@ dissmergegroups(
 
 \item{measure}{Character. Name of quality index. One of those returned by \code{\link[WeightedCluster]{wcClusterQuality}}}
 
-\item{crit}{Positive real value in the range [0,1]. Maximal allowed proportion of quality loss.}
+\item{crit}{Real in the range [0,1]. Maximal allowed proportion of quality loss.}
 
 \item{ref}{Character. Reference for proportion \code{crit}. One of \code{"initial"}, \code{"max"} (default), and \code{"previous"}.}
 
 \item{min.group}{Integer. Minimal number of end groups.}
 
-\item{small}{real. Percentage of sample size under which groups are considered as small.}
+\item{small}{Real. Percentage of sample size under which groups are considered as small.}
 
 \item{silent}{Logical. Should merge steps be displayed during computation?}
 }
@@ -83,7 +83,7 @@ xtabs(biofam[cases,'wp00tbgs'] ~ merged.grp)
 \references{
 Ritschard, G., T.F. Liao, and E. Struffolino (2023). Strategies for
 multidomain sequence analysis in social research.
-*Sociological Methodology*, 53(2), 288-322. \doi{10.1177/00811750231163833}
+\emph{Sociological Methodology}, 53(2), 288-322. \doi{10.1177/00811750231163833}
 }
 \seealso{
 \code{\link[WeightedCluster]{wcClusterQuality}}

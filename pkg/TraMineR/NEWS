@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-10 [2024-01-25]
+Version 2.3-10 [2024-03-03]
 
 New functions:
 
@@ -10,6 +10,8 @@ Changes in existing functions:
 
   - seqdist() new argument opt.args to test
     non-documented arguments at development stage.
+  - seqdef() now raises an error when it finds 
+    negative or NA weights.
 
 
 ## =========
