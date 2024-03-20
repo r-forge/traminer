@@ -1,7 +1,12 @@
-                CHANGES IN TraMineRextras VERSION 0.7.8 [2024-01-08]
+                CHANGES IN TraMineRextras VERSION 0.7.8 [2024-03-16]
                 
-Misc.:
-    o   No changes                
+New function:
+    o   dissCompare() comparison of two groups of data represented by 
+        a pairwise dissimilarity matrix.
+        
+Bug fixes
+    o   seqCompare() caused an error when only one group occurs in 
+        one of the sets. Now returns NA for such sets.                        
                 
                 CHANGES IN TraMineRextras VERSION 0.6.7 [2024-01-08]
 
