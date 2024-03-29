@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-10 [2024-03-03] }{
+\section{Changes in version 2.3-10 [2024-03-29] }{
 
     \subsection{New functions}{
         \itemize{
@@ -17,6 +17,13 @@
             non-documented arguments at development stage.
             \item
             \code{seqdef()} now raises an error when it finds negative of \code{NA} weights.
+        }
+    }
+    
+    \subsection{Bug fixes}{
+        \itemize{
+            \item
+            \code{seqcost()} {method="INDELSLOG"} returned \code{NA} costs for token 0 when alphabet is numeric.
         }
     }
 }

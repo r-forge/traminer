@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-10 [2024-03-03]
+Version 2.3-10 [2024-03-29]
 
 New functions:
 
@@ -10,8 +10,13 @@ Changes in existing functions:
 
   - seqdist() new argument opt.args to test
     non-documented arguments at development stage.
-  - seqdef() now raises an error when it finds 
+  - seqdef() now raises an error when it finds
     negative or NA weights.
+    
+Bug fixes:
+
+  - seqcost() method="INDELSLOG" returned NA costs
+    for token 0 when alphabet is numeric.
 
 
 ## =========
