@@ -1,3 +1,14 @@
+              CHANGES IN WeightedCluster VERSION 1.7
+
+NEW FEATURES
+  o seqclararange(): Clustering large databases of sequence using CLARA algorithm.
+  o bootclustrange(): Cluster quality indices estimation using bootstrapping for large databases. 
+
+BUG FIXES
+  o seqnullcqi(): progress bars are now hidden by default to prevent errors when included in RMarkdown/knitr documents.
+
+
+
               CHANGES IN WeightedCluster VERSION 1.6-4
 
 NEW FEATURES
