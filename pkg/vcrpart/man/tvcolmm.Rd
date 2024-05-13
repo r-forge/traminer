@@ -8,7 +8,7 @@
 
 \description{The \command{\link{tvcolmm}} function implements the
   tree-based longitudinal varying coefficient regression algorithm
-  proposed in Buergin and Ritschard (2015). The algorithm approximates
+  proposed in Burgin and Ritschard (2015). The algorithm approximates
   varying fixed coefficients in the cumulative logit mixed model by a
   (multivariate) piecewise constant function using recursive
   partitioning, i.e., it estimates the fixed effect component of the
@@ -35,7 +35,7 @@ tvcolmm_control(sctest = TRUE, alpha = 0.05, bonferroni = TRUE,
     
     where \code{vc} term specifies the varying fixed coefficients. Only
     one such \code{vc} term is allowed with
-    \command{\link{tvcolmm}} (in contrast to command{\link{tvcglm}}
+    \command{\link{tvcolmm}} (in contrast to \command{\link{tvcglm}}
     where multiple \code{vc} terms can be specified). The above example 
     formula removes the global intercepts and adds locally varying
     intercepts, by adding a \code{-1} term and specfiying \code{intercept
@@ -81,7 +81,7 @@ tvcolmm_control(sctest = TRUE, alpha = 0.05, bonferroni = TRUE,
     variables. See also the argument \code{from} of function
     \code{supLM} in package \pkg{strucchange}.}
   \item{estfun.args}{list of arguments to be passed to
-    \command{\link{gefp.olmm}}. See details.}
+    \command{\link{olmm_gefp}}. See details.}
   \item{nimpute}{a positive integer scalar. The number of times
     coefficient constancy tests should be repeated in each
     iteration. See details.}
@@ -126,9 +126,9 @@ tvcolmm_control(sctest = TRUE, alpha = 0.05, bonferroni = TRUE,
   selection (step 2) are based on the M-fluctuation tests of Zeileis and
   Hornik (2007), using the observation scores of the fitted mixed
   model. The observation scores can be extracted by
-  \command{\link{estfun.olmm}} for models fitted with
+  \command{\link{olmm_estfun}} for models fitted with
   \command{\link{olmm}}. To deal with intra-individual correlations
-  between such observation scores, the \command{\link{estfun.olmm}}
+  between such observation scores, the \command{\link{olmm_estfun}}
   function decorrelates the observation scores. In cases of unbalanced
   data, the pre-decorrelation method requires imputation. \code{nimpute}
   gives the number of times the coefficient constancy tests are repeated
@@ -143,7 +143,7 @@ tvcolmm_control(sctest = TRUE, alpha = 0.05, bonferroni = TRUE,
   point reduction methods to decrease the computational complexity. See
   the arguments \code{maxnomsplit}, \code{maxordsplit} and
   \code{maxnumsplit}. By default, the algorithm also uses the
-  approximative search model approach proposed in Buergin and Ritschard
+  approximative search model approach proposed in Burgin and Ritschard
   (2017). To disable this option to use the original algorithm, set
   \code{fast = FALSE} in \command{\link{tvcolmm_control}}.
 
@@ -170,11 +170,11 @@ tvcolmm_control(sctest = TRUE, alpha = 0.05, bonferroni = TRUE,
   Parameter Instability, \emph{Statistica Neerlandica}, \bold{61}(4),
   488--508.
   
-  Buergin R. and Ritschard G. (2015), Tree-Based Varying Coefficient 
+  Burgin R. and Ritschard G. (2015), Tree-Based Varying Coefficient 
   Regression for Longitudinal Ordinal Responses. \emph{Computational
     Statistics & Data Analysis}, \bold{86}, 65--80.
 
-  Buergin, R. and G. Ritschard (2017), Coefficient-Wise Tree-Based
+  Burgin, R. and G. Ritschard (2017), Coefficient-Wise Tree-Based
   Varying Coefficient Regression with vcrpart. \emph{Journal of
   Statistical Software}, \bold{80}(6), 1--33.
 
@@ -200,7 +200,7 @@ tvcolmm_control(sctest = TRUE, alpha = 0.05, bonferroni = TRUE,
 ## the effect of unemployment 'UNEMP' on happiness 'GHQL' is moderated 
 ## by 'AGE', 'FISIT', 'GENDER' and 'UEREGION'. 'FISIT' is the only true  
 ## moderator. For the the partitioning we coefficient constancy tests,
-## as described in Buergin and Ritschard (2015)
+## as described in Burgin and Ritschard (2015)
 ## ------------------------------------------------------------------- #
 
 data(unemp)
@@ -217,6 +217,6 @@ summary(model.UE)
 splitpath(model.UE, steps = 1, details = TRUE)
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \keyword{tree}

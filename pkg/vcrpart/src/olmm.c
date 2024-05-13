@@ -1,4 +1,6 @@
-#define USE_FC_LEN_T
+#ifndef  USE_FC_LEN_T
+# define USE_FC_LEN_T
+#endif
 #include "olmm.h"
 #include "utils.h"
 #include <Rmath.h>
@@ -167,11 +169,21 @@ SEXP olmm_setPar(SEXP x, SEXP par) {
   for (int i = 0; i < lenVRanefCholFac; i++)
     vRanefCholFac[i] = newPar[p + i];
   
-  F77_CALL(dgemv)("T", /* multiply with l. t. elimination matrix */ 
-		  &lenVRanefCholFac, &lenVecRanefCholFac,
-  		  &one, ranefElMat, 
-		  &lenVRanefCholFac, vRanefCholFac, &i1, 
-		  &zero, vecRanefCholFac, &i1 FCONE);
+  /* e.g. https://netlib.org/lapack/explore-html/d7/dda/group__gemv_ga4ac1b675072d18f902db8a310784d802.html */
+  /* multiply with l. t. elimination matrix */ 
+  /* TRANS: "T" > (alpha*A'*x + beta*y) */
+  /* M: number of rows of A */
+  /* N: number of columns of A */
+  /* ALPHA: double precision  */
+  /* A */
+  /* LDA */
+  /* X */
+  /* INC */
+  /* BETA */
+  /* Y */
+  /* INCY */
+  F77_CALL(dgemv)("T", &lenVRanefCholFac, &lenVecRanefCholFac, &one, ranefElMat,
+                  &lenVRanefCholFac, vRanefCholFac, &i1, &zero, vecRanefCholFac, &i1 FCONE);
 
   /* write updated coefficients into a list */
   SET_VECTOR_ELT(rvalR, 0, fixefR);
@@ -424,7 +436,7 @@ SEXP olmm_update_marg(SEXP x, SEXP par) {
 
 	/* hack to avoid numeric problems with DBL_MIN, DBL_MAX */
 	logLikCond_modified = 
-	  (fabs(exp(logLikCond_obs[i])) < 1E-6) & (gq_weight < 1E-6) ?
+	  ((fabs(exp(logLikCond_obs[i])) < 1E-6) & (gq_weight < 1E-6)) ?
 	  DBL_MAX : logLikCond_obs[i];
 	
 	/* calculate the Kronecker product of u_i and w_it */

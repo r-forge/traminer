@@ -130,4 +130,4 @@ vars <- c("x1", "x2", "x3")
 formula <- y ~ x1 + vc(vars, by = x2) + vc(vars, by = x3)
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}

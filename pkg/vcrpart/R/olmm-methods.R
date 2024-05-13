@@ -1,5 +1,5 @@
 ## --------------------------------------------------------- #
-## Author:       Reto Buergin
+## Author:       Reto Burgin
 ## E-Mail:       rbuergin@gmx.ch
 ## Date:         2019-12-15
 ##
@@ -41,6 +41,7 @@
 ## weights:     Weights
 ##
 ## Modifications:
+## 2024-05-03: rename 'gefp.olmm' to 'olmm_gefp' and 'olmm_estfun' to 'olmm_estfun'
 ## 2019-12-15: modify checks for classes (newly use function 'inherits')
 ## 2017-08-19: prettified code
 ## 2016-10-31: checked new implementation of C-code
@@ -48,9 +49,9 @@
 ## 2014-01-16: - improve 'predict.olmm' function
 ## 2014-12-07: - add argument 'center' to 'predecor_control'
 ## 2014-10-24: - improve simulate.olmm
-##             - improved 'estfun.olmm' call in 'gefp.olmm'
+##             - improved 'olmm_estfun' call in 'gefp.olmm'
 ## 2014-10-23: - fix bug in predict.olmm
-## 2014-09-22: - (internal) change 'Ninpute' to 'Nimpute' in estfun.olmm
+## 2014-09-22: - (internal) change 'Ninpute' to 'Nimpute' in olmm_estfun
 ## 2014-09-20: - use tile case in titles
 ## 2014-09-08: - partial substitution of 'rep' by 'rep.int'
 ##             - replace 'do.call' by 'call' in 'resid.olmm'
@@ -63,7 +64,7 @@
 ## To do:
 ## - improve update method
 ## - plot methods
-## - estfun.olmm: handle equal zero random effects
+## - olmm_estfun: handle equal zero random effects
 ## - anova with a single model
 ## --------------------------------------------------------- #
 
@@ -183,7 +184,7 @@ predecor_control <- function(impute = TRUE, seed = NULL,
 }
 
 
-estfun.olmm <- function(x, predecor = FALSE, control = predecor_control(),
+olmm_estfun <- function(x, predecor = FALSE, control = predecor_control(),
                         nuisance = NULL, ...) {
     
     ## append '...' arguments to control
@@ -391,17 +392,17 @@ fixef.olmm <- function(object, which = c("all", "ce", "ge"), ...) {
 formula.olmm <- function(x, ...) as.formula(x$formula, env = parent.frame())
 
 
-gefp.olmm <- function(object, scores = NULL, order.by = NULL, subset = NULL,
+olmm_gefp <- function(object, scores = NULL, order.by = NULL, subset = NULL,
                       predecor = TRUE, parm = NULL, center = TRUE,
                       drop = TRUE, silent = FALSE, ...) {
   
   ## extract scores (if scores is not a matrix)
   if (is.null(scores)) {
-    estfunCall <- list(name = as.name("estfun.olmm"),
+    estfunCall <- list(name = as.name("olmm_estfun"),
                        x = quote(object),
                        predecor = quote(predecor))
     dotargs <- list(...)
-    dotargs <- dotargs[intersect(names(formals(estfun.olmm)), names(dotargs))]
+    dotargs <- dotargs[intersect(names(formals(olmm_estfun)), names(dotargs))]
     estfunCall[names(dotargs)] <- dotargs
     mode(estfunCall) <- "call"
     scores <- try(eval(estfunCall))

@@ -109,12 +109,75 @@
   methods have the same arguments as the corresponding default methods. 
 }
 
+\value{
+  The \command{\link{coef.tvcm}} and \command{\link{coefficients.tvcm}}
+  methods return a \command{\link{list}} with model
+  coefficients. Slot \code{vc} stores varying coefficients, \code{fe}
+  fixed coefficients and \code{re} coefficients on random effects.
+
+  The \command{\link{depth.tvcm}} method returns a integer vector with
+  the depth of the trees of every varying
+  coefficient. \command{\link{width.tvcm}} returns a integer vector with
+  the width of the trees.  
+
+  The \command{\link{extract}} and \command{\link{extract.tvcm}} methods
+  allow to extract further information of \code{tvcm} objects, such as
+  the underlying regression model. The type of the return value depends
+  on the input for argument \code{what}.
+
+  The \command{\link{formula.tvcm}} method extracts the model formula,
+  which is an object of class \code{formula}. See also
+  \command{\link{formula}}.
+    
+  The methods \command{\link{fitted.tvcm}} and
+  \command{\link{predict.fvcm}} return an object of class \code{numeric}
+  or \code{matrix}, depending on the used model or the specification of
+  the argument \code{type}.
+
+  The \command{\link{getCall.tvcm}} method extracts the call for fitting
+  the model, which is an object of class \code{call}. See also
+  \command{\link{call}}. 
+  
+  The \command{\link{logLik.tvcm}} method returns an object of class
+  \code{logLik}, see also \command{\link{logLik}}.
+  
+  The \command{\link{model.frame.tvcm}} method returns a
+  \code{data.frame}. See also \command{\link{model.frame}}.
+
+  The \command{\link{neglogLik2.tvcm}} method returns a single numeric,
+  see also \command{\link{neglogLik2}}.
+    
+  The \command{\link{nobs.tvcm}} method extracts the number of
+  observations used to fit the model. See also
+  \command{\link{nobs.tvcm}}. 
+
+  The \command{\link{print.tvcm}} and \command{\link{summary.tvcm}}
+  methods return \code{NULL}. 
+
+  The \command{\link{ranef.tvcm}} method returns an object of class
+  \code{matrix} with values for the random effects. See also
+  \command{\link{ranef.olmm}} and \command{\link{ranef}}.
+
+  The \command{\link{resid.tvcm}} and \command{\link{residuals.tvcm}}
+  methods return  a \code{numeric} or a \code{matrix}, depending on the
+  used model or the type of residuals. See the help of the
+  \command{\link{resid}} method of the used model.
+
+  The methods \command{\link{splitpath}} and
+  \command{\link{splitpath.tvcm}} return an object of class
+  \code{splitpath.tvcm} that contains information on splitting when
+  building the tree.
+
+  The \command{\link{weights.tvcm}} method extracts a \code{numeric}
+  vector with the model weights. See also \command{\link{weights}}.
+}
+
+\author{Reto Burgin}
+
 \seealso{
   \command{\link{tvcm}}, \command{\link{tvcm-assessment}},
   \command{\link{tvcm-plot}}
 }
-
-\author{Reto Buergin}
 
 \examples{
 ## ------------------------------------------------------------------- #

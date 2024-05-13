@@ -1,9 +1,9 @@
 \name{olmm-gefp}
 
 \alias{olmm-gefp}
-\alias{gefp.olmm}
+\alias{olmm_gefp}
 \alias{predecor_control}
-\alias{estfun.olmm}
+\alias{olmm_estfun}
 
 \title{Methods for score processes of \command{\link{olmm}} objects}  
 
@@ -14,7 +14,7 @@
 } 
 
 \usage{
-estfun.olmm(x, predecor = FALSE, control = predecor_control(),
+olmm_estfun(x, predecor = FALSE, control = predecor_control(),
             nuisance = NULL, ...)
 
 predecor_control(impute = TRUE, seed = NULL, 
@@ -24,7 +24,7 @@ predecor_control(impute = TRUE, seed = NULL,
                  include = c("observed", "all"),
                  verbose = FALSE, silent = FALSE)
 
-gefp.olmm(object, scores = NULL, order.by = NULL, subset = NULL,
+olmm_gefp(object, scores = NULL, order.by = NULL, subset = NULL,
           predecor = TRUE, parm = NULL, center = TRUE, drop = TRUE,
           silent = FALSE, ...)
 }
@@ -62,7 +62,7 @@ gefp.olmm(object, scores = NULL, order.by = NULL, subset = NULL,
   \item{scores}{a function or a matrix. Function to extract the
     estimating equations from \code{object} or a matrix representing the
     estimating equations. If \code{NULL} (default), the
-    \command{\link{estfun.olmm}} function will be used with
+    \command{\link{olmm_estfun}} function will be used with
     argument \code{predecor} and additional arguments from \code{...}.} 
   \item{order.by}{a numeric or factor vector. The explanatory variable
     to be used to order the entries in the estimating equations. If set
@@ -77,38 +77,38 @@ gefp.olmm(object, scores = NULL, order.by = NULL, subset = NULL,
   \item{drop}{logical. Whether singularities should be handled
     automatically (otherwise singularities yield an error).}
   \item{...}{arguments passed to other
-    functions. \command{\link{gefp.olmm}} passes these arguments to
+    functions. \command{\link{olmm_gefp}} passes these arguments to
     \code{scores} if \code{scores} is a function.}
 }
 
 \value{
   \command{\link{predecor_control}} returns a list of control parameters
   for computing the pre-decorrelation transformation
-  matrix. \command{\link{estfun.olmm}} returns a \command{\link{matrix}}
-  with the estimating equations and \command{\link{gefp.olmm}} a list of
+  matrix. \command{\link{olmm_estfun}} returns a \command{\link{matrix}}
+  with the estimating equations and \command{\link{olmm_gefp}} a list of
   class class \code{"gefp"}.  
 }
 
 \details{
   Complements the \command{estfun} method of the package \pkg{sandwich}
-  and the \command{gefp} method of the package \pkg{strucchange} for
-  \command{\link{olmm}} objects. \command{\link{estfun.olmm}} allows to
+  and the \command{gefp} function of the package \pkg{strucchange} for
+  \command{\link{olmm}} objects. \command{\link{olmm_estfun}} allows to
   pre-decorrelate the intra-individual correlation of observation
   scores, see the argument \code{predecor}. The value returned by
-  \command{gefp.olmm} may be used for testing coefficient constancy
+  \command{olmm_gefp} may be used for testing coefficient constancy
   regarding an explanatory variable \code{order.by} by the
   \command{sctest} function of package \pkg{strucchange}, see the
   examples below. 
 
-  If \code{predecor = TRUE} in \command{\link{estfun.olmm}}, a linear
+  If \code{predecor = TRUE} in \command{\link{olmm_estfun}}, a linear
   within-subject transformation is applied that removes (approximately) 
   the intra-subject correlation from the scores. Backgrounds are
-  provided by Buergin and Ritschard (2014a).
+  provided by Burgin and Ritschard (2014a).
   
-  Given a score matrix produced by \command{\link{estfun.olmm}}, the
+  Given a score matrix produced by \command{\link{olmm_estfun}}, the
   empirical fluctuation process can be computed by
-  \command{\link{gefp.olmm}}. See Zeileis and Hornik
-  (2007). \command{\link{gefp.olmm}} provides with \code{subset} and
+  \command{\link{olmm_gefp}}. See Zeileis and Hornik
+  (2007). \command{\link{olmm_gefp}} provides with \code{subset} and
   \code{parm} arguments specifically designed for nodewise tests in the
   \command{\link{tvcm}} algorithm. Using \code{subset} extracts the
   partial fluctuation process of the selected subset. Further,
@@ -121,12 +121,12 @@ gefp.olmm(object, scores = NULL, order.by = NULL, subset = NULL,
   Parameter Instability, \emph{Statistica Neerlandica}, \bold{61}(4),
   488--508. 
 
-  Buergin R. and Ritschard G. (2015), Tree-Based Varying Coefficient 
+  Burgin R. and Ritschard G. (2015), Tree-Based Varying Coefficient 
   Regression for Longitudinal Ordinal Responses. \emph{Computational
     Statistics & Data Analysis}, \bold{86}, 65--80.
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \seealso{\command{\link{olmm}}}
 
@@ -148,12 +148,13 @@ table(table(vcrpart_1$id))
 model <- olmm(y ~ treat + re(1|id), data = vcrpart_1)
 
 ## extract and pre-decorrelate the scores
-scores <- estfun.olmm(model, predecor = TRUE,
-                      control = predecor_control(verbose = TRUE))
+scores <- olmm_estfun(
+  model, predecor = TRUE,
+  control = predecor_control(verbose = TRUE))
 attr(scores, "T") # transformation matrix
 
 ## compute the empirical fluctuation process
-fp <- gefp.olmm(model, scores, order.by = vcrpart_1$z4)
+fp <- olmm_gefp(model, scores, order.by = vcrpart_1$z4)
 
 ## process a fluctuation test
 library(strucchange)

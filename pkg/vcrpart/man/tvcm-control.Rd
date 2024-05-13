@@ -86,7 +86,7 @@ tvcm_control(minsize = 30, mindev = ifelse(sctest, 0.0, 2.0),
   the control parameters for \command{\link{tvcm}}.
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \seealso{\command{\link{tvcolmm_control}},
   \command{\link{tvcglm_control}}, \command{\link{tvcm}},

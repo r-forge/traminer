@@ -1,5 +1,5 @@
 ## --------------------------------------------------------- #
-## Author:          Reto Buergin
+## Author:          Reto Burgin
 ## E-Mail:          rbuergin@gmx.ch
 ## Date:            2019-12-15
 ##
@@ -602,9 +602,9 @@ predict.fvcm <- function(object, newdata = NULL,
         newdata[subs, yName] <- yLevs
         if (object$info$fit == "olmm") {
             sN <- object$info$model$subjectName
-            levs <- c(levels(newdata[,sN]), "RetoBuergin") 
+            levs <- c(levels(newdata[,sN]), "RetoBurgin") 
             newdata[sN] <- factor(newdata[,sN], levels = levs)
-            newdata[subs, sN] <- "RetoBuergin"
+            newdata[subs, sN] <- "RetoBurgin"
         }
         eta <- rbind(eta, matrix(0, nYLevs, ncol(eta)))
         folds <-
@@ -636,7 +636,7 @@ predict.fvcm <- function(object, newdata = NULL,
         
         ## predict random effects
         ranef <- ranef(model) 
-        ranef <- ranef[rownames(ranef) != "RetoBuergin",,drop=FALSE]
+        ranef <- ranef[rownames(ranef) != "RetoBurgin",,drop=FALSE]
         return(na.action(ranef))
         
     } else {

@@ -1,5 +1,5 @@
 ## --------------------------------------------------------- #
-## Author:       Reto Buergin
+## Author:       Reto Burgin
 ## E-Mail:       rbuergin@gmx.ch
 ## Date:         2021-04-15
 ##
@@ -506,7 +506,7 @@ olmm <- function(formula, data, family = cumulative(),
         class = "olmm")
     
     ## delete big data blocks
-    rm(list = ls()[!ls() %in% c("dims", "object")])
+    # rm(list = ls()[!ls() %in% c("dims", "object")]) # commented out this after mail of konstanze.lauseker@wu.ac.at at 2024-05-03
     
     if (dims["doFit"] > 0L) {
         

@@ -1,5 +1,5 @@
 ## --------------------------------------------------------- #
-## Author:          Reto Buergin
+## Author:          Reto Burgin
 ## E-Mail:          rbuergin@gmx.ch
 ## Date:            2016-01-10
 ##

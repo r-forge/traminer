@@ -1,6 +1,5 @@
 #ifndef VCRPART_OLMM_H
 #define VCRPART_OLMM_H
-/* #define USE_FC_LEN_T /* added 2022-02-03, see https://cran.r-project.org/doc/manuals/r-devel/R-exts.html#Fortran-character-strings */
 
 #include <R.h>
 #include <Rdefines.h>

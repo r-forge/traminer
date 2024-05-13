@@ -199,7 +199,7 @@ folds_control(type = c("kfold", "subsampling", "bootstrap"),
   Hastie, T., R. Tibshirani and J. Friedman (2001). \emph{The Elements
     of Statistical Learning} (2 ed.). New York, USA: Springer-Verlag.
   
-  Buergin, R. and G. Ritschard (2017), Coefficient-Wise Tree-Based
+  Burgin, R. and G. Ritschard (2017), Coefficient-Wise Tree-Based
   Varying Coefficient Regression with vcrpart. \emph{Journal of
   Statistical Software}, \bold{80}(6), 1--33.
 }
@@ -244,6 +244,6 @@ rfun <- function(y, mu, wt) sum(abs(y - mu))
 oobloss(model, newdata = vcrpart_2[76:100,], fun = rfun)
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \keyword{validation}

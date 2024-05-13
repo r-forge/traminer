@@ -26,7 +26,7 @@ contr.wsum(x, weights = rep.int(1.0, length(x)), sparse = FALSE)
 
 \value{A matrix with \code{nlevels(x)} rows and \code{nlevels(x)- 1}
   columns.}
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \seealso{\command{\link{contr.sum}}}
 

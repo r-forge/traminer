@@ -69,7 +69,23 @@
   methods have the same arguments as the corresponding default methods. 
 }
 
-\author{Reto Buergin}
+\value{The methods \command{\link{fitted.fvcm}} and
+  \command{\link{predict.fvcm}} return an object of class \code{numeric}
+  or \code{matrix}, depending on the used model or the specification of
+  the argument \code{type}. See also \command{\link{fitted.tvcm}}. 
+  
+  The \command{\link{oobloss.fvcm}} method returns the output of the
+  loss function defined by \code{fun}. This is a single numeric by
+  default. See also \command{\link{oobloss}}.
+
+  The \command{\link{plot.fvcm}} method returns \code{NULL}.
+
+  The \command{\link{ranef.fvcm}} method returns an object of class
+  \code{matrix} with values for the random effects. See also
+  \command{\link{ranef.olmm}} and \command{\link{ranef}}.
+}
+
+\author{Reto Burgin}
 
 \references{
   Breiman, L. (1996). Bagging Predictors. \emph{Machine Learning},

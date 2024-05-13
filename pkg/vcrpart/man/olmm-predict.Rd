@@ -83,7 +83,7 @@
   and will return an error. 
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \references{
   Skrondal, A., S. Rabe-Hesketh (2009). Prediction in Multilevel

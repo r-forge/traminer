@@ -35,7 +35,7 @@
 
 \seealso{\command{\link{olmm}}, \command{\link{olmm-methods}}}
 
-\author{Reto Buergin}
+\author{Reto Burgin}
  
 \examples{
 ## ------------------------------------------------------------------- #

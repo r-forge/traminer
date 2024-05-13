@@ -1,10 +1,16 @@
-Changes in Version 1.0-5 [2022-04-27]
+Changes in Version 1.0-5 [2024-05-06]
 
     o   Newest grid.rect() version seems seems to use white as default
         background (and not transparent as previously). Was a problem in 
         panel_coef().
 
     o   Solve new issue with character arguments at Fortran calls.
+
+    o   estfun() and gefp() are not anymore exported as methods for olmm(). estfun.olmm() and estfun.gefp() were renamed to olmm_estfun() and olmm_gefp().
+
+    o   Removed vignette because of warning messages on the size of the pdf.
+
+    o   Documentation of output values of various methods for 'fvcm', 'olmm' and 'tvcm'.
 
 Changes in Version 1.0-4 [2021-04-17]
 

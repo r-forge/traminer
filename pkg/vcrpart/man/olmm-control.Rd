@@ -61,7 +61,7 @@ olmm_control(fit = c("nlminb", "ucminf", "optim"),
   the control parameters.
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \seealso{\command{\link{olmm}}}
 

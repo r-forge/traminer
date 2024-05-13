@@ -100,7 +100,8 @@ fvcglm_control(maxstep = 10, minsize = 10,
 }
 
 \value{An object of class \code{fvcm}.}
-\author{Reto Buergin}
+
+\author{Reto Burgin}
 
 \references{
   Breiman, L. (1996). Bagging Predictors. \emph{Machine Learning},
@@ -112,7 +113,7 @@ fvcglm_control(maxstep = 10, minsize = 10,
   Hastie, T., R. Tibshirani and J. Friedman (2001). \emph{The Elements
     of Statistical Learning} (2 ed.). New York, USA: Springer-Verlag.
 
-  Buergin, R. A. (2015). Tree-based methods for moderated regression
+  Burgin, R. A. (2015). Tree-based methods for moderated regression
   with application to longitudinal data. PhD thesis. University of
   Geneva. 
 }

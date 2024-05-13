@@ -187,7 +187,7 @@ olmm(formula, data, family = cumulative(),
     \code{"list"}).}
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \references{
   Agresti, A. (2010). \emph{Analysis of Ordinal Categorical Data} (2

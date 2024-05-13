@@ -98,7 +98,7 @@
   comparisons, based on the marginal likelihood. At the time being, 
   at least two models must be assigned.
   
-  \command{\link{neglogLik2}} is the marginal maximum likelihood of the
+  \command{\link{neglogLik2}} returns the marginal maximum likelihood of the
   fitted model times minus 2. 
 
   \command{\link{ranefCov}} extracts the variance-covariance matrix of
@@ -110,6 +110,9 @@
   (2012). By default, the marginal outcome distribution is used to
   compute these residuals. The conditional residuals can be computed by
   assigning \code{ranef = TRUE} as a supplementary argument.   
+
+  \command{\link{simulate}} simulates ordinal responses based on the
+  input model. 
   
   Further, undocumented methods are \command{\link{deviance}},
   \command{\link{extractAIC}}, \command{\link{fitted}},
@@ -121,7 +124,71 @@
   \pkg{lme4} package. The authors are grateful for these codes. 
 }
 
-\author{Reto Buergin}
+\value{
+  The \command{\link{anova.olmm}} method returns an object of class
+  \code{anova}, see also \command{\link{anova}}.
+
+  The \command{\link{coef.olmm}}, \command{\link{coefficients.olmm}},
+  \command{\link{fixef}}, \command{\link{fixef.glm}} and
+  \command{\link{fixef.olmm}} methods return named \code{numeric}
+  vectors. See also \command{\link{coef}} and
+  \command{\link{coefficients}}. 
+
+  The \command{\link{deviance.olmm}} method returns a single numeric,
+  see also \command{\link{deviance}}.
+
+  The \command{\link{formula.olmm}} method extracts the model formula,
+  which is an object of class \code{formula}. See also
+  \command{\link{formula}}. 
+
+  The \command{\link{getCall.olmm}} method extracts the call for fitting
+  the model, which is an object of class \code{call}. See also
+  \command{\link{call}}. 
+  
+  The \command{\link{logLik.olmm}} method returns an object of class
+  \code{logLik}, which is a single numeric with a few attributes. See
+  also \command{\link{logLik}}.
+
+  The \command{\link{neglogLik2}} and \command{\link{neglogLik2.olmm}}
+  methods return a single numeric.  
+
+  The \command{\link{model.frame.olmm}} and
+  \command{\link{model.matrix.olmm}} methods return the model frame and
+  the model matrix of the \code{olmm} object. See also
+  \command{\link{model.frame}} and \command{\link{model.matrix}}.
+
+  The \command{\link{ranef}} and \command{\link{ranef.olmm}} methods
+  return a matrix with the estimated random effects.
+
+  The \command{\link{ranefCov}} and \command{\link{ranefCov.olmm}}
+  methods return an object of class \code{matrix}. The
+  \command{\link{VarCorr}} and \command{\link{VarCorr.olmm}} methods
+  return an object of class
+  \code{VarCorr.olmm}. \command{\link{print.VarCorr.olmm}} returns an
+  object of class \code{VarCorr.olmm}.
+  
+  The \command{\link{resid.olmm}} and \command{\link{residuals.olmm}}
+  methods return a numeric vector.
+
+  The \command{\link{simulate.olmm}} method returns a \code{data.frame}
+  including simulated responses based on the input model.
+
+  The \command{\link{terms.olmm}} method returns an object of class
+  \code{terms}. See also \command{\link{terms}}.
+
+  The \command{\link{update.olmm}} method will update and (by default)
+  re-fit a model. It returns an object of class \code{olmm}. See also
+  \command{\link{update}}. 
+
+  The \command{\link{vcov.olmm}} method extracts a \code{matrix} with
+  the variances and covariances of the fixed effects of the model. See
+  also \command{\link{vcov}}.
+
+  The \command{\link{weights.olmm}} method extracts a \code{numeric}
+  vector with the model weights. See also \command{\link{weights}}.
+}
+
+\author{Reto Burgin}
 
 \references{
   Agresti, A. (2010). \emph{Analysis of Ordinal Categorical Data} (2
@@ -139,7 +206,7 @@
 }
 
 \seealso{\command{\link{olmm}}, \command{\link{predict.olmm}},
-  \command{\link{gefp.olmm}}} 
+  \command{\link{olmm_gefp}}} 
 
 \examples{
 ## --------------------------------------------------------- #

@@ -102,15 +102,15 @@ tvcm(formula, data, fit, family,
   and Statistics, Research Platform Empirical and Experimental
   Economics}, Number 2014-10. Universitaet Innsbruck.
 
-  Buergin R. and Ritschard G. (2015), Tree-Based Varying Coefficient 
+  Burgin R. and Ritschard G. (2015), Tree-Based Varying Coefficient 
   Regression for Longitudinal Ordinal Responses. \emph{Computational
     Statistics & Data Analysis}, \bold{86}, 65--80.
 
-  Buergin, R. A. (2015b). Tree-based methods for moderated regression
+  Burgin, R. A. (2015b). Tree-based methods for moderated regression
   with application to longitudinal data. PhD thesis. University of
   Geneva. 
   
-  Buergin, R. and G. Ritschard (2017), Coefficient-Wise Tree-Based
+  Burgin, R. and G. Ritschard (2017), Coefficient-Wise Tree-Based
   Varying Coefficient Regression with vcrpart. \emph{Journal of
   Statistical Software}, \bold{80}(6), 1--33.
 }
@@ -169,6 +169,6 @@ splitpath(model.UE, steps = 1, details = TRUE)
 
 }
 
-\author{Reto Buergin}
+\author{Reto Burgin}
 
 \keyword{tree}

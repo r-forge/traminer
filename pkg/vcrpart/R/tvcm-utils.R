@@ -1,5 +1,5 @@
 ## --------------------------------------------------------- #
-## Author:          Reto Buergin
+## Author:          Reto Burgin
 ## E-Mail:          rbuergin@gmx.ch
 ## Date:            2017-08-21
 ##
@@ -81,7 +81,7 @@
 ## 2014-11-11: modified transformation of nominal into ordinal variables
 ##             to accelerate exhaustive search. There is now a function
 ##             'tvcm_exsearch_nomToOrd'.
-## 2014-11-05: parallelized 'estfun.olmm' call in 'tvcm_grow_sctest'
+## 2014-11-05: parallelized 'olmm_estfun' call in 'tvcm_grow_sctest'
 ## 2014-10-14: - modify dev-grid structure obtained from
 ##               'tvcm_grow_exsearch'
 ##               each combination of part/node/var has now a list of three
@@ -800,7 +800,7 @@ tvcm_grow_update <- function(object, control, subs = NULL) {
 }
 
 
-tvcm_grow_gefp <- gefp.olmm # see 'olmm-methods.R'
+tvcm_grow_gefp <- olmm_gefp # see 'olmm-methods.R'
 
 
 ## --------------------------------------------------------- #
@@ -1236,7 +1236,7 @@ tvcm_grow_sctest <- function(model, nodes, where, partid, nodeid, varid,
     ## call 'estfun' (eventually parallelized)
     eCall <-
         list(name = as.name(ifelse(inherits(model, "olmm"),
-                                   "estfun.olmm", "estfun")))
+                                   "olmm_estfun", "estfun")))
     eCall$x <- quote(model)
     eCall[names(control$estfun.args)] <- control$estfun.args
     mode(eCall) <- "call"

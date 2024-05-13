@@ -113,10 +113,20 @@ otsplot_filter(method = c("minfreq", "cumfreq", "linear"), level = NULL)
   authors are grateful for these codes.  
 }
 
-\author{Reto Buergin and Gilbert Ritschard}
+\value{\command{\link{otsplot}} returns an object of class
+  \code{otsplot}.
+
+  \command{\link{otsplot_control}} returns an object of class
+  \code{otsplot_control} and \command{\link{otsplot_filter}} an object
+  of class \code{otsplot_filter}. Both these object types are
+  specifically designed as input arguments of \command{\link{otsplot}}.
+  
+}
+
+\author{Reto Burgin and Gilbert Ritschard}
 
 \references{
-  Buergin, R. and G. Ritschard (2014). A Decorated Parallel Coordinate 
+  Burgin, R. and G. Ritschard (2014). A Decorated Parallel Coordinate 
   Plot for Categorical Longitudinal Data, \emph{The American
   Statistician} \bold{68}(2), 98--103. 
 

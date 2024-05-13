@@ -127,6 +127,12 @@ panel_coef(object, parm = NULL,
   \command{\link{plot.party}} function, see \pkg{partykit}.
 }
 
+\value{
+  The \command{\link{plot.fvcm}} method returns \code{NULL}.
+}
+
+\author{Reto Burgin}
+
 \references{
   Hastie, T., R. Tibshirani and J. Friedman (2001). \emph{The Elements
     of Statistical Learning} (2 ed.). New York, USA: Springer-Verlag.
@@ -172,7 +178,5 @@ plot(model, "partdep", var = "z1", ask = FALSE)
 }
 
 \seealso{\command{\link{tvcm}}, \command{\link{tvcm-methods}}}
-
-\author{Reto Buergin}
 
 \keyword{hplot}

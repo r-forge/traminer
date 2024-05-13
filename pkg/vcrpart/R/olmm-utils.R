@@ -1,5 +1,5 @@
 ## --------------------------------------------------------- #
-## Author:          Reto Buergin
+## Author:          Reto Burgin
 ## E-Mail:          rbuergin@gmx.ch
 ## Date:            2020-02-04
 ##
@@ -29,7 +29,7 @@
 ## glogis:               derivate of dlogis
 ## gnorm:                derivate of dnorm
 ##
-## Functions for estfun.olmm:
+## Functions for olmm_estfun:
 ## olmm_scoreVar:        computes the variance of the observation scores.
 ## olmm_scoreCovWin:     computes the intra-subject covariance of
 ##                       the observation scores.

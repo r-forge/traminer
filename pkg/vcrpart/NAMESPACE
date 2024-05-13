@@ -61,8 +61,8 @@ export(
   panel_coef,
   panel_partdep,
   predecor_control,
-  estfun.olmm,
-  gefp.olmm,
+  olmm_estfun,
+  olmm_gefp,
   tvcm_control,
   tvcolmm_control,
   tvcglm_control,
@@ -93,13 +93,11 @@ S3method(anova, olmm)
 S3method(coef, olmm)
 S3method(coefficients, olmm)
 S3method(deviance, olmm)
-S3method(estfun, olmm)
 S3method(extractAIC, olmm)
 S3method(fitted, olmm)
 S3method(fixef, olmm)
 S3method(formula, olmm)
 S3method(getCall, olmm)
-S3method(gefp, olmm)
 S3method(logLik, olmm)
 S3method(model.frame, olmm)
 S3method(model.matrix, olmm)
