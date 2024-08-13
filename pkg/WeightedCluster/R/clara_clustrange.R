@@ -103,7 +103,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 		  if(method=="fuzzy"){
 		    ## Weighted FCMdd clustering on subsample
 		    memb = as.memb(cutree(hc, k = kvals[k]))
-		    clusteringC <- wfcmdd(diss, memb = fanny$membership, weights=ac2$aggWeights, method="FCMdd", m=m) #FCMdd algo sur la matrice de distance
+		    clusteringC <- wfcmdd(diss, memb = memb, weights=ac2$aggWeights, method="FCMdd", m=m) #FCMdd algo sur la matrice de distance
 			fanny <- fanny(diss, kvals[k], diss=TRUE, memb.exp=m, iniMem.p=memb, tol=0.00001)
 		    clustering <- wfcmdd(diss, memb = fanny$membership, weights=ac2$aggWeights, method="FCMdd", m=m) #FCMdd algo sur la matrice de distance
 		   if(clusteringC$functional<clustering$functional){
