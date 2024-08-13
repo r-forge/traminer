@@ -73,6 +73,8 @@ Several \emph{null} models are provided to test the different structuring aspect
 
 \references{
 Studer, M. (2021). Validating Sequence Analysis Typologies Using Parametric Bootstrap. \emph{Sociological Methodology}. \doi{10.1177/00811750211014232}
+
+A brief introduction to the \code{R} code needed to use parametric bootstraps for typology validation in sequence analysis is provided here \url{https://sequenceanalysis.org/2023/10/19/validating-sequence-analysis-typologies-using-parametric-bootstrap/}
 }
 
 \seealso{
