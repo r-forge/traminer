@@ -33,7 +33,7 @@ fuzzy_davies_bouldin_internal <- function(diss, memb, medoids, weights=NULL){
 
   list_diam <- numeric(length(medoids))
   if(is.null(weights)){
-	weights <- rep(1, nrow(diss))
+		weights <- rep(1, nrow(diss))
   }
 
   n <- sum(weights)

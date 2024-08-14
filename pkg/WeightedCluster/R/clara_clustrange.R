@@ -1,8 +1,8 @@
 
 
 seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kvals = 2:10, 
-							seqdist.args = list(method = "LCS"), method=c("crisp", "fuzzy", "representativeness"), m=1.5,
-							criteria = c("distance"), stability=FALSE, 
+							seqdist.args = list(method = "LCS"), method=c("crisp", "fuzzy", "representativeness", "noise"), m=1.5,
+							criteria = c("distance"), stability=FALSE, dnoise=NULL,
 							parallel=FALSE, progressbar = FALSE, keep.diss=FALSE, max.dist = NULL){
 							
 
@@ -15,7 +15,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 	if(max(kvals) > sample.size){
 		stop(" [!] More clusters than the size of the sample requested.")
 	}
-  allmethods <- c("crisp", "fuzzy", "representativeness")
+  allmethods <- c("crisp", "fuzzy", "representativeness", "noise")
   methindex <- pmatch(method[1], allmethods)
   if(is.na(methindex)){
     stop(" [!] Unknow method ", method, ". Please specify one of the following: ", paste(allmethods, collapse = ", "))
@@ -80,7 +80,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 	message(" [>] Starting iterations...\n")
 	## Launch parallel loop
 	#calc_pam <- foreach(loop=1:R, .export=c("davies_bouldin_internal"), .packages = c('TraMineR', 'cluster', 'WeightedCluster', 'fastcluster')) %dofuture%{#on stocke chaque sample
-	calc_pam <- foreach(loop=1:R, .options.future = list(seed = TRUE, globals = structure(TRUE, add = c("sample.size", "seqdist.args", "m"))) ) %dofuture%{#on stocke chaque sample
+	calc_pam <- foreach(loop=1:R, .options.future = list(seed = TRUE, globals = structure(TRUE, add = c("sample.size", "seqdist.args", "m", "dnoise"))) ) %dofuture%{#on stocke chaque sample
 		ltime <- Sys.time()
 		mysample <- sample.int(nrow(agseqdata), size=sample.size, prob=ac$probs, replace=TRUE)
 		##Re-aggregate!
@@ -100,16 +100,17 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 		allclust <- list()
 		for(k in seq_along(kvals)){
 		  
-		  if(method=="fuzzy"){
+		  if(method %in% c("fuzzy", "noise")){
 		    ## Weighted FCMdd clustering on subsample
 		    memb = as.memb(cutree(hc, k = kvals[k]))
-		    clusteringC <- wfcmdd(diss, memb = memb, weights=ac2$aggWeights, method="FCMdd", m=m) #FCMdd algo sur la matrice de distance
-			fanny <- fanny(diss, kvals[k], diss=TRUE, memb.exp=m, iniMem.p=memb, tol=0.00001)
-		    clustering <- wfcmdd(diss, memb = fanny$membership, weights=ac2$aggWeights, method="FCMdd", m=m) #FCMdd algo sur la matrice de distance
-		   if(clusteringC$functional<clustering$functional){
+		    algo <- ifelse(method=="fuzzy", "FCMdd", "NCdd")
+		    clusteringC <- wfcmdd(diss, memb = memb, weights=ac2$aggWeights, method=algo, m=m, dnoise=dnoise) #FCMdd algo sur la matrice de distance
+				fanny <- fanny(diss, kvals[k], diss=TRUE, memb.exp=m, iniMem.p=memb, tol=0.00001)
+		    clustering <- wfcmdd(diss, memb = fanny$membership, weights=ac2$aggWeights, method=algo, m=m, dnoise=dnoise) #FCMdd algo sur la matrice de distance
+		  	if(clusteringC$functional<clustering$functional){
 		   		clustering <- clusteringC
-		   }
-			rm(fanny, clusteringC)
+		  	}
+				rm(fanny, clusteringC)
 		    ##Retrieve medoids
 		    medoids <- mysample[ac2$aggIndex[clustering$mobileCenters]] ## Going back to overall dataset
 		  }else{
@@ -149,6 +150,26 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 		    pbm <- ((1/length(medoids)) *(max(diss2[medoids, ])/sum(rowSums((memb)*diss2)*ac$probs)))^2
 		    ams <- sum(hightest.memb*sil*ac$probs)/sum(hightest.memb*ac$probs)
 		    rm(hightest.memb)		    
+		  }else if(method=="noise"){
+		  	##Allocate to clusters using FCM formulae
+		  	diss3 <- cbind(diss2, dnoise)
+		  	memb <- (1/diss3)^(1/(m-1))
+		  	memb <- memb/rowSums(memb)
+		  	memb[diss3==0] <- 1
+		  	##Compute criterion (FCMdd Formulae)
+		  	## mean_diss <- sum(rowSums((memb^m)*diss2)*ac$aggWeights)
+		  	mean_diss <- sum(rowSums((memb^m)*diss3)*ac$probs)
+		  	
+		  	db <- fuzzy_davies_bouldin_internal(diss2, memb[, -ncol(memb), drop=FALSE], medoids, weights=ac$aggWeights)$db
+		  	
+		  	alpha <- 1
+		  	hightest.memb <- apply(memb[, -ncol(memb), drop=FALSE], 1, function(x){
+		  		y <- sort(x, decreasing = TRUE)[1:2]
+		  		return((y[1]-y[2])**alpha)
+		  	})
+		  	pbm <- ((1/length(medoids)) *(max(diss2[medoids, ])/sum(rowSums((memb)*diss3)*ac$probs)))^2
+		  	ams <- sum(hightest.memb*sil*ac$probs)/sum(hightest.memb*ac$probs)
+		  	rm(hightest.memb)		    
 		  }else{
   			##Allocate to clusters
 		    memb <- apply(diss2, 1, which.min)
@@ -213,7 +234,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 		xb_all <- reframeData(calc_pam, "xb", k, "vector")
 		ams_all <- reframeData(calc_pam, "ams", k, "vector")
 		##Retrieve all clusterings
-		clustering_all_diss <- reframeData(calc_pam, "clustering",k, ifelse(method=="fuzzy", "list", "matrix"))
+		clustering_all_diss <- reframeData(calc_pam, "clustering",k, ifelse(method %in% c("fuzzy", "noise"), "list", "matrix"))
 		##Retrieve medoids
 		med_all_diss <- reframeData(calc_pam, "medoids", k, "matrix")
 		##Find best clustering
@@ -226,12 +247,12 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 			# adjustedRandIndex(tab)
 		# })
 		if(stability){
-			if(method=="fuzzy"){
+			if(method %in% c("noise", "fuzzy")){
 				foplan <- plan(sequential)
 			}
 			arilist <- foreach(j=1:R, .options.future = list(seed = TRUE, globals = structure(TRUE, add = c("ac", "clustering_all_diss", "method"))) ) %dofuture%{#on stocke chaque sample
 				
-				if(method=="fuzzy"){
+				if(method %in% c("noise", "fuzzy")){
 					tab <- as.table(crossmemb(clustering_all_diss[[j]]*ac$aggWeights, clustering_all_diss[[best]]*ac$aggWeights, relativize = FALSE))
 				}
 				else{
@@ -241,7 +262,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 				p()
 				val
 			}
-			if(method=="fuzzy"){
+			if(method %in% c("noise", "fuzzy")){
 				plan(foplan)
 			}
 			arimatrix <- do.call(rbind, arilist)	  
@@ -253,7 +274,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 			ari08 <- NA
 			jc08 <- NA
 		}
-		if(method=="fuzzy"){
+		if(method %in% c("noise", "fuzzy")){
 		  disagclust <- clustering_all_diss[[best]][ac$disaggIndex, ] ##Disaggregate here 
 		}else{
 		  disagclust <- clustering_all_diss[ac$disaggIndex, best] ##Disaggregate here
