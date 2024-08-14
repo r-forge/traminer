@@ -13,8 +13,8 @@ Cluster large databases of sequences for a different number of groups using the 
 \usage{
 seqclararange(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), 
   kvals = 2:10,  seqdist.args = list(method = "LCS"),
-  method = c("crisp", "fuzzy", "representativeness"), 
-  m = 1.5, criteria = c("distance"), stability = FALSE, 
+  method=c("crisp", "fuzzy", "representativeness", "noise"), 
+  m = 1.5, criteria = c("distance"), stability = FALSE, dnoise=NULL,
   parallel = FALSE, progressbar = FALSE, keep.diss = FALSE, 
   max.dist = NULL)
 }
@@ -25,10 +25,11 @@ seqclararange(seqdata, R = 100, sample.size = 40 + 2 * max(kvals),
   \item{sample.size}{Numeric. The size of the subsamples, the default values is the one proposed by Kaufmann and Rousseuuw (1990). However, larger values (typically between 1000 and 10 000) are recommended.}
   \item{kvals}{Numeric vector. The different number of groups to compute. }
   \item{seqdist.args}{List of arguments passed to \code{\link{seqdist}} for computing the distances.} 
-  \item{method}{Character. The clustering approach to use, with default to "crisp" clustering. "fuzzy" or "representativeness" approaches can also be used.}
+  \item{method}{Character. The clustering approach to use, with default to "crisp" clustering. "fuzzy", "noise" or "representativeness" approaches can also be used.}
   \item{m}{Numeric. Only used for fuzzy clustering, the value of the fuzzifier. }
   \item{criteria}{Character. The name of the criteria used for selecting the best clustering among the different runs. The following values are accepted: "distance" (Default, average value to cluster medoids),  "db" (Davies-Bouldin Index), "xb" (Xie-Beni index), "pbm" (PBM Index), "ams" (Average medoid silhouette value). }
   \item{stability}{Logical. If \code{TRUE}, stability measures are computed (can be time consuming, especially for fuzzy clustering). Default to \code{FALSE}.}
+  \item{dnoise}{Numerical. The theoretically defined distance to the noise cluster. Mandatory for noise clustering.}
   \item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link{plan}} is used. If \code{TRUE}, \code{\link{multisession}} \code{\link{plan}} is initialized using default values.}
 	\item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link{handlers}} is initialized.}
   \item{keep.diss}{Logical. Whether to keep the distances to the medoids. Set to \code{FALSE} by default.}
@@ -96,7 +97,7 @@ seqdplot(biofam.seq, group=bfclara$clustering$cluster3)
 ## Cluster quality indices estimation using boostrap
 
 bCQI <- bootclustrange(bfclara, biofam.seq, seqdist.args = list(method = "HAM"), 
-											 R = 3, sample.size = 10,  parallel=FALSE)
+  R = 3, sample.size = 10,  parallel=FALSE)
 
 bCQI
 plot(bCQI, norm="zscore")
