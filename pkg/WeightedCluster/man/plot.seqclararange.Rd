@@ -31,5 +31,4 @@ Plot of the cluster quality of a \code{\link{seqclararange} object.}
 \seealso{
 See \code{\link{seqclararange}} to produce a clustering objects.
 }
-\examples{
-}
+

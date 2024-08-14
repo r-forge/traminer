@@ -250,6 +250,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 			if(method %in% c("noise", "fuzzy")){
 				foplan <- plan(sequential)
 			}
+			j <- "BindingFIX"
 			arilist <- foreach(j=1:R, .options.future = list(seed = TRUE, globals = structure(TRUE, add = c("ac", "clustering_all_diss", "method"))) ) %dofuture%{#on stocke chaque sample
 				
 				if(method %in% c("noise", "fuzzy")){
@@ -262,6 +263,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2*max(kvals), kva
 				p()
 				val
 			}
+			rm(j)
 			if(method %in% c("noise", "fuzzy")){
 				plan(foplan)
 			}

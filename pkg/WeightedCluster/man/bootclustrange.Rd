@@ -65,6 +65,4 @@ FIXME.
 \seealso{
 See Also \code{\link{as.clustrange}} for the list of cluster quality indices that are computed.
 }
-\examples{
 
-}
