@@ -42,6 +42,7 @@ export(
   seqfpos,
   seqfposend,
   seqgen,
+  seqhasmiss,
   seqHtplot,
   seqibad,
   seqici,
