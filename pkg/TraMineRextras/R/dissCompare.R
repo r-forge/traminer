@@ -182,7 +182,7 @@ dissCompare <- function(diss,
           #weights <- c(attr(seq.a[[i]],"weights"),attr(seq.b[[i]],"weights"))
         suppressMessages(
             Results[i,] <-
-              seq.comp(r1, r2, diss.i, weights, is.LRT=is.LRT, is.BIC=is.BIC,
+              seqxcomp(r1, r2, diss.i, weights, is.LRT=is.LRT, is.BIC=is.BIC,
                  squared=squared, weighted=weighted, weight.by=weight.by,
                  LRTpow=LRTpow))
         }
@@ -211,7 +211,7 @@ dissCompare <- function(diss,
               r2 <- r.s2[j,] + length(idx.a[[i]])
             #}
             suppressMessages(t[j,] <-
-                seq.comp(r1, r2, diss.i, weights, is.LRT=is.LRT, is.BIC=is.BIC,
+                seqxcomp(r1, r2, diss.i, weights, is.LRT=is.LRT, is.BIC=is.BIC,
                   squared=squared, weighted=weighted, weight.by=weight.by,
                   LRTpow=LRTpow))
           }

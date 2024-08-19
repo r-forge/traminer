@@ -1,4 +1,10 @@
-                CHANGES IN TraMineRextras VERSION 0.7.8 [2024-03-16]
+                CHANGES IN TraMineRextras VERSION 0.7.9 [2024-03-19]
+                
+Misc.:
+    o   No changes.
+    
+
+                CHANGES IN TraMineRextras VERSION 0.6.8 [2024-03-17]
                 
 New function:
     o   dissCompare() comparison of two groups of data represented by 
@@ -6,7 +12,10 @@ New function:
         
 Bug fixes
     o   seqCompare() caused an error when only one group occurs in 
-        one of the sets. Now returns NA for such sets.                        
+        one of the sets. Now returns NA for such sets.
+    o   internal seq.comp() renamed as seqxcomp().
+    o   missing package anchors for Rd link targets. 
+                           
                 
                 CHANGES IN TraMineRextras VERSION 0.6.7 [2024-01-08]
 

@@ -200,7 +200,7 @@ seqCompare <- function(seqdata, seqdata2=NULL, group=NULL, set=NULL,
           weights <- c(attr(seq.a[[i]],"weights"),attr(seq.b[[i]],"weights"))
           suppressMessages(
             Results[i,] <-
-              seq.comp(r1, r2, diss, weights, is.LRT=is.LRT, is.BIC=is.BIC,
+              seqxcomp(r1, r2, diss, weights, is.LRT=is.LRT, is.BIC=is.BIC,
                  squared=squared, weighted=weighted, weight.by=weight.by,
                  LRTpow=LRTpow))
         }
@@ -240,7 +240,7 @@ seqCompare <- function(seqdata, seqdata2=NULL, group=NULL, set=NULL,
               suppressMessages(diss <- seqdist(seqAB, method=method, weighted=weighted, ...))
             }
             suppressMessages(t[j,] <-
-                seq.comp(r1, r2, diss, weights, is.LRT=is.LRT, is.BIC=is.BIC,
+                seqxcomp(r1, r2, diss, weights, is.LRT=is.LRT, is.BIC=is.BIC,
                   squared=squared, weighted=weighted, weight.by=weight.by,
                   LRTpow=LRTpow))
           }
@@ -284,7 +284,7 @@ seqCompare <- function(seqdata, seqdata2=NULL, group=NULL, set=NULL,
 }
 
 ####################
-seq.comp <- function(r1, r2, diss, weights, is.LRT,is.BIC, squared, weighted, weight.by,
+seqxcomp <- function(r1, r2, diss, weights, is.LRT,is.BIC, squared, weighted, weight.by,
                     LRTpow)
 {
   #print(length(r1))

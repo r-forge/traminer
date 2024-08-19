@@ -1,7 +1,19 @@
 \name{NEWS}
 \title{NEWS file of the TraMineRextras package}
 
-\section{Changes in version 0.7.8 [2024-03-16] }{
+\section{Changes in version 0.7.9 [2024-08-19] }{
+    \subsection{Misc.}{
+        \itemize{
+            \item
+            No changes
+        }
+    }
+}
+
+
+
+
+\section{Changes in version 0.6.8 [2024-08-17] }{
 
     \subsection{New function}{
         \itemize{
@@ -9,11 +21,15 @@
             \code{dissCompare()} comparison of two groups of data represented by a pairwise dissimilarity matrix.
         }
     }
-    
+
     \subsection{Bug fixes}{
         \itemize{
             \item
             \code{seqCompare()} caused an error when only one group occurs in one of the sets. Now returns NA for such sets.
+            \item
+            internal \code{seq.comp()} renamed as \code{seqxcomp()}.
+            \item
+            missing package anchors for Rd \code{link} targets.
         }
     }
 }

@@ -88,7 +88,7 @@ The computation is based on the pairwise distances between the sequences. The \c
   }
 Function \code{seqBIC} (and \code{seqLRT} with the \code{"BIC"} stat value) outputs a matrix with two columns, \code{Delta BIC} and \code{BF}.
 
-  \item{Delta BIC}{This is the difference between BIC of the model that does not distinguish the two groups and the model taking account of the distinction.
+  \item{Delta BIC}{This is the difference between BIC values of the model that does not distinguish the two groups and the model taking account of the distinction.
   }
   \item{Bayes Factor}{This is the Bayes factor associated with the BIC difference.
   }
@@ -98,7 +98,7 @@ Function \code{seqBIC} (and \code{seqLRT} with the \code{"BIC"} stat value) outp
 When \code{set=NULL}, the matrix has a single row. Otherwise, there is one row per distinct \code{set} value.
 }
 
-\seealso{\code{\link{dissassoc}}
+\seealso{\code{\link[TraMineR]{dissassoc}}
 }
 
 \author{Tim Liao and Gilbert Ritschard}
