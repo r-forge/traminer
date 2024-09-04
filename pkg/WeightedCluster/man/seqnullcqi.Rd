@@ -39,7 +39,7 @@ seqnullcqi(seqdata, clustrange, R, model=c("combined", "duration", "sequencing",
 	\item{alpha}{Transparency parameter for the lines to be drawn (only for \code{type="line"}).}
 	\item{digits}{Number of digits to be printed.}
 	\item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link[future]{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link[future]{plan}} is used. If \code{TRUE}, \code{\link[future]{multisession}} \code{\link[future]{plan}} is initialized using default values.}
-	\item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link[future]{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link[future]{handlers}} is initialized.}
+	\item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link[progressr]{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link[progressr]{handlers}} is initialized.}
 	\item{\dots}{Additionnal parameters passed to \code{\link{seqnull}} (for \code{seqnullcqi}) or \code{\link{plot}} or \code{\link{print}}.}
 }
 \details{
