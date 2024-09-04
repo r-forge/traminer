@@ -15,7 +15,7 @@ seqclararange(seqdata, R = 100, sample.size = 40 + 2 * max(kvals),
   kvals = 2:10,  seqdist.args = list(method = "LCS"),
   method=c("crisp", "fuzzy", "representativeness", "noise"), 
   m = 1.5, criteria = c("distance"), stability = FALSE, dnoise=NULL,
-  parallel = FALSE, progressbar = FALSE, keep.diss = FALSE, 
+  dlambda=NULL, parallel = FALSE, progressbar = FALSE, keep.diss = FALSE, 
   max.dist = NULL)
 }
 
@@ -116,7 +116,28 @@ plot(bfclaraf, norm="zscore")
 fuzzyseqplot(biofam.seq, group=bfclaraf$clustering$cluster3, type="I", 
   sortv="membership", membership.threashold=0.2)
 
+## Noise clustering
+bfclaran <- seqclararange(biofam.seq, R = 3, sample.size = 20, kvals = 2:3, 
+  method="noise", seqdist.args = list(method = "HAM"), dnoise=6,
+	parallel=FALSE)
 
+fuzzyseqplot(biofam.seq, group=bfclaran$clustering$cluster3, type="I", 
+  sortv="membership", membership.threashold=0.2)
 
+## Adaptative Noise clustering
+bfclaran <- seqclararange(biofam.seq, R = 3, sample.size = 20, kvals = 2:3, 
+  method="noise", seqdist.args = list(method = "HAM"), dlambda=1,
+	parallel=FALSE)
+
+fuzzyseqplot(biofam.seq, group=bfclaran$clustering$cluster3, type="I", 
+  sortv="membership", membership.threashold=0.2)
+
+## Adaptative Noise clustering
+bfclaran <- seqclararange(biofam.seq, R = 3, sample.size = 20, kvals = 2:3, 
+  method="noise", seqdist.args = list(method = "HAM"), dlambda=1,
+	parallel=FALSE)
+
+fuzzyseqplot(biofam.seq, group=bfclaran$clustering$cluster3, type="I", 
+  sortv="membership", membership.threashold=0.2)
 }
 
