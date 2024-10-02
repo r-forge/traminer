@@ -15,7 +15,7 @@ seqclararange(seqdata, R = 100, sample.size = 40 + 2 * max(kvals),
   kvals = 2:10,  seqdist.args = list(method = "LCS"),
   method=c("crisp", "fuzzy", "representativeness", "noise"), 
   m = 1.5, criteria = c("distance"), stability = FALSE, dnoise=NULL,
-  dlambda=NULL, parallel = FALSE, progressbar = FALSE, keep.diss = FALSE, 
+  parallel = FALSE, progressbar = FALSE, keep.diss = FALSE, 
   max.dist = NULL)
 }
 
@@ -80,7 +80,7 @@ biofam.seq <- seqdef(biofam[1:100, 10:25], alphabet=0:7, states=statelab)
 
 
 ## Clara clustering
-bfclara <- seqclararange(biofam.seq, R = 3, sample.size = 20, kvals = 2:3, 
+bfclara <- seqclararange(biofam.seq, R = 3, sample.size = 10, kvals = 2:3, 
   seqdist.args = list(method = "HAM"), parallel=FALSE, 
   stability=TRUE)
 
