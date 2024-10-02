@@ -23,12 +23,12 @@ bootclustrange(object, seqdata, seqdist.args = list(method = "LCS"),
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{A \code{\link{seqclararange}} \code{object} or a \code{data.frame} with the clustering to be evaluated.}
-\item{seqdata}{State sequence object of class \code{stslist}. The sequence data to use. Use \code{\link{seqdef}} to create such an object.}
-\item{seqdist.args}{List of arguments passed to \code{\link{seqdist}} for computing the distances.}
+\item{seqdata}{State sequence object of class \code{stslist}. The sequence data to use. Use \code{\link[TraMineR]{seqdef}} to create such an object.}
+\item{seqdist.args}{List of arguments passed to \code{\link[TraMineR]{seqdist}} for computing the distances.}
 \item{R}{Numeric. The number of subsamples to use.}
  \item{sample.size}{Numeric. The size of the subsamples, values between 1000 and 10 000 are recommended.}
-  \item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link{plan}} is used. If \code{TRUE}, \code{\link{multisession}} \code{\link{plan}} is initialized using default values.}
-	\item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link{handlers}} is initialized.}
+  \item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link[future]{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link[future]{plan}} is used. If \code{TRUE}, \code{\link[future]{multisession}} \code{\link[future]{plan}} is initialized using default values.}
+	\item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link[progressr]{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link[progressr]{handlers}} is initialized.}
   
   \item{sampling}{Character. The sampling procedure to be used: \code{"clustering"} (default) the sampling is stratified by the maximum number of clusters, use \code{"medoids"} to add the medoids in each subsamples, \code{"strata"} to stratify by the \code{strata} arguments, or \code{"random"} for random sampling.
 }

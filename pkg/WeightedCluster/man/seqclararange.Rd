@@ -20,18 +20,18 @@ seqclararange(seqdata, R = 100, sample.size = 40 + 2 * max(kvals),
 }
 
 \arguments{
-  \item{seqdata}{State sequence object of class \code{stslist}. The sequence data to use. Use \code{\link{seqdef}} to create such an object.}
+  \item{seqdata}{State sequence object of class \code{stslist}. The sequence data to use. Use \code{\link[TraMineR]{seqdef}} to create such an object.}
   \item{R}{Numeric. The number of subsamples to use.}
   \item{sample.size}{Numeric. The size of the subsamples, the default values is the one proposed by Kaufmann and Rousseuuw (1990). However, larger values (typically between 1000 and 10 000) are recommended.}
   \item{kvals}{Numeric vector. The different number of groups to compute. }
-  \item{seqdist.args}{List of arguments passed to \code{\link{seqdist}} for computing the distances.} 
+  \item{seqdist.args}{List of arguments passed to \code{\link[TraMineR]{seqdist}} for computing the distances.} 
   \item{method}{Character. The clustering approach to use, with default to "crisp" clustering. "fuzzy", "noise" or "representativeness" approaches can also be used.}
   \item{m}{Numeric. Only used for fuzzy clustering, the value of the fuzzifier. }
   \item{criteria}{Character. The name of the criteria used for selecting the best clustering among the different runs. The following values are accepted: "distance" (Default, average value to cluster medoids),  "db" (Davies-Bouldin Index), "xb" (Xie-Beni index), "pbm" (PBM Index), "ams" (Average medoid silhouette value). }
   \item{stability}{Logical. If \code{TRUE}, stability measures are computed (can be time consuming, especially for fuzzy clustering). Default to \code{FALSE}.}
   \item{dnoise}{Numerical. The theoretically defined distance to the noise cluster. Mandatory for noise clustering.}
-  \item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link{plan}} is used. If \code{TRUE}, \code{\link{multisession}} \code{\link{plan}} is initialized using default values.}
-	\item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link{handlers}} is initialized.}
+  \item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link[future]{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link[future]{plan}} is used. If \code{TRUE}, \code{\link[future]{multisession}} \code{\link[future]{plan}} is initialized using default values.}
+	\item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link[progressr]{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link[progressr]{handlers}} is initialized.}
   \item{keep.diss}{Logical. Whether to keep the distances to the medoids. Set to \code{FALSE} by default.}
   \item{max.dist}{Numeric. Maximal theoretical distance value between sequences. Required for \code{method="representativeness"} clustering.}
 
