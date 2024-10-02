@@ -60,7 +60,8 @@ To minimize the computation, the operation is repeated for different number of g
 	\item{clara:}{Detailed information on the best clustering for each number of groups, in the same order as kvals.}
 }
 \references{
-	FIXME: reference.
+	Studer, M., R. Sadeghi and L. Tochon (2024). Sequence Analysis for Large Databases. \emph{LIVES Working Papers 104} \doi{10.12682/lives.2296-1658.2024.104}
+
 }
 
 
@@ -74,7 +75,7 @@ data(biofam) #load illustrative data
 statelab <- c("Parent", "Left", "Married", "Left/Married",  "Child", 
             "Left/Child", "Left/Married/Child", "Divorced")
 ## Creating the state sequence object,
-biofam.seq <- seqdef(biofam[1:200, 10:25], alphabet=0:7, states=statelab)
+biofam.seq <- seqdef(biofam[1:100, 10:25], alphabet=0:7, states=statelab)
 
 
 
@@ -102,7 +103,7 @@ bCQI <- bootclustrange(bfclara, biofam.seq, seqdist.args = list(method = "HAM"),
 bCQI
 plot(bCQI, norm="zscore")
 
-
+\dontrun{
 ## Fuzzy clustering
 bfclaraf <- seqclararange(biofam.seq, R = 3, sample.size = 20, kvals = 2:3, 
   method="fuzzy", seqdist.args = list(method = "HAM"), 
@@ -124,20 +125,6 @@ bfclaran <- seqclararange(biofam.seq, R = 3, sample.size = 20, kvals = 2:3,
 fuzzyseqplot(biofam.seq, group=bfclaran$clustering$cluster3, type="I", 
   sortv="membership", membership.threashold=0.2)
 
-## Adaptative Noise clustering
-bfclaran <- seqclararange(biofam.seq, R = 3, sample.size = 20, kvals = 2:3, 
-  method="noise", seqdist.args = list(method = "HAM"), dlambda=1,
-	parallel=FALSE)
-
-fuzzyseqplot(biofam.seq, group=bfclaran$clustering$cluster3, type="I", 
-  sortv="membership", membership.threashold=0.2)
-
-## Adaptative Noise clustering
-bfclaran <- seqclararange(biofam.seq, R = 3, sample.size = 20, kvals = 2:3, 
-  method="noise", seqdist.args = list(method = "HAM"), dlambda=1,
-	parallel=FALSE)
-
-fuzzyseqplot(biofam.seq, group=bfclaran$clustering$cluster3, type="I", 
-  sortv="membership", membership.threashold=0.2)
+}
 }
 

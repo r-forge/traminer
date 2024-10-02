@@ -1,7 +1,8 @@
 seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), kvals = 2:10,
                           seqdist.args = list(method = "LCS"), method = c("crisp", "fuzzy", "representativeness", "noise"), m = 1.5,
-                          criteria = c("distance"), stability = FALSE, dnoise = NULL, dlambda=NULL,
+                          criteria = c("distance"), stability = FALSE, dnoise = NULL,
                           parallel = FALSE, progressbar = FALSE, keep.diss = FALSE, max.dist = NULL) {
+  dlambda <- NULL ## To keep internal code
   ## Setting up and checks
   message(" [>] Starting generalized CLARA for sequence analysis.")
 

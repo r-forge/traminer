@@ -1,4 +1,4 @@
-              CHANGES IN WeightedCluster VERSION 1.7-2
+              CHANGES IN WeightedCluster VERSION 1.8-0
 
 NEW FEATURES
   o seqclararange(): Clustering large databases of sequences data using improved CLARA algorithm.

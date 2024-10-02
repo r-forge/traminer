@@ -32,3 +32,7 @@ Plot of the cluster quality of a \code{\link{seqclararange} object.}
 See \code{\link{seqclararange}} to produce a clustering objects.
 }
 
+\references{
+	Studer, M., R. Sadeghi and L. Tochon (2024). Sequence Analysis for Large Databases. \emph{LIVES Working Papers 104} \doi{10.12682/lives.2296-1658.2024.104}
+
+}

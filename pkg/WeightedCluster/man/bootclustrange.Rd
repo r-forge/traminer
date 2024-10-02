@@ -59,10 +59,11 @@ The clustering can be specified either as a \code{\link{seqclararange}} object o
 A \code{clustrange} object, see \code{\link{as.clustrange}} with the bootrapped values.
 }
 \references{
-FIXME.
+	Studer, M., R. Sadeghi and L. Tochon (2024). Sequence Analysis for Large Databases. \emph{LIVES Working Papers 104} \doi{10.12682/lives.2296-1658.2024.104}
 }
 
+
 \seealso{
-See Also \code{\link{as.clustrange}} for the list of cluster quality indices that are computed.
+See Also \code{\link{as.clustrange}} for the list of cluster quality indices that are computed, and \code{\link{seqclararange}} for example of use
 }
 
