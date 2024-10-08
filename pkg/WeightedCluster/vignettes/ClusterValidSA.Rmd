@@ -1,8 +1,11 @@
 ---
 title: 'Validating Sequence Analysis Typologies Using Parametric Bootstrap: R Code introduction'
 author: "Matthias Studer"
-output:
-  html_document:
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Validating Sequence Analysis Typologies Using Parametric Bootstrap: R Code introduction}
+  %\VignetteEncoding{UTF-8}
     
 ---
 
@@ -13,7 +16,7 @@ This document provides a very quick introduction to the `R` code needed to use p
 
 - Studer, M. (2021). Validating Sequence Analysis Typologies Using Parametric Bootstraps. *Sociological Methodology 51(2)*, 290--318. https://doi.org/10.1177/00811750211014232 
 
-Warning!! To avoid lengthy computations, we restricted the number of bootstraps to 300. We recommend using a higher value (i.e., 1000). We also set the seed for reproducible results.
+Warning!! To avoid lengthy computations, we restricted the number of bootstraps to 100. We recommend using a higher value (i.e., 1000). We also set the seed for reproducible results.
 
 
 ```{r, message=FALSE}
@@ -83,7 +86,7 @@ The following `R` code estimate expected values of the cluster quality indices w
 
 
 ```{r}
-bcq.combined <- seqnullcqi(mvad.seq, clustqual, R=300, model="combined", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
+bcq.combined <- seqnullcqi(mvad.seq, clustqual, R=100, model="combined", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
 ```
  
 
@@ -125,7 +128,7 @@ plot(bcq.combined, stat="ASW", type="line")
 To use another null model, one needs to change the `model` argument of the `seqnullcqi` function. The randomized sequencing keep the duration attached to each state, but randomizes the ordering of the spells. It can be used to uncover sequencing structure of the data. 
 
 ```{r}
-bcq.seq <- seqnullcqi(mvad.seq, clustqual, R=300, model="sequencing", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
+bcq.seq <- seqnullcqi(mvad.seq, clustqual, R=100, model="sequencing", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
 ```
 
 We can then plot the results as before. Notice that solutions between 3 and 6 are below the critical line.
@@ -141,7 +144,7 @@ plot(bcq.seq, stat="ASW", type="line")
 The randomized duration keeps the same ordering of the states, but randomizes the time spent in each spell. It can be used to uncover the duration-related structure of the data. 
 
 ```{r}
-bcq.dur <- seqnullcqi(mvad.seq, clustqual, R=300, model="duration", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
+bcq.dur <- seqnullcqi(mvad.seq, clustqual, R=100, model="duration", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
 ```
 
 We can then plot the results as before. The solutions 3 and 4 groups solutions are below the "significance line". Otherwise, the ranking of the solutions is the same. 
@@ -156,7 +159,7 @@ The state independence null model generates sequence, position by position, inde
 
 
 ```{r, cache=TRUE}
-bcq.stateindep <- seqnullcqi(mvad.seq, clustqual, R=300, model="stateindep", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
+bcq.stateindep <- seqnullcqi(mvad.seq, clustqual, R=100, model="stateindep", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
 ```
 
 Bootstrapped CQI values are extremely low compared to our clustering, meaning that we have a strong longitudinal structure (not surprising!).
@@ -172,7 +175,7 @@ The first-order Markov null model generates sequences using time-invariant trans
 
 
 ```{r, cache=TRUE}
-bcq.Markov <- seqnullcqi(mvad.seq, clustqual, R=300, model="Markov", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
+bcq.Markov <- seqnullcqi(mvad.seq, clustqual, R=100, model="Markov", seqdist.args=list(method="HAM"), hclust.method="ward.D", parallel = TRUE)
 ```
 
 
