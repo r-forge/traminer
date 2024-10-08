@@ -2,6 +2,7 @@
 title: 'Validating Sequence Analysis Typologies Using Parametric Bootstrap: R Code introduction'
 author: "Matthias Studer"
 output: rmarkdown::html_vignette
+bibliography: manual.bib 
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Validating Sequence Analysis Typologies Using Parametric Bootstrap: R Code introduction}
@@ -15,6 +16,8 @@ vignette: >
 This document provides a very quick introduction to the `R` code needed to use parametric bootstraps for typology validation in sequence analysis. Readers interested in the methods and the exact interpretation of the results are referred to:
 
 - Studer, M. (2021). Validating Sequence Analysis Typologies Using Parametric Bootstraps. *Sociological Methodology 51(2)*, 290--318. https://doi.org/10.1177/00811750211014232 
+
+You are kindly asked to cite the above reference if you use the methods presented in this document. 
 
 **Warning!!** To avoid lengthy computations (and overloading the CRAN server), we restricted the number of bootstraps to 100. We recommend using a higher value (i.e., 1000). 
 
@@ -73,7 +76,7 @@ clustqual
 
 # Parametric Bootstrap
 
-Parametric bootstrap aims to provide baseline values obtained by clustering *similar* but *non-clustered* data. This can be computed using the `seqnullcqi` function with the following parameters:
+Parametric bootstrap aims to provide baseline values obtained by clustering *similar* but *non-clustered* data [@Studer2021]. This can be computed using the `seqnullcqi` function with the following parameters:
 
  - `R`: number of bootstraps.
  - `model`: The null model (see table below
