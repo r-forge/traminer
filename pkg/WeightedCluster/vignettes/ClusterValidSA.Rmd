@@ -16,7 +16,9 @@ This document provides a very quick introduction to the `R` code needed to use p
 
 - Studer, M. (2021). Validating Sequence Analysis Typologies Using Parametric Bootstraps. *Sociological Methodology 51(2)*, 290--318. https://doi.org/10.1177/00811750211014232 
 
-Warning!! To avoid lengthy computations, we restricted the number of bootstraps to 100. We recommend using a higher value (i.e., 1000). We also set the seed for reproducible results.
+**Warning!!** To avoid lengthy computations (and overloading the CRAN server), we restricted the number of bootstraps to 100. We recommend using a higher value (i.e., 1000). 
+
+Let's start by setting the seed for reproducible results.
 
 
 ```{r, message=FALSE}
