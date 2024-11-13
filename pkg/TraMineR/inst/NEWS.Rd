@@ -1,12 +1,22 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-11 [2024-05-21] }{
+\section{Changes in version 2.3-11 [2024-11-13] }{
 
-    \subsection{Misc.}{
+    \subsection{Changes in existing functions}{
         \itemize{
             \item
-            No changes.
+            \code{dissrep()}: when all distances are zero, the
+            number \code{nb} of cases in the neighborhood of the
+            representative is set as the sum of weights
+            (was zero in previous versions)
+        }
+    }
+
+    \subsection{Bug fixes}{
+        \itemize{
+            \item
+            \code{dissrep()} error when seqdata is a single sequence.
         }
     }
 }

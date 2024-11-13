@@ -1,8 +1,16 @@
 ## =========
-Version 2.3-11 [2024-05-21]
+Version 2.3-11 [2024-11-13]
 
-Misc.:
-  - No changes
+Changes in existing functions:
+
+  - dissrep(): when all distances are zero, the 
+    number nb of cases in the neighborhood of the 
+    representative is set as the sum of weights 
+    (was zero in previous versions)
+
+Bug fixes:
+
+  - dissrep() error when seqdata is a single sequence
 
 Version 2.2-10 [2024-05-20]
 
