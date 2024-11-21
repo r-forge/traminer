@@ -13,6 +13,10 @@ vignette: >
 
 # Introduction 
 
+```{r, include=FALSE}
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+```
+
 This document provides a very quick introduction to the `R` code needed to use parametric bootstraps for typology validation in sequence analysis. Readers interested in the methods and the exact interpretation of the results are referred to:
 
 - Studer, M. (2021). Validating Sequence Analysis Typologies Using Parametric Bootstraps. *Sociological Methodology 51(2)*, 290--318. https://doi.org/10.1177/00811750211014232 

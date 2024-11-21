@@ -11,6 +11,9 @@ vignette: >
 ---
 
 # Introduction 
+```{r, include=FALSE}
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+```
 
 
 This document provides an introduction to the `R` code to create typologies of trajectories in large databases using the algorithm provided by the `WeightedCluster R` library [@Studer2013]. It also presents methods to evaluate the quality of the resulting clustering in large databases. Readers interested by the methods and looking for more information on the interpretation of the results are referred to:
@@ -93,7 +96,7 @@ plot(bfclara, stat="stability")
 The `bootclustrange` function can be used to bootstrap the cluster quality measures. It has the following arguments. The first object is the clustering to be evaluated, as a `seqclararange` object, a `data.frame` or a vector. Second, the sequences that were used to create the typology. We should further specify the distance measure to use (as before), the number of bootstraps (`R` argument), and the subsample size (here 500). We would generally use higher values for this last two arguments. Finally, the `parallel` and `progressbar` arguments could be used as before. The resulting object is then printed and the standardized value of the CQI are plotted. The results lead to the same conclusion as for the medoid-based CQI. 
 
 
-```{r bcqi}
+```{r bcqi, fig.width=8, fig.height=5}
 	bCQI <- bootclustrange(bfclara, biofam.seq, seqdist.args = list(method = "LCS"), R = 100, sample.size = 500,  parallel=TRUE)
 	bCQI
   plot(bCQI, norm="zscore")
@@ -116,7 +119,7 @@ By setting `method="fuzzy"` in the `seqclararange` function, the fuzzy version o
 
 
 
-```{r seqclarafuzzy, warning=FALSE, message=FALSE}
+```{r seqclarafuzzy, warning=FALSE, message=FALSE, fig.width=8, fig.height=5}
 bfclaraf <- seqclararange(biofam.seq, R = 100, sample.size = 200, kvals = 2:10, method="fuzzy",
 							seqdist.args = list(method = "LCS"), parallel=TRUE)
 bfclaraf
@@ -127,6 +130,6 @@ The XB and AMS index favor a four or six cluster solution. Several plots are ava
 
 
 
-```{r seqdplotclustf, dev="png", dpi=600}
+```{r seqdplotclustf, dev="png", fig.width=8, fig.height=8}
 fuzzyseqplot(biofam.seq, group=bfclaraf$clustering$cluster4, type="I", sortv="membership", membership.threashold=0.4)
 ```
