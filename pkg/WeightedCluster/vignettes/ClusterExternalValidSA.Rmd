@@ -14,7 +14,22 @@ vignette: >
 # Introduction 
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+knitr::knit_hooks$set(time_it = local({
+  now <- NULL
+  function(before, options) {
+    if (before) {
+      # record the current time before each chunk
+      now <<- Sys.time()
+    } else {
+      # calculate the time difference after a chunk
+      res <- difftime(Sys.time(), now, units = "secs")
+      # return a character string to show the time
+      paste("Time for this code chunk to run:", round(res,
+        2), "seconds")
+    }
+  }
+}))
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"), time_it=TRUE)
 ```
 
 This document provides a very quick introduction to the `R` code needed to estimate the quality of a typology in a subsequent regression or when the relationship between the typology and the covariate is of key interest. Readers interested in the methods and the exact interpretation of the results are referred to:
@@ -119,3 +134,11 @@ We can notice that the 6 cluster solutions contains a new joblessness cluster, w
 
 
 The presented might lead to different recommendations than the usual cluster quality indices, because it focuses on a relationship with a covariate. The method often suggests a higher number of groups. 
+
+
+```{r, include=FALSE}
+knitr::write_bib(file = 'packages.bib')
+```
+
+
+# References

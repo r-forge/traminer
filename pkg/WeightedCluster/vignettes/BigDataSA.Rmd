@@ -12,7 +12,22 @@ vignette: >
 
 # Introduction 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+knitr::knit_hooks$set(time_it = local({
+  now <- NULL
+  function(before, options) {
+    if (before) {
+      # record the current time before each chunk
+      now <<- Sys.time()
+    } else {
+      # calculate the time difference after a chunk
+      res <- difftime(Sys.time(), now, units = "secs")
+      # return a character string to show the time
+      paste("Time for this code chunk to run:", round(res,
+        2), "seconds")
+    }
+  }
+}))
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"), time_it=TRUE)
 ```
 
 
@@ -23,7 +38,7 @@ This document provides an introduction to the `R` code to create typologies of t
 
 You are kindly asked to cite the above reference if you use the methods presented in this document. 
 
-**Warning!!** To avoid lengthy computations (and overloading the CRAN server), we restricted the number of iterations and strongly recommend using higher values. 
+**Warning!!** To avoid lengthy computations (and overloading the CRAN server), we restricted the number of iterations and the sample size. We strongly recommend using much higher values. 
 
 We start by loading the required library and setting the seed. 
 
@@ -56,13 +71,13 @@ seqdplot(biofam.seq, legend.prop=0.2)
 CLARA for SA is available in the `seqclararange` function. It is used as follows:
 
 ```{r seqclaraex, warning=FALSE, message=FALSE}
-bfclara <- seqclararange(biofam.seq, R = 100, sample.size = 200, kvals = 2:10, 
-						 seqdist.args = list(method = "LCS"), parallel=TRUE, 
+bfclara <- seqclararange(biofam.seq, R = 50, sample.size = 100, kvals = 2:10, 
+						 seqdist.args = list(method = "HAM"), parallel=TRUE, 
                          stability=TRUE)
 ```
 
 
-The function requires us to specify the sequence to cluster (our `biofam.seq` sequence object), the number of iterations (argument `R`, here set to 100 to avoid long computation time, larger values are recommended) and the subsample size (argument `sample.size`, here again set to the low value of 200 for illustrative purpose). The number of groups in our typology is set using the `kvals` arguments, here between 2 and ten groups solutions. We directly specify a range of values that will be considered later on. Finally, we need to specify how to compute the distance between sequences through the `seqdist.args` argument as a `list` object. All the arguments specified here will be directly passed to the `seqdist` function. Therefore, any distance measures available in `seqdist` can be used here. Finally, we set `stability=TRUE` to estimate the stability of the clustering among the subsamples.
+The function requires us to specify the sequence to cluster (our `biofam.seq` sequence object), the number of iterations (argument `R`, here set to 50 to avoid long computation time, larger values are recommended) and the subsample size (argument `sample.size`, here again set to the low value of 100 for illustrative purpose). The number of groups in our typology is set using the `kvals` arguments, here between 2 and ten groups solutions. We directly specify a range of values that will be considered later on. Finally, we need to specify how to compute the distance between sequences through the `seqdist.args` argument as a `list` object. All the arguments specified here will be directly passed to the `seqdist` function. Therefore, any distance measures available in `seqdist` can be used here. Finally, we set `stability=TRUE` to estimate the stability of the clustering among the subsamples.
 
 Setting `parallel=TRUE`, a default parallel back-end is set up using the future framework [@Bengtsson2021]. However, any parallel back-end previously defined with the `plan` function will be used when `parallel=FALSE`. The parallel protocol can then be adapted to specific environments, for instance some High Performance Computing (HPC) server relies on specific protocols (MPI,...). As implied by the name, setting `progressbar=TRUE` shows information (and estimated computation time) on the progress of the computations.
 
@@ -93,11 +108,11 @@ Here again, the five-cluster solution shows the highest CQI values. However, the
 plot(bfclara, stat="stability")
 ```
 
-The `bootclustrange` function can be used to bootstrap the cluster quality measures. It has the following arguments. The first object is the clustering to be evaluated, as a `seqclararange` object, a `data.frame` or a vector. Second, the sequences that were used to create the typology. We should further specify the distance measure to use (as before), the number of bootstraps (`R` argument), and the subsample size (here 500). We would generally use higher values for this last two arguments. Finally, the `parallel` and `progressbar` arguments could be used as before. The resulting object is then printed and the standardized values of the CQI are plotted. The results lead to the same conclusion as for the medoid-based CQI. 
+The `bootclustrange` function can be used to bootstrap the cluster quality measures. It has the following arguments. The first object is the clustering to be evaluated, as a `seqclararange` object, a `data.frame` or a vector. Second, the sequences that were used to create the typology. We should further specify the distance measure to use (as before), the number of bootstraps (`R` argument), and the subsample size (here 100). We would generally use higher values for this last two arguments. Finally, the `parallel` and `progressbar` arguments could be used as before. The resulting object is then printed and the standardized values of the CQI are plotted. The results lead to the same conclusion as for the medoid-based CQI. 
 
 
 ```{r bcqi, fig.width=8, fig.height=5}
-	bCQI <- bootclustrange(bfclara, biofam.seq, seqdist.args = list(method = "LCS"), R = 100, sample.size = 500,  parallel=TRUE)
+	bCQI <- bootclustrange(bfclara, biofam.seq, seqdist.args = list(method = "HAM"), R = 50, sample.size = 100,  parallel=TRUE)
 	bCQI
   plot(bCQI, norm="zscore")
 ```
@@ -120,8 +135,8 @@ By setting `method="fuzzy"` in the `seqclararange` function, the fuzzy version o
 
 
 ```{r seqclarafuzzy, warning=FALSE, message=FALSE, fig.width=8, fig.height=5}
-bfclaraf <- seqclararange(biofam.seq, R = 100, sample.size = 200, kvals = 2:10, method="fuzzy",
-							seqdist.args = list(method = "LCS"), parallel=TRUE)
+bfclaraf <- seqclararange(biofam.seq, R = 50, sample.size = 100, kvals = 2:10, method="fuzzy",
+							seqdist.args = list(method = "HAM"), parallel=TRUE)
 bfclaraf
 plot(bfclaraf, norm="zscore")
 ```
