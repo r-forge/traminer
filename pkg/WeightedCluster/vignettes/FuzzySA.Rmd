@@ -1,11 +1,11 @@
 ---
-title: 'Fuzzy and Property-Based Clustering for Sequence Analysis: R Code introduction'
+title: 'Short R Tutorial: Fuzzy and Property-Based Clustering for Sequence Analysis'
 author: "Matthias Studer"
 output: rmarkdown::html_vignette
 bibliography: [packages.bib,manual.bib]
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Fuzzy and Property-Based Clustering for Sequence Analysis: R Code introduction}
+  %\VignetteIndexEntry{Short R Tutorial: Fuzzy and Property-Based Clustering for Sequence Analysis}
   %\VignetteEncoding{UTF-8}
     
 ---
@@ -178,7 +178,7 @@ pclustqual
 
 The clustering solution can then be accessed and plotted using the same procedure as for any cluster algorithms, e.g.:
 
-```{r}
+```{r, fig.width=8, fig.height=5}
 seqdplot(biofam.seq, pclustqual$clustering$cluster4)
 ```
 

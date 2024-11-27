@@ -1,11 +1,11 @@
 ---
-title: 'Sequence Analysis Typologies for Large Databases: R Code introduction'
+title: 'Short R Tutorial: Sequence Analysis Typologies for Large Databases'
 author: "Matthias Studer"
 output: rmarkdown::html_vignette
 bibliography: manual.bib 
 vignette: >
   %\VignetteEngine{knitr::rmarkdown} 
-  %\VignetteIndexEntry{Sequence Analysis Typologies for Large Databases: R Code introduction}
+  %\VignetteIndexEntry{Short R Tutorial: Sequence Analysis Typologies for Large Databases}
   %\VignetteEncoding{UTF-8}
     
 ---

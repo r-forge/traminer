@@ -1,11 +1,11 @@
 ---
-title: 'Validating Sequence Analysis Typologies Using Parametric Bootstrap: R Code introduction'
+title: 'Short R Tutorial: Validating Sequence Analysis Typologies Using Parametric Bootstrap'
 author: "Matthias Studer"
 output: rmarkdown::html_vignette
 bibliography: manual.bib 
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Validating Sequence Analysis Typologies Using Parametric Bootstrap: R Code introduction}
+  %\VignetteIndexEntry{Short R Tutorial: Validating Sequence Analysis Typologies Using Parametric Bootstrap}
   %\VignetteEncoding{UTF-8}
     
 ---

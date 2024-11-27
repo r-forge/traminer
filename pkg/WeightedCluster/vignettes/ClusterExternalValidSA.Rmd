@@ -1,11 +1,11 @@
 ---
-title: 'Validating Sequence Analysis Typologies To be Used in Subsequent Regression: R Code introduction'
+title: 'Short R Tutorial: Validating Sequence Analysis Typologies To be Used in Subsequent Regression'
 author: "Matthias Studer"
 output: rmarkdown::html_vignette
 bibliography: [manual.bib,packages.bib]
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Validating Sequence Analysis Typologies To be Used in Subsequent Regression: R Code introduction}
+  %\VignetteIndexEntry{Short R Tutorial: Validating Sequence Analysis Typologies To be Used in Subsequent Regression}
   %\VignetteEncoding{UTF-8}
     
 ---
