@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-11 [2024-11-13] }{
+\section{Changes in version 2.3-11 [2024-12-05] }{
 
     \subsection{Changes in existing functions}{
         \itemize{
@@ -17,6 +17,8 @@
         \itemize{
             \item
             \code{dissrep()} error when seqdata is a single sequence.
+            \item
+            \code{seqecreate()} (and \code{tmrsequenceseveral} cpp function): segfault error when intEvent is NULL. (Fix required by Brian Ripley)
         }
     }
 }
