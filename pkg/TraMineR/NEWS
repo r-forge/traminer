@@ -1,5 +1,13 @@
 ## =========
-Version 2.3-11 [2024-12-05]
+Version 2.3-12 [2024-12-08]
+
+Misc.:
+
+  - No changes.
+
+
+## =========
+Version 2.2-11 [2024-12-08]
 
 Changes in existing functions:
 
@@ -15,6 +23,7 @@ Bug fixes:
     segfault error when intEvent is NULL. 
     (Fix required by Brian Ripley.)
 
+## =========
 Version 2.2-10 [2024-05-20]
 
 New functions:
