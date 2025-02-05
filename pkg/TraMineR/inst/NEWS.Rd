@@ -1,12 +1,12 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-12 [2024-12-08] }{
+\section{Changes in version 2.3-12 [2025-02-05] }{
 
-    \subsection{Misc.}{
+    \subsection{Bug fixes}{
         \itemize{
             \item
-            No changes.
+            \code{dissdomassoc()}: issue with ties when ranking values for spearman correlation.
         }
     }
 }
