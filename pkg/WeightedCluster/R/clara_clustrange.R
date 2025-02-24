@@ -132,9 +132,14 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
       sil <- ((alphabeta[2, ] - alphabeta[1, ]) / pmax(alphabeta[2, ], alphabeta[1, ]))
       if (method == "fuzzy") {
         ## Allocate to clusters using FCM formulae
-        memb <- (1 / diss2)^(1 / (m - 1))
-        memb <- memb / rowSums(memb)
-        memb[diss2 == 0] <- 1
+		zerodistcond <- diss2==0
+		allmed <- rowSums(zerodistcond)>0
+		mexp <- -(1 / (m - 1))
+        memb <- diss2^mexp
+        memb[allmed, ] <- 0
+        memb[zerodistcond] <- 1
+		memb <- memb / rowSums(memb)
+		rm(zerodistcond, allmed)
         ## Compute criterion (FCMdd Formulae)
         ## mean_diss <- sum(rowSums((memb^m)*diss2)*ac$aggWeights)
         mean_diss <- sum(rowSums((memb^m) * diss2) * ac$probs)
@@ -151,10 +156,16 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
         rm(hightest.memb)
       } else if (method == "noise") {
         ## Allocate to clusters using FCM formulae
+		
         diss3 <- cbind(diss2, dnoise)
-        memb <- (1 / diss3)^(1 / (m - 1))
-        memb <- memb / rowSums(memb)
-        memb[diss3 == 0] <- 1
+		zerodistcond <- diss3==0
+		allmed <- rowSums(zerodistcond)>0
+        mexp <- -(1 / (m - 1))
+        memb <- diss3^mexp
+        memb[allmed, ] <- 0
+        memb[zerodistcond] <- 1
+		memb <- memb / rowSums(memb)
+		rm(zerodistcond, allmed)
         ## Compute criterion (FCMdd Formulae)
         ## mean_diss <- sum(rowSums((memb^m)*diss2)*ac$aggWeights)
         mean_diss <- sum(rowSums((memb^m) * diss3) * ac$probs)
