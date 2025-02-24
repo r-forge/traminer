@@ -1,10 +1,19 @@
-                CHANGES IN TraMineRextras VERSION 0.7.9 [2024-03-19]
+                CHANGES IN TraMineRextras VERSION 0.7.9 [2025-02-24]
                 
 Misc.:
-    o   No changes.
+    o   seqCompare() and dissCompare() gains logical argument 
+        inc.df to control whether the degrees of freedom of the LRT 
+        returned should be included in the table. In addition, 
+        in case of multiple samples, i.e., when s is not zero but 
+        smaller than the number of cases of the most frequent 
+        category, the returned LRT is now the sum of the individual 
+        LRTs (previously was the average) and its associated 
+        chi-square p-value is obtained with the corresponding 
+        degrees of freedom.
+.
     
 
-                CHANGES IN TraMineRextras VERSION 0.6.8 [2024-03-17]
+                CHANGES IN TraMineRextras VERSION 0.6.8 [2024-08-17]
                 
 New function:
     o   dissCompare() comparison of two groups of data represented by 
