@@ -21,7 +21,7 @@ regressboot(diss, covar, df, B = 500, count = FALSE,
   \item{algo}{The clustering algorithm as a character string. Currently only "pam" (calling the function \code{wcKMedRange}) and "hierarchical" (calling the function \code{fastcluster::hclust}) are supported. By default "pam".}
   \item{method}{A character string with the method argument of \code{hclust}, "ward.D" by default.}
   \item{fixed}{Logical. TRUE implies that the number of clusters is the same in every bootstrap. FALSE (default) implies that an optimal number of clusters is evaluated each time.}
-  \item{ncluster}{Integer. Either the number of clusters in every bootstrap if \code{fixed} is TRUE or the maximum number of clusters (starting from 2) to be evaluated in each bootstrap if {fixed} is FALSE.}
+  \item{ncluster}{Integer. Either the number of clusters in every bootstrap if \code{fixed} is TRUE or the maximum number of clusters (starting from 2) to be evaluated in each bootstrap if \code{fixed} is FALSE.}
   \item{eval}{A character string with the cluster quality index to be evaluated for each new partition. Any column of \code{as.clustrange} is supported, "CH" (the Calinski-Harabasz index) by default. Also works with \code{algo}= "pam".}
   \item{parallel}{A character string with the type of parallel operation to be used (if any) by the function \code{boot:boot}. Options are "no" (default), "multicore" and "snow" (for Windows).}
   \item{ncpus}{Integer. Number of processes to be used in case of parallel operation. Typically, one would chose this to be the number of available CPUs.}

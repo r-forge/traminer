@@ -23,17 +23,17 @@ The output of \code{rarcat} is a list with the following components:
   \item{nobs}{An integer with the number of observations (i.e., number of estimated AMES from the function \code{regressboot}) used to compute the robust estimates in the multilevel model. Due to missing observations when an individual does not appear in a bootstrap, \code{nobs < m x B}, where \code{m < M} is the number of individuals in a given cluster, \code{M} is the total number of individuals and \code{B} is the total number of bootstrap in \code{regressboot}.}
   \item{pooled.ame}{A numeric value indicating the pooled AME, which is the mean change in cluster membership probability for a change in the level of the covariate of interest over all bootstraps and all individuals belonging to the reference cluster in the original typology.}
   \item{standard.error}{Standard error of the pooled AME, which diminishes asymptotically as the number of bootstrap increases.}
-  \item{bootstrap.deviation}{The estimate for the standard deviation of the bootstrap random effect. This can be used to construct a prediction interval for the association of interest (see Roth et al. [2024] for details on how to compute this).}
+  \item{bootstrap.deviation}{The estimate for the standard deviation of the bootstrap random effect. This can be used to construct a prediction interval for the association of interest (see Roth et al. 2024 for details on how to compute this).}
   \item{individual.deviation}{The estimate for the standard deviation of the bootstrap random effect.}
   \item{bootstrap.ranef}{A vector of size \code{B} containing the estimated random effects for each bootstrap.}
   \item{individual.ranef}{A vector of size \code{m} containing the estimated random effects for each individual in the reference cluster.}
 }
 \references{
-Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303. https://doi.org/10.1186/s12874-024-02435-8.
+Roth, L., Studer, M., Zuercher, E., and Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303.
 
 Studer, M. (2013). WeightedCluster library manual: A practical guide to creating typologies of trajectories in the social sciences with R. University of Geneva.
 
-Fernández-Castilla, B., Maes, M., Declercq, L., Jamshidi, L., Beretvas, S. N., Onghena, P., & Van den Noortgate, W. (2019). A demonstration and evaluation of the use of cross-classified random-effects models for meta-analysis. Behavior research methods, 51(3), 1286–1304. https://doi.org/10.3758/s13428-018-1063-2
+Fernandez-Castilla, B., Maes, M., Declercq, L., Jamshidi, L., Beretvas, S. N., Onghena, P., and Van den Noortgate, W. (2019). A demonstration and evaluation of the use of cross-classified random-effects models for meta-analysis. Behavior research methods, 51(3), 1286–1304.
 }
 \author{
 Leonard Roth
@@ -89,8 +89,8 @@ covar <- c("funemp")
 ## maximizing the CH index
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
 bootout <- regressboot(diss, covar, mvad, B = 50, 
-                        algo = "hierarchical", method = "ward.D", 
-                        ncluster = 10)
+                      algo = "hierarchical", method = "ward.D", 
+                      ncluster = 10)
 table(bootout$optimal.number)
 bootout$assoc.char
                         

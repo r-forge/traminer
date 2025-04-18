@@ -19,7 +19,7 @@ rarcattables <- function(clustering, covar, df, bootout=NULL, transformation=FAL
     
     df$membership <- clustering == i
     mod <- glm(formula, df, family = "binomial")
-    tmp <- summary(margins(mod))
+    tmp <- summary(margins::margins(mod))
     #print(tmp)
     
     # Set up with the specific associations

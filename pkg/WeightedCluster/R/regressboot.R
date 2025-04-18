@@ -16,9 +16,9 @@ regressboot <- function(diss, covar, df, B=500, count=FALSE,
     stop("Please give a single number as ncluster (see documentation)")
   }
   
-  res <- boot(diss, amemat, B, df=df, covar=covar, algo=algo, method=method, 
-              eval=eval, ncluster=ncluster, fixed=fixed, count=count, 
-              parallel=parallel, ncpus=ncpus, cl=cl)
+  res <- boot::boot(diss, amemat, B, df=df, covar=covar, algo=algo, method=method, 
+                    eval=eval, ncluster=ncluster, fixed=fixed, count=count, 
+                    parallel=parallel, ncpus=ncpus, cl=cl)
   originres <- res$t0
   bootres <- t(res$t)
   
@@ -35,7 +35,8 @@ regressboot <- function(diss, covar, df, B=500, count=FALSE,
   # Extract information once
   first <- bootres[1:nrow(df),]
   optimal.number <- apply(first, 2, function(x) length(unique(na.omit(x))))
-  cluster.solution <- apply(first, 2, function(x) as.numeric(factor(x), levels = unique(na.omit(x))))
+  cluster.solution <- apply(first, 2, function(x) as.numeric(factor(x), 
+                                                             levels = unique(na.omit(x))))
   
   original <- list()
   effects <- list()

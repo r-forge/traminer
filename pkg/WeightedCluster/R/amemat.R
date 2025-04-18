@@ -59,7 +59,9 @@ amemat <- function(diss, indices, df, covar, algo="pam", method="ward.D",
     tmp <- summary(margins::margins(mod))
     
     # One estimate for each association and each individual in this bootstrap cluster
-    sub <- replicate %>% filter(solution == i, !duplicated(id)) %>% select(id)
+    sub <- replicate %>% 
+      filter(solution == i, !duplicated(id)) %>% 
+      select(id)
     effects <- matrix(tmp$AME, nrow = nrow(sub), ncol = nrow(tmp), byrow = T)
     colnames(effects) <- tmp$factor
     errors <- matrix(tmp$SE, nrow = nrow(sub), ncol = nrow(tmp), byrow = T)

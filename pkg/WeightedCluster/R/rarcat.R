@@ -36,17 +36,17 @@ rarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) {
   prep$stweight <- prep$weight/mean(prep$weight)
   
   # Function from the DescTools package
-  if(transformation) prep$ame <- FisherZ(prep$ame)
+  if(transformation) prep$ame <- DescTools::FisherZ(prep$ame)
   
-  rob <- lme4::lmer(ame ~ (1|id) + (1|bootstrap), weights = stweight, data = prep)
+  rob <- lme4::lmer(ame ~ (1|id) + (1|bootstrap), weights = prep$stweight, data = prep)
   output <- summary(rob)
   
   if(transformation) {
     
-    output$coefficients[1] <- FisherZInv(output$coefficients[1])
+    output$coefficients[1] <- DescTools::FisherZInv(output$coefficients[1])
     output$coefficients[2] <- output$coefficients[2] * (1 - tanh(output$coefficients[1])^2)
-    output$varcor$bootstrap <- FisherZInv(as.numeric(output$varcor$bootstrap))
-    output$varcor$id <- FisherZInv(as.numeric(output$varcor$id))
+    output$varcor$bootstrap <- DescTools::FisherZInv(as.numeric(output$varcor$bootstrap))
+    output$varcor$id <- DescTools::FisherZInv(as.numeric(output$varcor$id))
   }
   
   return(list("nobs" = nrow(prep), 
@@ -54,7 +54,7 @@ rarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) {
               "standard.error" = output$coefficients[2],
               "bootstrap.deviation" = sqrt(as.numeric(output$varcor$bootstrap)),
               "individual.deviation" = sqrt(as.numeric(output$varcor$id)),
-              "bootstrap.ranef" = ranef(rob)$bootstrap[,1],
-              "individual.ranef" = ranef(rob)$id[,1]))
+              "bootstrap.ranef" = lme4::ranef(rob)$bootstrap[,1],
+              "individual.ranef" = lme4::ranef(rob)$id[,1]))
 }
 

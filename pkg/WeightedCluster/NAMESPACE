@@ -4,7 +4,7 @@ importFrom(RColorBrewer, brewer.pal)
 importFrom("graphics", "par", "plot", "legend", "lines", "polygon", "layout")
 importFrom("nnet", "multinom")
 importFrom("grDevices", "adjustcolor", "gray")
-importFrom("stats", "var", "cutree", "median", "qnorm", "quantile", "xtabs", "aggregate", "as.dist", "as.formula", "runif", "density", "sd", "BIC", "lm")
+importFrom("stats", "var", "cutree", "median", "qnorm", "quantile", "xtabs", "aggregate", "as.dist", "as.formula", "runif", "density", "sd", "BIC", "lm", "glm", "na.omit", "qt")
 importFrom("graphics", "barplot", "boxplot", "abline", "segments", "text")
 importFrom("future", "plan", "multisession", "sequential")
 importFrom("foreach", "foreach")
@@ -14,7 +14,7 @@ importFrom("doFuture", "%dofuture%")
 importFrom("fastcluster", "hclust")
 importFrom("vegclust", "as.memb", "crossmemb")
 importFrom("utils", "flush.console", "getS3method")
-
+importFrom("dplyr", "desc", "%>%", "filter", "select", "left_join", "arrange")
 
 export(
 as.clustrange,
@@ -34,7 +34,10 @@ seqclustname,
 seqnull,
 seqnullcqi, 
 seqpropclust,
-seqclararange
+seqclararange,
+regressboot,
+rarcat,
+rarcattables
 )
 
 S3method(as.clustrange, hclust)
