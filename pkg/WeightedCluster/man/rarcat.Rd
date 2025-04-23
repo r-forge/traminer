@@ -4,7 +4,7 @@
 Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT)
 }
 \description{
-\code{rarcat} is a wrapper for the functions \code{regressboot} and \code{rarcat} that performs the entire RARCAT procedure on all possible associations between a typology and covariates of interest. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} package vignettes for all details on the corresponding methods and their utility.
+\code{rarcat} is a wrapper for the functions \code{regressboot} and \code{rarcat} that performs the entire RARCAT procedure on all possible associations between a typology and covariates of interest. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} vignette for all details on the corresponding methods and their utility.
 }
 \usage{
 rarcat(diss, covar, df, 

@@ -4,7 +4,7 @@
 Bootstrap replicates of a typology and its association with covariates of interest
 }
 \description{
-The \code{regressboot} function corresponds to the first part of the Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure, which allows for evaluating the impact of sampling uncertainty on a standard Sequence Analysis, and thus assessing the reliability of its findings. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} package vignette for all details on this procedure and its utility. \code{regressboot} should be used together with the \code{rarcat} or \code{rarcattables} functions.
+The \code{regressboot} function corresponds to the first part of the Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure, which allows for evaluating the impact of sampling uncertainty on a standard Sequence Analysis, and thus assessing the reliability of its findings. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} vignette for all details on this procedure and its utility. \code{regressboot} should be used together with the \code{unirarcat} function.
 }
 \usage{
 regressboot(diss, covar, df, B = 500, count = FALSE,
@@ -52,7 +52,7 @@ Hennig, C. (2007) Cluster-wise assessment of cluster stability. Computational St
 Leonard Roth
 }
 \note{
-Requires the following packages: fastcluster, dplyr, margins, boot
+Uses the following packages: fastcluster, dplyr, margins, boot
 }
 \seealso{
 \code{\link{unirarcat}}, \code{\link{rarcat}}
