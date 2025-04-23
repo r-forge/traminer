@@ -1,56 +1,60 @@
 \name{rarcat}
 \alias{rarcat}
 \title{
-Bootstrap-based robustness assessment for an association between a cluster and a covariate
+Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT)
 }
 \description{
-The \code{rarcat} function corresponds to the second part of the Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure, which allows for evaluating the impact of sampling uncertainty on a standard Sequence Analysis, and thus assessing the reliability of its findings. See Roth et al. (2024) or the two R tutorials as \code{WeightedCluster} package vignettes for all details on this procedure and its utility. \code{rarcat} should be used together with the \code{regressboot} function.}
+\code{rarcat} is a wrapper for the functions \code{regressboot} and \code{rarcat} that performs the entire RARCAT procedure on all possible associations between a typology and covariates of interest. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} package vignettes for all details on the corresponding methods and their utility.
+}
 \usage{
-rarcat(bootout, clustering, clusnb, assoc, transformation = FALSE)
+rarcat(diss, covar, df, 
+        clustering=NULL, robust=TRUE, B=500, count=FALSE, 
+        algo="pam", method="ward.D", 
+        fixed=FALSE, ncluster=10, eval="CH",
+        parallel="no", ncpus=1, cl=NULL,
+        transformation=FALSE, conflevel=0.05, digits=3)
 }
 \arguments{
-  \item{bootout}{Output of the \code{regressboot} function.}
-  \item{clustering}{An integer vector containing the clustering solution (one entry for each individual) from the original analysis.}
-  \item{clusnb}{An integer with the cluster to be evaluated (part of the clustering solution), as the RARCAT procedure is cluster-wise by design.}
-  \item{assoc}{A character string with the association of interest as specified in the component \code{assoc.char} of the \code{regressboot} function output.}
-  \item{transformation}{Logical. TRUE means that the Average Marginal Effects (AMEs) from the bootstrap procedure are transformed with a Fisher transformation before being imputed in the pooling model, and then transformed back for the output results. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.}
+  \item{diss}{The numerical dissimilarity matrix used for clustering. Only a pre-computed matrix (i.e., where pairwise dissimilarities do not depend on the resample) is currently supported.}
+  \item{covar}{A character vector containing the names of the covariates whose association with the clustering is studied. The formula object is then created inside the function based on this.}
+  \item{df}{The original dataset (data frame) containing the covariates of interest. Row number should be equal to the length of the \code{clustering} argument and column names should match the information in \code{covar}.}
+  \item{clustering}{Optional. An integer vector containing the clustering solution (one entry for each individual) from the original analysis. If not given (default), it is computed based on the other information inside the function.}
+  \item{robust}{Logical. TRUE (the default) indicates that RARCAT should be performed. FALSE implies a much faster function run but only output the original analysis, which is a standard regression analysis for all combinations of reference clusters and covariates.}
+  \item{B}{The integer number of bootstrap. Set to 500 by default to attain a satisfactory precision around the estimates as the procedure involves multiple steps.}
+  \item{count}{Logical. Whether the bootstrap runs are counted on the screen or not.}
+  \item{algo}{The clustering algorithm as a character string. Currently only "pam" (calling the function \code{wcKMedRange}) and "hierarchical" (calling the function \code{fastcluster::hclust}) are supported. By default "pam".}
+  \item{method}{A character string with the method argument of \code{hclust}, "ward.D" by default.}
+  \item{fixed}{Logical. TRUE implies that the number of clusters is the same in every bootstrap. FALSE (default) implies that an optimal number of clusters is evaluated each time.}
+  \item{ncluster}{Integer. Either the number of clusters in every bootstrap if \code{fixed} is TRUE or the maximum number of clusters (starting from 2) to be evaluated in each bootstrap if \code{fixed} is FALSE.}
+  \item{eval}{A character string with the cluster quality index to be evaluated for each new partition. Any column of \code{as.clustrange} is supported, "CH" (the Calinski-Harabasz index) by default. Also works with \code{algo}= "pam".}
+  \item{parallel}{A character string with the type of parallel operation to be used (if any) by the function \code{boot:boot}. Options are "no" (default), "multicore" and "snow" (for Windows).}
+  \item{ncpus}{Integer. Number of processes to be used in case of parallel operation. Typically, one would chose this to be the number of available CPUs.}
+  \item{cl}{A parallel cluster for use if \code{parallel} = "snow". If not supplied, a cluster on the local machine is created for the duration of the \code{boot} call.}
+  \item{transformation}{Logical. TRUE means that a Fisher transformation is applied in the \code{rarcat} function. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.}
+  \item{conflevel}{Confidence level for the confidence intervals from the original analysis and the prediction intervals from the robustness assessment. 0.05 by default.}
+  \item{digits}{Controls the number of significant digits to print. 3 by default.}
 }
 \details{
-The \code{rarcat} function takes as input the AMEs (for each individual and each bootstrap) and their standard errors estimated with the \code{regressboot}. It then combine them using a multilevel modelling framework that mimics a meta-analysis. The summary estimates of effect thus produced account for the sampling uncertainty and should be compared with the results from the original analysis to assess their robustness. Moreover, the individual random effects inform on the central and outlier trajectories in a cluster.
+The \code{rarcat} function runs a standard typology-based association study and evaluates the impact of sampling uncertainty on the results, thus assessing the reproducibility of the analysis.
 }
 \value{
-The output of \code{rarcat} is a list with the following components:
-  \item{nobs}{An integer with the number of observations (i.e., number of estimated AMES from the function \code{regressboot}) used to compute the robust estimates in the multilevel model. Due to missing observations when an individual does not appear in a bootstrap, \code{nobs < m x B}, where \code{m < M} is the number of individuals in a given cluster, \code{M} is the total number of individuals and \code{B} is the total number of bootstrap in \code{regressboot}.}
-  \item{pooled.ame}{A numeric value indicating the pooled AME, which is the mean change in cluster membership probability for a change in the level of the covariate of interest over all bootstraps and all individuals belonging to the reference cluster in the original typology.}
-  \item{standard.error}{Standard error of the pooled AME, which diminishes asymptotically as the number of bootstrap increases.}
-  \item{bootstrap.deviation}{The estimate for the standard deviation of the bootstrap random effect. This can be used to construct a prediction interval for the association of interest (see Roth et al. 2024 for details on how to compute this).}
-  \item{individual.deviation}{The estimate for the standard deviation of the bootstrap random effect.}
-  \item{bootstrap.ranef}{A vector of size \code{B} containing the estimated random effects for each bootstrap.}
-  \item{individual.ranef}{A vector of size \code{m} containing the estimated random effects for each individual in the reference cluster.}
+The output of \code{rarcattables} contains the following tables:
+  \item{original.analysis}{Average Marginal Effects (AMEs) estimated with multivariable logistic regressions and representing the expected change in the probability of belonging to a trajectory group (a reference cluster) for a change in the level of a variable (a covariate of interest), together with their confidence intervals.}
+  \item{robust.analysis}{Pooled AMEs from the bootstrap procedure and their prediction intervals, representing the range of expected values if the clustering and associated regressions were performed on a new sample from the same underlying distribution. This table provide robust estimates for a typology-based association study.}
 }
 \references{
-Roth, L., Studer, M., Zuercher, E., and Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303.
-
-Studer, M. (2013). WeightedCluster library manual: A practical guide to creating typologies of trajectories in the social sciences with R. University of Geneva.
-
-Fernandez-Castilla, B., Maes, M., Declercq, L., Jamshidi, L., Beretvas, S. N., Onghena, P., and Van den Noortgate, W. (2019). A demonstration and evaluation of the use of cross-classified random-effects models for meta-analysis. Behavior research methods, 51(3), 1286–1304.
+Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303. https://doi.org/10.1186/s12874-024-02435-8.
 }
 \author{
 Leonard Roth
 }
-\note{
-Requires the following packages: dplyr, DescTools, lme4
-}
 \seealso{
-\code{\link{regressboot}}, \code{\link{rarcattables}}
+\code{\link{regressboot}}, \code{\link{unirarcat}}
 }
 \examples{
 
 ## Set the seed for reproducible results
 set.seed(1)
-
-## Load the margins library for marginal effect estimation
-library(margins)
 
 ## Loading the data (TraMineR package)
 data(mvad)
@@ -65,39 +69,19 @@ diss <- seqdist(mvad.seq, method="LCS")
 hc <- fastcluster::hclust(as.dist(diss), method="ward.D")
 
 ## Computing cluster quality measures
-clustqual <- as.clustrange(hc, diss=diss, ncluster=10)
-clustqual
+clustqual <- as.clustrange(hc, diss=diss, ncluster=6)
 
-# Create cluster membership variable based on cluster quality above
-mvad$clustering <- clustqual$clustering$cluster2
-mvad$membership <- mvad$clustering == 2
-
-# Formula for the association between the clustering and a covariate of interest
-formula <- membership ~ funemp
-
-# Run logistic regression model
-mod <- glm(formula, mvad, family = "binomial")
-
-# Model results
-summary(margins(mod))
-
-# A character vector with the name of the covariate of interest (to be related to the typology)
-covar <- c("funemp")
+# A character vector with the names of the covariates of interest (to be related to the typology)
+covar <- c("funemp", "gcse5eq")
 
 ## As in the original analysis, hierarchical clustering with Ward method is implemented
-## An optimal clustering solution with n between 2 and 10 is evaluated each time by
-## maximizing the CH index
+## The number of clusters is fixed to 6 here
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-bootout <- regressboot(diss, covar, mvad, B = 50, 
-                      algo = "hierarchical", method = "ward.D", 
-                      ncluster = 10)
-table(bootout$optimal.number)
-bootout$assoc.char
-                        
-# Robustness assessment for the association between father unemployment status
-# and membership to the higher education trajectory group
-result <- rarcat(bootout,  clustqual$clustering$cluster2, 2, "funempyes")
-round(result$pooled.ame, 4)
-round(result$standard.error, 4)
-round(result$bootstrap.deviation, 4)
+rarcatout <- rarcat(diss, covar, mvad, B = 50, 
+                    algo = "hierarchical", method = "ward.D", 
+                    fixed = TRUE, ncluster = 6)
+
+## Assess the robustness of the original analysis
+rarcatout$original.analysis
+rarcatout$robust.analysis
 }

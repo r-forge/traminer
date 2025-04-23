@@ -27,6 +27,7 @@ regressboot <- function(diss, covar, df, B=500, count=FALSE,
     if(is.factor(df[[i]])) {
       paste0(i, levels(df[[i]])[-1])
     } else {
+      if(is.character(df[[i]])) stop("Covariates class should be either factor or numeric")
       i
     }
   }))
@@ -38,27 +39,29 @@ regressboot <- function(diss, covar, df, B=500, count=FALSE,
   cluster.solution <- apply(first, 2, function(x) as.numeric(factor(x), 
                                                              levels = unique(na.omit(x))))
   
-  original <- list()
+  original.assoc <- list()
   effects <- list()
   errors <- list()
   for (i in seq_along(varlist)) {
     
     if(i == 1) {
       effects[[varlist[i]]] <- first
+      original.cluster <- as.integer(factor(originres[((i-1)*nrow(df)+1):(i*nrow(df))]))
     } else {
       # The way the function amemat is constructed, the estimates are stacked on top of each other
       # Starting with the AMEs for each association, then the corresponding standard errors
       effects[[varlist[i]]] <- bootres[((i-1)*nrow(df)+1):(i*nrow(df)),]
     }
     errors[[varlist[i]]] <- bootres[(length(varlist)*nrow(df)+1):((length(varlist)+i)*nrow(df)),]
-    original[[varlist[i]]] <- unique(originres[((i-1)*nrow(df)+1):(i*nrow(df))])
+    original.assoc[[varlist[i]]] <- unique(originres[((i-1)*nrow(df)+1):(i*nrow(df))])
   }
   
   return(list("B" = B, 
               "optimal.number" = optimal.number, 
               "cluster.solution" = cluster.solution, 
               "assoc.char" = varlist,
-              "original.result" = original,
+              "original.cluster" = original.cluster,
+              "original.assoc" = original.assoc,
               "coefficients" = effects, 
               "errors" = errors))
 }

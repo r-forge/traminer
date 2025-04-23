@@ -36,8 +36,8 @@ seqnullcqi,
 seqpropclust,
 seqclararange,
 regressboot,
-rarcat,
-rarcattables
+unirarcat,
+rarcat
 )
 
 S3method(as.clustrange, hclust)

@@ -4,7 +4,7 @@
 Bootstrap replicates of a typology and its association with covariates of interest
 }
 \description{
-The \code{regressboot} function corresponds to the first part of the Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure, which allows for evaluating the impact of sampling uncertainty on a standard Sequence Analysis, and thus assessing the reliability of its findings. See Roth et al. (2024) or the two R tutorials as \code{WeightedCluster} package vignettes for all details on this procedure and its utility. \code{regressboot} should be used together with the \code{rarcat} or \code{rarcattables} functions.
+The \code{regressboot} function corresponds to the first part of the Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure, which allows for evaluating the impact of sampling uncertainty on a standard Sequence Analysis, and thus assessing the reliability of its findings. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} package vignette for all details on this procedure and its utility. \code{regressboot} should be used together with the \code{rarcat} or \code{rarcattables} functions.
 }
 \usage{
 regressboot(diss, covar, df, B = 500, count = FALSE,
@@ -36,7 +36,8 @@ The output of \code{regressboot} is a list with the following components:
   \item{optimal.number}{An integer vector with the numbers of clusters for each bootstrap partition. If input parameter \code{fixed} is FALSE, this corresponds to the selected clustering solution based on the evaluation criterion. If input parameter \code{fixed} is TRUE, this can in rare cases differ from \code{ncluster} if two reference clusters have exactly the same estimated association with a covariate.}
   \item{cluster.solution}{A numerical matrix with the number of individuals (\code{nrow(df)}) as row number and the number of bootstrap (\code{B}) as column number. Each column correspond to the typology for this bootstrap.}
   \item{assoc.char}{A character vector with the different associations evaluated in the logistic regression model (based on input parameter \code{covar}). This corresponds to the name of the covariate for numerical variables and the name with a specific level for factors.}
-  \item{original.result}{A list with the estimated AMEs corresponding to each association between covariates of interest (as in \code{assoc.char}) and the original typology, i.e., the one constructed on the original sample.}
+  \item{original.cluster}{A vector of the same size as the dataset with the original clustering, i.e., the one constructed on the original sample with the given method.}
+  \item{original.assoc}{A list with the estimated AMEs corresponding to each association between covariates of interest (as in \code{assoc.char}) and the original typology, i.e., the one constructed on the original sample.}
   \item{coefficients}{A list with the estimated AMEs for all individuals and all bootstraps, corresponding to the associations between covariates of interest (as in \code{assoc.char}) and the typology constructed on each bootstrap. For each covariate, the list contains a numerical matrix with the number of individuals (\code{nrow(df)}) as row number and the number of bootstrap (\code{B}) as column number.}
   \item{errors}{A list with the estimated standard errors of the AMEs for all individuals and all bootstraps, corresponding to the associations between covariates of interest (as in \code{assoc.char}) and the typology constructed on each bootstrap. For each covariate, the list contains a numerical matrix with the number of individuals (\code{nrow(df)}) as row number and the number of bootstrap (\code{B}) as column number.}
 }
@@ -54,12 +55,15 @@ Leonard Roth
 Requires the following packages: fastcluster, dplyr, margins, boot
 }
 \seealso{
-\code{\link{rarcat}}, \code{\link{rarcattables}}
+\code{\link{unirarcat}}, \code{\link{rarcat}}
 }
 \examples{
 
 ## Set the seed for reproducible results
 set.seed(1)
+
+## Load the margins library for marginal effect estimation
+library(margins)
 
 ## Loading the data (TraMineR package)
 data(mvad)
@@ -74,20 +78,39 @@ diss <- seqdist(mvad.seq, method="LCS")
 hc <- fastcluster::hclust(as.dist(diss), method="ward.D")
 
 ## Computing cluster quality measures
-clustqual <- as.clustrange(hc, diss=diss, ncluster=6)
+clustqual <- as.clustrange(hc, diss=diss, ncluster=10)
+clustqual
 
-# A character vector with the names of the covariates of interest (to be related to the typology)
-covar <- c("funemp", "gcse5eq")
+# Create cluster membership variable based on cluster quality above
+mvad$clustering <- clustqual$clustering$cluster2
+mvad$membership <- mvad$clustering == 2
+
+# Formula for the association between the clustering and a covariate of interest
+formula <- membership ~ funemp
+
+# Run logistic regression model
+mod <- glm(formula, mvad, family = "binomial")
+
+# Model results
+summary(margins(mod))
+
+# A character vector with the name of the covariate of interest (to be related to the typology)
+covar <- c("funemp")
 
 ## As in the original analysis, hierarchical clustering with Ward method is implemented
-## The number of clusters is fixed to 6 here
+## An optimal clustering solution with n between 2 and 10 is evaluated each time by
+## maximizing the CH index
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
 bootout <- regressboot(diss, covar, mvad, B = 50, 
-                        algo = "hierarchical", method = "ward.D", 
-                        fixed = TRUE, ncluster = 6)
+                      algo = "hierarchical", method = "ward.D", 
+                      ncluster = 10)
+table(bootout$optimal.number)
+bootout$assoc.char
                         
-## Assess the robustness of the original analysis
-rarcatout <- rarcattables(clustqual$clustering$cluster6, covar, mvad, bootout)
-rarcatout$original.analysis
-rarcatout$robust.analysis
+# Robustness assessment for the association between father unemployment status
+# and membership to the higher education trajectory group
+result <- unirarcat(bootout,  clustqual$clustering$cluster2, 2, "funempyes")
+round(result$pooled.ame, 4)
+round(result$standard.error, 4)
+round(result$bootstrap.deviation, 4)
 }
