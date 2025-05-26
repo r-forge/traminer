@@ -1,0 +1,399 @@
+---
+title: 'R Tutorials: Robustness Assessment of Regressions using Cluster Analysis
+  Typologies'
+author: "Leonard Roth"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteIndexEntry{R Tutorials: Robustness Assessment of Regressions using Cluster Analysis Typologies}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::knit_hooks$set(time_it = local({
+  now <- NULL
+  function(before, options) {
+    if (before) {
+      # record the current time before each chunk
+      now <<- Sys.time()
+    } else {
+      # calculate the time difference after a chunk
+      res <- difftime(Sys.time(), now, units = "secs")
+      # return a character string to show the time
+      paste("Time for this code chunk to run:", round(res,
+        2), "seconds")
+    }
+  }
+}))
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"), time_it=TRUE)
+```
+
+In a standard Sequence Analysis, similar trajectories are clustered together to create a typology of trajectories, which is then often used to evaluate the association between sequence patterns and covariates inside regression models. The sampling uncertainty, which affects both the derivation of the typology and associated regressions, is typically ignored in this analysis, an oversight that may lead to wrong statistical conclusions.
+
+This document provides an introduction to the `R` code proposed to assess the robustness of regression results obtained from this standard analysis. Bootstrap samples are drawn from the data, and for each bootstrap, a new typology replicating the original one is constructed, followed by the estimation of the corresponding regression models. The bootstrap estimates are then combined using a multilevel modelling framework. 
+
+The document is structured in two parts. First, a short tutorial with a streamlined standard analysis on sequence data and a robustness assessment made with the `rarcat` function. Then, an extended tutorial with the same data illustration and a detailed explanation of the new functions, their arguments and their outputs. Furthermore, readers interested in the methods and the precise interpretation of the results are referred to:
+
+- Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303. https://doi.org/10.1186/s12874-024-02435-8.
+
+You are kindly asked to cite the above reference if you use the methods presented in this document.
+
+Let us start by setting the seed for reproducible results.
+
+```{r, message=FALSE}
+set.seed(1)
+```
+
+# Short tutorial
+
+## Creating the state sequence object
+
+For this example, we use the openly available `mvad` dataset on transitions from school to work. First, we create the state sequence object.
+
+```{r, message=FALSE}
+## Loading the TraMineR library
+library(TraMineR)
+## Loading the data
+data(mvad)
+
+## State properties
+mvad.alphabet <- c("employment", "FE", "HE", "joblessness", "school", "training")
+mvad.lab <- c("employment", "further education", "higher education", "joblessness", "school", "training")
+mvad.shortlab <- c("EM","FE","HE","JL","SC","TR")
+
+## Creating the state sequence object
+mvad.seq <- seqdef(mvad, 17:86, alphabet = mvad.alphabet, states = mvad.shortlab, 
+                   labels = mvad.lab, xtstep = 6)
+```
+
+## Constructing the typology
+
+We will now construct a typology using cluster analysis. For readers seeking more details, the `WeightedCluster` library manual provides an in-depth explanation of the process and the computation of cluster quality measures.
+
+We start by computing dissimilarities with the `seqdist` function using the longest common subsequence distance. We then use Ward clustering to create a typology of the trajectories.
+
+```{r, message=FALSE}
+## Using fastcluster for hierarchical clustering
+library(fastcluster)
+## Distance computation
+diss <- seqdist(mvad.seq, method="LCS")
+## Hierarchical clustering
+hc <- hclust(as.dist(diss), method="ward.D")
+```
+
+We can now compute several cluster quality indices using `as.clustrange` function with two to ten groups.
+
+```{r, message=FALSE}
+# Loading the WeightedCluster library
+library(WeightedCluster)
+# Computing cluster quality measures.
+clustqual <- as.clustrange(hc, diss=diss, ncluster=10)
+clustqual
+```
+
+Different clustering solutions may be argued based on the information above. We are interested in a relatively detailed partition of the data, so focus hereafter on a six clusters solution (more details on selecting a clustering solution available in the extended tutorial that below). The corresponding typology is shown next:
+
+```{r, fig.width=8, fig.height=10}
+seqdplot(mvad.seq, group=clustqual$clustering$cluster6, border=NA)
+```
+
+## Association study
+
+We are now interested in the relationship between this typology and the `funemp` and `gcse5eq` covariates, which represent the father's unemployment status and the qualifications gained by the end of compulsory education, respectively (both are binary variables). Such associations can be studied with different approaches. Here, we focus on implementing separate logistic regressions for each cluster and estimating average marginal effects (AMEs) with these models. The readers are referred to the article by Roth et al. (2024) for theoretical and practical explanations for these methodological choices.
+
+Multiple commands would normally be required to explore all possible combinations between the clusters and their related covariates. This can also simply be done with the` function `rarcat` below.
+
+```{r, message=FALSE}
+# Loading the knitr library for better table design
+library(knitr)
+# A character vector with the names of the covariates of interest (to be related to the typology)
+covar <- c("funemp", "gcse5eq")
+# Run separate logistic regressions for each cluster and compute the corresponding AMEs
+# with their confidence interval
+rarcatout <- rarcat(diss, covar, mvad, clustqual$clustering$cluster6, robust = FALSE)
+kable(t(rarcatout$original.analysis))
+```
+
+The results in the table above are AMEs, which measure the expected change in probability of belonging to a given cluster if the covariate takes a given value, together with their 95% confidence intervals. Thus, after adjustment for the GCSEs, father unemployment status is only marginally associated with membership to cluster 6, which contains the children unemployment trajectories (the p-value is actually 0.06).
+
+On the other hand, there are strong associations apparent between the GCSEs obtained and the trajectory groups, with a distinctively higher probability to enter higher education (clusters 2 and 5) compared to being employed, in training or, to a lesser degree, unemployed (clusters 1, 4 and 6) if five or more GCSEs were gained. However, the standard analysis presented to this point does not properly account for the sampling uncertainty, such that the findings' reliability remains in the balance.
+
+## Robustness assessment
+
+The Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure allows for evaluating the reproducibility of the analysis on resamples from the data. We focus here on a quick implementation of the procedure and refer to the extended tutorial below or the article by Roth et al. (2024) for further details. The function `rarcat` is run again with `robust = TRUE` and further arguments for the procedure that replicates the typology and associated regressions on bootstrap samples of the data, thus enabling assessing the robustness of the original estimates by comparing them to summary estimates in the form of pooled AMEs and 95% predictions intervals.
+
+```{r, message=FALSE}
+# Evaluate the validity of the original analysis and the reliability of its
+# findings by applying RARCAT with all given covariates.
+# As in the original analysis, hierarchical clustering with Ward method is implemented.
+# The number of clusters is fixed to 6 here.
+rarcatout <- rarcat(diss, covar, mvad, clustqual$clustering$cluster6,
+                    robust = TRUE, B = 50, 
+                    algo = "hierarchical", method = "ward.D", 
+                    fixed = TRUE, ncluster = 6)
+kable(t(rarcatout$robust.analysis))
+```
+
+The results stay fairly close to the ones from the original analysis (seen earlier), in particular regarding the "significant" associations. The relationship between father unemployment status and unemployment trajectories (cluster 6) seems somewhat stronger than it did on the original sample, and the relationship between GCSEs and long training spells (cluster 4) is a bit weaker. The other relevant associations are virtually unchanged. Thus, we conclude that the original analysis appear to be valid and robust to sampling variation. However, fixing the number of clusters (six here) throughout the bootstrap procedure may not always be warranted.
+
+## Parallel computing
+
+In the example above, we have run the function `rarcat` with the number of bootstrap $B=50$, which is less than the recommended number (500 in the function documentation). This was done to speed up the computing. Alternatively, parallel computing may be used. The code below shows how to do this for Windows users. The function `rarcat` also accepts arguments for parallel computing on different operating systems (see the function `boot` documentation for more details).
+
+```{r, message=FALSE}
+# Loading the parallel library
+library(parallel)
+# Use available cores minus one
+ncpus <- detectCores() - 1
+# Create the parallel cluster
+cl <- makeCluster(ncpus)
+# Add dplyr functions (required here)
+invisible(clusterEvalQ(cl, library(dplyr)))
+
+# Parallel run
+rarcatout <- rarcat(diss, covar, mvad, clustqual$clustering$cluster6,
+                    robust = TRUE, B = 500, 
+                    algo = "hierarchical", method = "ward.D", 
+                    fixed = TRUE, ncluster = 6, 
+                    parallel = "snow", ncpus = ncpus, cl = cl)
+kable(t(rarcatout$robust.analysis))
+```
+
+The bootstrap procedure is now at least four times faster and the estimates become sufficiently accurate, in the sense that a new run gives almost exactly the same values.
+
+# Extended tutorial
+
+We will use here the same dataset (`mvad`) and dissimilarity matrix (`diss`) as before. First, let us consider again the cluster quality measures:
+
+```{r, message=FALSE}
+clustqual
+```
+
+## First use case: varying number of clusters
+
+### Association with a covariate
+
+Based on the quality indices above, it seems reasonable to explore the two clusters solution. These clusters are visualised below with state distribution plots.
+
+```{r, fig.width=8, fig.height=4}
+seqdplot(mvad.seq, group=clustqual$clustering$cluster2, border=NA)
+```
+
+The distinction is essentially between individuals with prolonged spells of higher education (on the right, n=151) and the rest (on the left, n=561). In this example, we investigate the association between father unemployment status (`funemp` variable) and this typology of trajectories.
+
+```{r, message=FALSE}
+# Loading the dplyr library for efficient data handling
+library(dplyr)
+# Loading the margins library for marginal effects estimation
+library(margins)
+# Create cluster membership variable
+df <- mvad %>% mutate(clustering = clustqual$clustering$cluster2,
+                      membership = clustering == 2)
+# Formula for the association between the clustering and a covariate of interest
+formula <- membership ~ funemp
+# Run logistic regression model
+mod <- glm(formula, df, family = "binomial")
+# Model results
+summary(margins(mod))
+```
+
+The average marginal effect (AME) measures the expected change in probability of belonging to the higher education trajectory group if the father was unemployed at time of survey. The readers are referred to the article by Roth et al. (2024) for theoretical and practical explanations of the use of a logistic regression and marginal effects in this situation. Crucially, the standard analysis presented to this point does not account for the sampling uncertainty, which might impact the findings' reliability.
+
+### Bootstrap replicates of the typology
+
+The Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure works as follows:
+
+1. A random sample with replacement (i.e, bootstrap) is drawn from the data.
+2. The bootstrap sample is clustered applying the exact same clustering procedure as the one used in the original analysis, which implies using the same dissimilarity measure, cluster algorithm, and method to determine the number of clusters.
+3. A separate logistic regression predicting membership probability in each group is estimated.
+4. The AME of each covariate on the probability to be assigned to a given type is retrieved for all sequences belonging to this type.
+5. These steps are repeated $N$ times, with $N$ typically large.
+6. The AMEs from step 4 are pooled using a multilevel modelling framework.
+
+Hennig (2007) proposed to use the new partitions derived in step 2 to evaluate cluster-wise stability by measuring the quality preservation of clustering solutions across perturbed dataset through average Jaccard similarities. The corresponding code is available in the library `fpc` and its application is illustrated below with 500 bootstrap.
+
+```{r, message=FALSE}
+# Loading the fpc library
+library(fpc)
+# Cluster-wise stability assessment by bootstrap
+stab <- clusterboot(diss, B = 500, distances = TRUE, clustermethod = disthclustCBI, 
+                    method = "ward.D", k = 2, count = FALSE)
+round(stab$bootmean, 2)
+```
+
+The estimated Jaccard coefficients are above 0.85, which indicate high cluster-wise stability, meaning that most of the individuals belonging to any of the two clusters in the original partition tend to be clustered again in the bootstrap partitions, particularly for the first cluster.
+
+We propose to go one step further and use the bootstrap partitions to estimate each time new regression models replicating the original ones. This can be achieved by running the `regressboot` function with the following parameters:
+
+- `diss`: The numerical dissimilarity matrix used for clustering. Only a pre-computed matrix (i.e., where pairwise dissimilarities do not depend on the resample) is currently supported.
+- `covar`: A character vector containing the names of the covariates whose association with the clustering is studied. The formula object is then created inside the function based on this. 
+- `df`: The dataset (data frame) with the covariates of interest. Column names should match the information in `covar` and the number of individuals (row number) should match the dimension of `diss`.
+- `B`: The integer number of bootstrap. Set to 500 by default to attain a satisfactory precision around the estimates as the procedure involves multiple steps.
+- `count`: Logical. Whether the bootstrap runs are counted on the screen or not.
+- `algo`: The clustering algorithm as a character string. Currently only "pam" (calling the function `wcKMedRange`) and "hierarchical" (calling the function `fastcluster::hclust`) are supported. By default "pam".
+- `method`: A character string with the method argument of `hclust`, "ward.D" by default.
+- `fixed`: Logical. TRUE implies that the number of clusters is the same in every bootstrap. FALSE (default) implies that an optimal number of clusters is evaluated each time.
+- `ncluster`: Integer. Either the number of clusters in every bootstrap if `fixed` is TRUE or the maximum number of clusters (starting from 2) to be evaluated in each bootstrap if `fixed` is FALSE.
+- `eval`: A character string with the cluster quality index to be evaluated for each new partition. Any column of `as.clustrange` is supported, "CH" (the Calinski-Harabasz index) by default. Also works with `algo`= "pam".
+- `parallel`: A character string with the type of parallel operation to be used (if any) by the function `boot:boot`. Options are "no" (default), "multicore" and "snow" (for Windows).
+- `ncpus`: Integer. Number of processes to be used in case of parallel operation. Typically, one would chose this to be the number of available CPUs.
+- `cl`: A parallel cluster for use if `parallel` = "snow". If not supplied, a cluster on the local machine is created for the duration of the `boot` call.
+
+A typical utilisation of `regressboot` is shown below (caution, this uses the Windows parallel computing settings from the short tutorial):
+
+```{r, message=FALSE}
+# Bootstrap replicates of the typology and its association with the variable funemp.
+# As in the original analysis, hierarchical clustering with Ward method is implemented.
+# Also, an optimal clustering solution with n between 2 and 10 is evaluated each time by
+# maximizing the CH index.
+bootout <- regressboot(diss, "funemp", mvad, B = 500, 
+                       algo = "hierarchical", method = "ward.D", 
+                       fixed = FALSE, eval = "CH", ncluster = 10, 
+                       parallel = "snow", ncpus = ncpus, cl = cl)
+# Without parallel computing
+# bootout <- regressboot(diss, "funemp", mvad, B = 500, 
+#                        algo = "hierarchical", method = "ward.D", 
+#                        fixed = FALSE, eval = "CH", ncluster = 10)
+table(bootout$optimal.number)
+```
+
+The vast majority of the bootstrap partitions have two clusters, but sometimes this optimal number varies. In these cases, corresponding varying numbers of logistic regressions are also conducted. The output of the function `regressboot` is a list with the following components:
+
+- `B`: The number of bootstrap (input parameter).
+- `optimal.number`: An integer vector with the numbers of clusters for each bootstrap partition. If input parameter `fixed` is FALSE, this corresponds to the selected clustering solution based on the evaluation criterion. If input parameter `fixed` is TRUE, this can in rare cases differ from `ncluster` if two reference clusters have exactly the same estimated association with a covariate.
+- `cluster.solution`: A numerical matrix with the number of individuals (`nrow(df)`) as row number and the number of bootstrap (`B`) as column number. Each column correspond to the typology for this bootstrap.
+- `assoc.char`: A character vector with the different associations evaluated in the logistic regression model (based on input parameter `covar`). This corresponds to the name of the covariate for numerical variables and the name with a specific level for factors.
+- `original.cluster`: An integer vector with the original clustering solution (cluster membership variable for all individuals).
+- `original.assoc`: A list with the estimated AMEs corresponding to each association between covariates of interest (as in `assoc.char`) and the original typology, i.e., the one constructed on the original sample.
+- `coefficients`: A list with the estimated AMEs for all individuals and all bootstraps, corresponding to the associations between covariates of interest (as in `assoc.char`) and the typology constructed on each bootstrap. For each covariate, the list contains a numerical matrix with the number of individuals (`nrow(df)`) as row number and the number of bootstrap (`B`) as column number.
+- `errors`: A list with the estimated standard errors of the AMEs for all individuals and all bootstraps, corresponding to the associations between covariates of interest (as in `assoc.char`) and the typology constructed on each bootstrap. For each covariate, the list contains a numerical matrix with the number of individuals (`nrow(df)`) as row number and the number of bootstrap (`B`) as column number.
+
+Let us come back to some of these components.
+
+```{r, message=FALSE}
+# The association with father unemployment status as it appears in the regression output
+bootout$assoc.char
+# The AMEs for the association between father unemployment status and the original clustering
+round(bootout$original.assoc$funempyes, 4)
+```
+
+As the original clustering is not given as input but computed inside the function, it may be recommended to verify that the result corresponds to what is expected. Here, it is indeed the same as what was estimated earlier. There is symmetry in this setting because of the two clusters solution.
+
+The main purpose of the `regressboot` function is to estimate the AME matrix for an association with a covariate of interest. We show next the distribution of these values for our use case.
+
+```{r, fig.width=8, fig.height=5}
+# Histogram of the estimated AMEs for all individuals and all bootstraps
+hist(bootout$coefficients$funempyes, main = NULL, xlab = "AME")
+# Histogram for the individuals in the second cluster (high education trajectories)
+clustering <- clustqual$clustering$cluster2
+hist(bootout$coefficients$funempyes[clustering == 2,], main = NULL, xlab = "AME")
+# Histogram for the individuals in the first cluster (the rest)
+hist(bootout$coefficients$funempyes[clustering == 1,], main = NULL, xlab = "AME")
+```
+
+If a given individual is sampled in a given bootstrap, the entry in the AME matrix corresponds to the expected change in probability of belonging to a certain cluster in this bootstrap for a change in the level of the covariate. Otherwise, if an individual is not sampled in a bootstrap, the corresponding entry is empty. Next, we show how to aggregate and summarize the information obtained from the bootstrap procedure.
+
+### Pooling effect sizes
+
+We remind that our objective is to assess the robustness of the regression result from the original cluster analysis by utilising the sampling variation. This is achieved with the `unirarcat` function with the following parameters:
+
+- `bootout`: Output of the `regressboot` function.
+- `clustering`: An integer vector containing the clustering solution (one entry for each individual) from the original analysis.
+- `clusnb`: An integer with the cluster to be evaluated (part of the clustering solution), as the RARCAT procedure is cluster-wise by design.
+- `assoc`: A character string with the association of interest as specified in the component `assoc.char` of the `regressboot` function output.
+- `transformation`: Logical. TRUE means that the AMEs from the bootstrap procedure are transformed with a Fisher transformation before being imputed in the pooling model, and then transformed back for the output results. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.
+
+A typical utilisation of `rarcat` is presented below:
+
+```{r, message=FALSE}
+# Robustness assessment for the association between father unemployment status
+# and membership to the higher education trajectory group
+result <- unirarcat(bootout, clustering, 2, "funempyes")
+round(result$pooled.ame, 4)
+round(result$standard.error, 4)
+round(result$bootstrap.deviation, 4)
+```
+
+The output of the function `unirarcat` is a list with the following components:
+
+- `nobs`: An integer with the number of observations (i.e., number of estimated AMEs from the function `regressboot`) used to compute the robust estimates in the multilevel model. Due to missing observations when an individual does not appear in a bootstrap, $nobs < m x B$, where $m < M$ is the number of individuals in a given cluster, $M$ is the total number of individuals and $B$ is the total number of bootstrap in `regressboot`.
+- `pooled.ame`: A numeric value indicating the pooled AME, which is the mean change in cluster membership probability for a change in the level of the covariate of interest over all bootstraps and all individuals belonging to the reference cluster in the original typology.
+- `standard.error`: Standard error of the pooled AME, which diminishes asymptotically as the number of bootstrap increases.
+- `bootstrap.deviation`: The estimate for the standard deviation of the bootstrap random effect. This can be used to construct a prediction interval for the association of interest (see Roth et al. [2024] for details on how to compute this).
+- `individual.deviation`: The estimate for the standard deviation of the bootstrap random effect.
+- `bootstrap.ranef`: A vector of size $B$ containing the estimated random effects for each bootstrap.
+- `individual.ranef`: A vector of size $m$ containing the estimated random effects for each individual in the reference cluster.
+
+Now we are able to interpret the output of the `unirarcat` function run above. The pooled AME is approximately -0.11 and represents the expected change in cluster membership probability based on the typology replications for individuals whose father was unemployed at time of survey, for an average bootstrap sample and an average individual in the higher education cluster. The corresponding standard error (SE) is small, which indicates that there are probably enough bootstrap replications, and that despite the results' randomness caused by the bootstrap sampling, variation in the pooled AME is limited. Based on the between-bootstrap random deviation, we can derive a 95% prediction interval (PI) for the association of interest: [-0.20, -0.02]. If a new sample is drawn from the same underlying distribution, and a new partition constructed from this sample, this interval gives the range of expected values for the change in cluster membership probability for father unemployment status based on this new partition for individuals assigned to the high education cluster originally. While this supports the claim from the original analysis (95% CI for the corresponding AME was [-0.19, -0.06]), the evidence for the effect of father unemployment on higher education trajectories is a bit weaker after the robustness assessment.
+
+Lastly, the individual-specific random effects in the output of `unirarcat` inform on the within-cluster homogeneity. Indeed, individuals with fitted values that diverge from the other individuals in the same cluster were often assigned to different clusters in the bootstrap, thus impacting their estimated AMEs. We can see this with by looking at the distribution of these random effects.
+
+```{r, fig.width=8, fig.height=5}
+# Histogram of the fitted random effects for individuals in the second cluster
+hist(result$individual.ranef, main = NULL, breaks = 20,
+     xlab = "Individual-specific random effects")
+```
+
+Individuals at the far right of this histogram have outlier trajectories compared to the other individuals in the cluster. This can be checked by plotting the actual trajectories. In the code below, we highlight the most common sequences in the second cluster depending on whether the fitted random effect for the corresponding individual is more than one standard deviation away from its mean (on the right, n=11) or not (on the left, n=140). The trajectories on the right feature shorter spells in higher education compared to those on the left and can thus be interpreted as borderline or atypical.
+
+```{r, fig.width=8, fig.height=4}
+# Most frequent trajectories in the second cluster, separated by their 
+# random effects estimated in RARCAT
+seqfplot(mvad.seq[clustering == 2,], 
+         group=abs(result$individual.ranef) > result$individual.deviation, 
+         border=NA, main="Outlier")
+```
+
+## Second use case: fixed number of clusters
+
+It can be argued that a two clusters solution is not particularly interesting or informative, and that despite "worse" cluster quality indices, a solution with more clusters should be favoured. This is particularly true in this case as we are interested in the association between the clustering and a covariate, and the `clustassoc` function supports considering at least 6 groups to sufficiently account for this association (see `WeightedCluster` vignette _Validating Sequence Analysis Typologies to be used in Subsequent Regression_). Therefore, we consider a six clusters solution for further illustration of the methods and their implementation in $R$. First, we visualise again this typology.
+
+```{r, fig.width=8, fig.height=10}
+seqdplot(mvad.seq, group=clustqual$clustering$cluster6, border=NA)
+```
+
+It could be interesting to study the association between father unemployment status and membership to the unemployment or joblessness cluster (number 6 above). We repeat thus the standard analysis with this trajectory group as reference.
+
+```{r, message=FALSE}
+# Create cluster membership variable
+df <- mvad %>% mutate(clustering = clustqual$clustering$cluster6,
+                      membership = clustering == 6)
+# Run logistic regression model
+mod <- glm(formula, df, family = "binomial")
+# Model results
+summary(margins(mod))
+```
+
+Moving directly to the new functions, we force this time the number of clusters to be fixed to six in each bootstrap to avoid choosing a solution with less clusters due to a quality index. The output of the function `regressboot` does not depend on a specific reference cluster so there is the possibility to evaluate all the possible associations in one run. This is achieved with the function `rarcat`, with the same parameters as `regressboot` as well as several additional ones:
+
+- `clustering`: An integer vector containing the clustering solution (one entry for each individual) from the original analysis.
+- `robust`: Logical. TRUE (the default) indicates that RARCAT should be performed. FALSE implies a much faster function run but only output the original analysis, which is a standard regression analysis for all combinations of reference clusters and covariates.
+- `transformation`: Logical. TRUE means that a Fisher transformation is applied in the `rarcat` function. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.
+- `conflevel`: Confidence level for the confidence intervals from the original analysis and the prediction intervals from the robustness assessment. 0.05 by default.
+- `digits`: Controls the number of significant digits to print. 3 by default.
+
+```{r, message=FALSE}
+# Evaluate the validity of the original analysis and the reliability of its
+# findings by applying RARCAT with all given covariates and constructed types
+rarcat <- rarcat(diss, "funemp", mvad, clustqual$clustering$cluster6, 
+                 B = 500, algo = "hierarchical", method = "ward.D", 
+                 fixed = TRUE, ncluster = 6, 
+                 parallel = "snow", ncpus = ncpus, cl = cl)
+# rarcat <- rarcat(diss, "funemp", mvad, clustqual$clustering$cluster6, 
+#                  B = 500, algo = "hierarchical", method = "ward.D", 
+#                  ncluster = 6, fixed = TRUE)
+kable(t(rarcat$original.analysis))
+kable(t(rarcat$robust.analysis))
+# Stop the parallel cluster after computation
+stopCluster(cl)
+```
+
+We see here that in the original analysis, the father unemployment status was not only associated with the unemployment trajectory group, but also with trajectories featuring long training spells (cluster 4) and, as hinted in the first use case, with school + higher education trajectories (cluster 5, inverse association). However, the evidence for the association with cluster 4 was only weak and does not pass the robustness assessment (95% PI contains the null value), which indicates that this relationship is sensitive to sampling uncertainty and therefore unstable [1]. On the other hand, the association with cluster 5 stays virtually unchanged in the robustness assessment, and the association with cluster 6 becomes even more apparent. We conclude that there is relatively strong evidence of a relationship between our covariate of interest and these two specific trajectory types, at least if we ignore potential confounding factors.
+
+[1] In fact, the estimated Jaccard coefficient for this cluster is only 0.39, compared to 0.94 for the fifth cluster and 0.63 for the sixth.
+
+## References
+
+Hennig, C. (2007) Cluster-wise assessment of cluster stability. Computational Statistics and Data Analysis, 52, 258-271.
+
+Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303. https://doi.org/10.1186/s12874-024-02435-8.

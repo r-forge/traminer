@@ -1,5 +1,5 @@
 Package: WeightedCluster
-Version: 1.9-4
+Version: 1.9-5
 Date: 2025-04-23
 Title: Clustering of Weighted Data
 Authors@R:c(person("Matthias", "Studer", email = "matthias.studer@unige.ch", role = c("aut", "cre")), person("Leonard", "Roth", role = c("ctb")))

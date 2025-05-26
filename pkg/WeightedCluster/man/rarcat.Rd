@@ -7,8 +7,8 @@ Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT)
 \code{rarcat} is a wrapper for the functions \code{regressboot} and \code{rarcat} that performs the entire RARCAT procedure on all possible associations between a typology and covariates of interest. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} vignette for all details on the corresponding methods and their utility.
 }
 \usage{
-rarcat(diss, covar, df, 
-        clustering=NULL, robust=TRUE, B=500, count=FALSE, 
+rarcat(diss, covar, df, clustering, 
+        robust=TRUE, B=500, count=FALSE, 
         algo="pam", method="ward.D", 
         fixed=FALSE, ncluster=10, eval="CH",
         parallel="no", ncpus=1, cl=NULL,
@@ -18,7 +18,7 @@ rarcat(diss, covar, df,
   \item{diss}{The numerical dissimilarity matrix used for clustering. Only a pre-computed matrix (i.e., where pairwise dissimilarities do not depend on the resample) is currently supported.}
   \item{covar}{A character vector containing the names of the covariates whose association with the clustering is studied. The formula object is then created inside the function based on this.}
   \item{df}{The original dataset (data frame) containing the covariates of interest. Row number should be equal to the length of the \code{clustering} argument and column names should match the information in \code{covar}.}
-  \item{clustering}{Optional. An integer vector containing the clustering solution (one entry for each individual) from the original analysis. If not given (default), it is computed based on the other information inside the function.}
+  \item{clustering}{An integer vector containing the clustering solution (one entry for each individual) from the original analysis.}
   \item{robust}{Logical. TRUE (the default) indicates that RARCAT should be performed. FALSE implies a much faster function run but only output the original analysis, which is a standard regression analysis for all combinations of reference clusters and covariates.}
   \item{B}{The integer number of bootstrap. Set to 500 by default to attain a satisfactory precision around the estimates as the procedure involves multiple steps.}
   \item{count}{Logical. Whether the bootstrap runs are counted on the screen or not.}
@@ -77,7 +77,7 @@ covar <- c("funemp", "gcse5eq")
 ## As in the original analysis, hierarchical clustering with Ward method is implemented
 ## The number of clusters is fixed to 6 here
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-rarcatout <- rarcat(diss, covar, mvad, B = 50, 
+rarcatout <- rarcat(diss, covar, mvad, clustqual$clustering$cluster6, B = 50, 
                     algo = "hierarchical", method = "ward.D", 
                     fixed = TRUE, ncluster = 6)
 

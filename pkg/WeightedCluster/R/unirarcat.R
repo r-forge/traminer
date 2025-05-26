@@ -28,10 +28,10 @@ unirarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) 
   # Prepare the data to input in the multilevel model
   tmp <- data.frame(clustering = clustering, id = seq(1, length(clustering)))
   prep <- data.frame(bootstrap = rep(1:ncol(ame), nrow(ame)),
-                     id = rep(filter(tmp, clustering == clusnb)$id, each=ncol(ame)),
+                     id = rep(dplyr::filter(tmp, clustering == clusnb)$id, each=ncol(ame)),
                      ame = c(t(ame)), 
                      sterror = c(t(error)))
-  prep <- filter(prep, !is.na(ame))
+  prep <- dplyr::filter(prep, !is.na(ame))
   # Weights based on the standard errors
   prep$weight <- 1/prep$sterror^2
   prep$stweight <- prep$weight/mean(prep$weight)
@@ -39,7 +39,8 @@ unirarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) 
   # Function from the DescTools package
   if(transformation) prep$ame <- DescTools::FisherZ(prep$ame)
   
-  rob <- lme4::lmer(ame ~ (1|id) + (1|bootstrap), weights = prep$stweight, data = prep)
+  rob <- suppressMessages(lme4::lmer(ame ~ (1|id) + (1|bootstrap), 
+                                     weights = prep$stweight, data = prep))
   output <- summary(rob)
   
   if(transformation) {
