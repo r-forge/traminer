@@ -1,10 +1,10 @@
 
-unirarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) {
+bootpool <- function(bootout, clustering, clusnb, covar, fisher_transform = FALSE) {
   
   # Ensure correct bootout object
-  if(!all(names(bootout) == c("B", "optimal.number", "cluster.solution", 
-                              "assoc.char", "original.cluster", "original.assoc", 
-                              "coefficients", "errors"))) {
+  if(!all(names(bootout) == c("B", "optimal.kcluster", "cluster.solution", 
+                              "covar.name", "original.cluster", "original.ame", 
+                              "bootstrap.ame", "std.err"))) {
     stop("Please give the output of the function regressboot as argument")
   }
   # Ensure correct size of the clustering solution
@@ -12,9 +12,9 @@ unirarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) 
     stop("Please give a clustering solution that has the same size as the original dataset")
   }
   # Ensure that the association can be retrieved
-  if(!(assoc %in% bootout$assoc.char)) {
-    stop("Please check that the assoc argument has the correct format 
-         (as in bootout$assoc.char)")
+  if(!(covar %in% bootout$covar.name)) {
+    stop("Please check that the covar argument has the correct format 
+         (as in bootout$covar.name)")
   }
   # Ensure that the cluster number exists
   if(!(clusnb %in% clustering)) {
@@ -22,8 +22,8 @@ unirarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) 
   }
   
   # Retrieve the average marginal effects and standard errors from the bootstrap procedure
-  ame <- bootout$coefficients[[assoc]][clustering == clusnb,]
-  error <- bootout$errors[[assoc]][clustering == clusnb,]
+  ame <- bootout$bootstrap.ame[[covar]][clustering == clusnb,]
+  error <- bootout$std.err[[covar]][clustering == clusnb,]
   
   # Prepare the data to input in the multilevel model
   tmp <- data.frame(clustering = clustering, id = seq(1, length(clustering)))
@@ -37,13 +37,13 @@ unirarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) 
   prep$stweight <- prep$weight/mean(prep$weight)
   
   # Function from the DescTools package
-  if(transformation) prep$ame <- DescTools::FisherZ(prep$ame)
+  if(fisher_transform) prep$ame <- DescTools::FisherZ(prep$ame)
   
   rob <- suppressMessages(lme4::lmer(ame ~ (1|id) + (1|bootstrap), 
                                      weights = prep$stweight, data = prep))
   output <- summary(rob)
   
-  if(transformation) {
+  if(fisher_transform) {
     
     output$coefficients[1] <- DescTools::FisherZInv(output$coefficients[1])
     output$coefficients[2] <- output$coefficients[2] * (1 - tanh(output$coefficients[1])^2)
@@ -54,8 +54,8 @@ unirarcat <- function(bootout, clustering, clusnb, assoc, transformation=FALSE) 
   return(list("nobs" = nrow(prep), 
               "pooled.ame" = output$coefficients[1],
               "standard.error" = output$coefficients[2],
-              "bootstrap.deviation" = sqrt(as.numeric(output$varcor$bootstrap)),
-              "individual.deviation" = sqrt(as.numeric(output$varcor$id)),
+              "bootstrap.stddev" = sqrt(as.numeric(output$varcor$bootstrap)),
+              "individual.stddev" = sqrt(as.numeric(output$varcor$id)),
               "bootstrap.ranef" = lme4::ranef(rob)$bootstrap[,1],
               "individual.ranef" = lme4::ranef(rob)$id[,1]))
 }

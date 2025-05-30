@@ -4,7 +4,7 @@ importFrom(RColorBrewer, brewer.pal)
 importFrom("graphics", "par", "plot", "legend", "lines", "polygon", "layout")
 importFrom("nnet", "multinom")
 importFrom("grDevices", "adjustcolor", "gray")
-importFrom("stats", "var", "cutree", "median", "qnorm", "quantile", "xtabs", "aggregate", "as.dist", "as.formula", "runif", "density", "sd", "BIC", "lm", "glm", "na.omit", "qt")
+importFrom("stats", "var", "cutree", "median", "qnorm", "quantile", "xtabs", "aggregate", "as.dist", "as.formula", "runif", "density", "sd", "BIC", "lm", "glm", "na.omit", "qt", "model.frame")
 importFrom("graphics", "barplot", "boxplot", "abline", "segments", "text")
 importFrom("future", "plan", "multisession", "sequential")
 importFrom("foreach", "foreach")
@@ -36,7 +36,7 @@ seqnullcqi,
 seqpropclust,
 seqclararange,
 regressboot,
-unirarcat,
+bootpool,
 rarcat
 )
 

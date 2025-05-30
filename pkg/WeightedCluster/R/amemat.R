@@ -1,28 +1,28 @@
 
-amemat <- function(diss, indices, df, covar, algo="pam", method="ward.D",
-                   fixed = FALSE, ncluster=10, eval="CH", count=FALSE) {
+amemat <- function(diss, indices, modelFormula, modelDF, algo="pam", method="ward.D",
+                   fixed = FALSE, kcluster=10, cqi="CH", count=FALSE) {
   
-  if(!(eval %in% c("PBC", "HG", "HGSD", "ASW", "ASWw", "CH", "R2", "CHsq", 
+  if(!(cqi %in% c("PBC", "HG", "HGSD", "ASW", "ASWw", "CH", "R2", "CHsq", 
                    "R2sq", "HC"))) {
     stop("Incorrect evaluation measure")
   }
-  if(ncluster < 2) stop("At least two clusters required")
+  if(kcluster < 2) stop("At least two clusters required")
   
   # Bootstrap dissimilarities
   d <- diss[indices,indices]
   
   if(algo == "pam") {
     
-    k <- 2:ncluster
+    k <- 2:kcluster
     quality <- wcKMedRange(d, kvals=k)
     
   } else if(algo == "hierarchical") {
     
     tree <- fastcluster::hclust(as.dist(d), method = method)
-    if(ncluster == 2) {
-      clustering <- cutree(tree, k=ncluster)
+    if(kcluster == 2) {
+      clustering <- cutree(tree, k=kcluster)
     } else {
-      quality <- WeightedCluster::as.clustrange(tree, diss=d, ncluster=ncluster)
+      quality <- WeightedCluster::as.clustrange(tree, diss=d, ncluster=kcluster)
     }
   } else {
     
@@ -30,23 +30,21 @@ amemat <- function(diss, indices, df, covar, algo="pam", method="ward.D",
   }
   
   if(!fixed) {
-    quality$stats <- arrange(quality$stats, !!as.symbol(eval))
-    if(eval == "HC") quality$stats <- arrange(quality$stats, desc(!!as.symbol(eval)))
+    quality$stats <- dplyr::arrange(quality$stats, !!as.symbol(cqi))
+    if(cqi == "HC") quality$stats <- dplyr::arrange(quality$stats, desc(!!as.symbol(cqi)))
   }
   
-  if(ncluster > 2 | algo == "pam") {
+  if(kcluster > 2 | algo == "pam") {
     clustering <- quality$clustering[,row.names(quality$stats)[nrow(quality$stats)]]
   }
   
   # Bootstrap covariates
-  replicate <- df[indices,]
+  replicate <- modelDF[indices,]
   # Recreate ids for safety
   replicate$id <- indices
   # Optimal solution
   replicate$solution <- clustering
   
-  # Create formula object
-  formula <- paste("membership ~", paste(covar, collapse = " + "))
   # Preallocate list
   output_list <- vector("list", length(unique(replicate$solution)))
   
@@ -55,13 +53,11 @@ amemat <- function(diss, indices, df, covar, algo="pam", method="ward.D",
     if(count) print(i)
     
     replicate$membership <- replicate$solution == i
-    mod <- glm(formula, replicate, family = "binomial")
+    mod <- glm(modelFormula, replicate, family = "binomial")
     tmp <- summary(margins::margins(mod))
     
     # One estimate for each association and each individual in this bootstrap cluster
-    sub <- replicate %>% 
-      filter(solution == i, !duplicated(id)) %>% 
-      select(id)
+    sub <- dplyr::select(dplyr::filter(replicate, solution == i, !duplicated(id)), id)
     effects <- matrix(tmp$AME, nrow = nrow(sub), ncol = nrow(tmp), byrow = T)
     colnames(effects) <- tmp$factor
     errors <- matrix(tmp$SE, nrow = nrow(sub), ncol = nrow(tmp), byrow = T)
@@ -72,6 +68,6 @@ amemat <- function(diss, indices, df, covar, algo="pam", method="ward.D",
   
   output <- do.call(rbind, output_list)
   # With all individuals (and missing observations depending on the sample)
-  output <- left_join(data.frame(id = seq_len(nrow(df))), output, by = "id")
+  output <- dplyr::left_join(data.frame(id = seq_len(nrow(modelDF))), output, by = "id")
   return(c(as.matrix(output[,-1])))
 }

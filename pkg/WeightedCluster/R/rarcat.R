@@ -1,38 +1,29 @@
 
-rarcat <- function(diss, covar, df, clustering, 
+rarcat <- function(formula, data, diss, 
                    robust=TRUE, B=500, count=FALSE, 
                    algo="pam", method="ward.D", 
-                   fixed=FALSE, ncluster=10, eval="CH",
+                   fixed=FALSE, kcluster=10, cqi="CH",
                    parallel="no", ncpus=1, cl=NULL,
-                   transformation=FALSE, conflevel=0.05, digits=3) {
-  
-  # Ensure that the associations can be retrieved
-  if(!all(covar %in% colnames(df))) {
-    stop("Please check that the covariates names correspond to columns in the dataset")
-  }
-  
-  # Ensure correct size of the clustering solution
-  if(nrow(df) != length(clustering)) {
-    stop("Please give a clustering solution that has the same size as the original dataset")
-  }
+                   fisher_transform=FALSE, conflevel=0.05, digits=3) {
   
   # Run the bootstrap procedure if asked
   bootout <- NULL
   if(robust) {
-    bootout <- regressboot(diss, covar, df, B=B, count=count, 
+    bootout <- regressboot(formula, data, diss, B=B, count=count, 
                            algo=algo, method=method, 
-                           fixed=fixed, ncluster=ncluster, eval=eval,
+                           fixed=fixed, kcluster=kcluster, cqi=cqi,
                            parallel=parallel, ncpus=ncpus, cl=cl)
   }
   
-  formula <- paste("membership ~", paste(covar, collapse = " + "))
+  modelDF <- model.frame(formula, data)
+  modelFormula <- paste("membership ~", paste(colnames(modelDF)[-1], collapse = " + "))
   
   original <- data.frame()
   assess <- data.frame()
-  for(i in unique(clustering)) {
+  for(i in unique(modelDF[,1])) {
     
-    df$membership <- clustering == i
-    mod <- glm(formula, df, family = "binomial")
+    modelDF$membership <- modelDF[,1] == i
+    mod <- glm(modelFormula, modelDF, family = "binomial")
     tmp <- summary(margins::margins(mod))
     #print(tmp)
     
@@ -43,28 +34,28 @@ rarcat <- function(diss, covar, df, clustering,
     } 
     
     # Average marginal effects with confidence intervals
-    lower <- tmp$AME - qnorm(1 - conflevel/2)*tmp$SE
-    upper <- tmp$AME + qnorm(1 - conflevel/2)*tmp$SE
-    original[,paste("cluster", i)] <- paste0(round(tmp$AME, digits), " [", 
-                                             round(lower, digits), ", ", 
-                                             round(upper, digits), "]")
+    original[,paste("cluster", i)] <- round(tmp$AME, digits)
+    original[,paste0("c", i, " lower")] <- 
+      round(tmp$AME - qnorm(1 - conflevel/2)*tmp$SE, digits)
+    original[,paste0("c", i, " upper")] <- 
+      round(upper <- tmp$AME + qnorm(1 - conflevel/2)*tmp$SE, digits)
     
     if(!is.null(bootout)) {
       
       assess[,paste("cluster", i)] <- NA
+      assess[,paste0("c", i, " lower")] <- NA
+      assess[,paste0("c", i, " upper")] <- NA
       for(j in 1:nrow(assess)) {
         
-        # Run the RARCAT function for each combination of cluster and covariate
-        res <- unirarcat(bootout, clustering, i, assess$factor[j], transformation)
+        # Run the pooling function for each combination of cluster and covariate
+        res <- bootpool(bootout, modelDF[,1], i, assess$factor[j], fisher_transform)
         # Formula for the prediction interval
         var <- qt(1 - conflevel/2, bootout$B - 2)*
-          sqrt(res$standard.error^2 + res$bootstrap.deviation^2)
-        min <- res$pooled.ame - var
-        max <- res$pooled.ame + var
+          sqrt(res$standard.error^2 + res$bootstrap.stddev^2)
         
-        assess[j,paste("cluster", i)] <- paste0(round(res$pooled.ame, digits), " [", 
-                                                round(min, digits), ", ", 
-                                                round(max, digits), "]") 
+        assess[j,paste("cluster", i)] <- round(res$pooled.ame, digits)
+        assess[j,paste0("c", i, " lower")] <- round(res$pooled.ame - var, digits)
+        assess[j,paste0("c", i, " upper")] <- round(res$pooled.ame + var, digits)
       }
     }
   }
