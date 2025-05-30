@@ -68,14 +68,15 @@ hc <- fastcluster::hclust(as.dist(diss), method="ward.D")
 clustqual <- as.clustrange(hc, diss=diss, ncluster=10)
 clustqual
 
-# Create cluster membership variable based on cluster quality above
+## Create cluster membership variable based on cluster quality above
 mvad$clustering <- clustqual$clustering$cluster2
 mvad$membership <- mvad$clustering == 2
 
-# Run logistic regression model for the association between the clustering and a covariate of interest
+## Run logistic regression model for the association between the clustering 
+## and a covariate of interest
 mod <- glm(membership ~ funemp, mvad, family = "binomial")
 
-# Model results
+## Model results
 summary(margins(mod))
 
 ## As in the original analysis, hierarchical clustering with Ward method is implemented

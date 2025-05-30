@@ -141,18 +141,18 @@ In the example above, we have run the function `rarcat` with the number of boots
 
 ```{r, message=FALSE}
 # Loading the parallel library
-library(parallel)
+#library(parallel)
 # Use available cores minus one
-ncpus <- detectCores() - 1
+#ncpus <- detectCores() - 1
 # Create the parallel cluster
-cl <- makeCluster(ncpus)
+#cl <- makeCluster(ncpus)
 
 # Parallel run
-rarcatout <- rarcat(formula, data = mvad, diss = diss, robust = TRUE, B = 500,
-                    algo = "hierarchical", method = "ward.D",
-                    fixed = TRUE, kcluster = 6,
-                    parallel = "snow", ncpus = ncpus, cl = cl)
-rarcatout$robust.analysis
+# rarcatout <- rarcat(formula, data = mvad, diss = diss, robust = TRUE, B = 500,
+#                     algo = "hierarchical", method = "ward.D",
+#                     fixed = TRUE, kcluster = 6,
+#                     parallel = "snow", ncpus = ncpus, cl = cl)
+# rarcatout$robust.analysis
 ```
 
 The bootstrap procedure is now at least four times faster and the estimates become sufficiently accurate, in the sense that a new run gives almost exactly the same values.
@@ -231,14 +231,14 @@ A typical utilisation of `regressboot` is shown below (caution, this uses the Wi
 # As in the original analysis, hierarchical clustering with Ward method is implemented.
 # Also, an optimal clustering solution with n between 2 and 10 is evaluated each time by
 # maximizing the CH index.
-bootout <- regressboot(clustering ~ funemp, data = mvad, diss = diss, B = 500,
-                       algo = "hierarchical", method = "ward.D",
-                       fixed = FALSE, kcluster = 10, cqi = "CH", 
-                       parallel = "snow", ncpus = ncpus, cl = cl)
-# Without parallel computing
-# bootout <- regressboot(clustering ~ funemp, data = mvad, diss = diss, B = 50,
+# bootout <- regressboot(clustering ~ funemp, data = mvad, diss = diss, B = 500,
 #                        algo = "hierarchical", method = "ward.D",
-#                        fixed = FALSE, kcluster = 10, cqi = "CH")
+#                        fixed = FALSE, kcluster = 10, cqi = "CH", 
+#                        parallel = "snow", ncpus = ncpus, cl = cl)
+# Without parallel computing
+bootout <- regressboot(clustering ~ funemp, data = mvad, diss = diss, B = 50,
+                       algo = "hierarchical", method = "ward.D",
+                       fixed = FALSE, kcluster = 10, cqi = "CH")
 table(bootout$optimal.kcluster)
 ```
 
@@ -356,17 +356,17 @@ Moving directly to the new functions, we force this time the number of clusters 
 ```{r, message=FALSE}
 # Evaluate the validity of the original analysis and the reliability of its
 # findings by applying RARCAT with all given covariates and constructed types
-rarcat <- rarcat(clustering ~ funemp, mvad, diss = diss, B = 500, 
+# rarcat <- rarcat(clustering ~ funemp, mvad, diss = diss, B = 500, 
+#                  algo = "hierarchical", method = "ward.D", 
+#                  fixed = TRUE, kcluster = 6,
+#                  parallel = "snow", ncpus = ncpus, cl = cl)
+rarcat <- rarcat(clustering ~ funemp, mvad, diss = diss, B = 50, 
                  algo = "hierarchical", method = "ward.D", 
-                 fixed = TRUE, kcluster = 6,
-                 parallel = "snow", ncpus = ncpus, cl = cl)
-# rarcat <- rarcat(diss, "funemp", mvad, clustqual$clustering$cluster6,
-#                  B = 50, algo = "hierarchical", method = "ward.D",
-#                  ncluster = 6, fixed = TRUE)
+                 fixed = TRUE, kcluster = 6)
 rarcat$original.analysis
 rarcat$robust.analysis
 # Stop the parallel cluster after computation
-stopCluster(cl)
+#stopCluster(cl)
 ```
 
 The results here are not directly comparable to the ones from the short tutorial as only one covariate is considered (father unemployment status), such that the estimated effects are not adjusted for GCSEs obtained as it was the case then. Nevertheless, we see in this bivariate setting that in the original analysis, father unemployment status was not only associated with the unemployment trajectory group, but also with trajectories featuring long training spells (cluster 4) and, as hinted in the first use case (two clusters solution), with school + higher education trajectories (cluster 5, inverse association). However, the evidence for the association with cluster 4 was only weak and does not pass the robustness assessment (95% PI contains the null value), which indicates that this relationship is sensitive to sampling uncertainty and therefore unstable [1]. On the other hand, the association with cluster 5 stays virtually unchanged in the robustness assessment, and the association with cluster 6 becomes even more apparent. We conclude that there is relatively strong evidence of a relationship between our covariate of interest and these two specific trajectory types, at least if we ignore potential confounding factors.
