@@ -140,14 +140,14 @@ The results stay fairly close to the ones from the original analysis (seen earli
 In the example above, we have run the function `rarcat` with the number of bootstrap $B=50$, which is less than the recommended number (500 in the function documentation). This was done to speed up the computing. Alternatively, parallel computing may be used. The code below shows how to do this for Windows users. The function `rarcat` also accepts arguments for parallel computing on different operating systems (see the function `boot` documentation for more details).
 
 ```{r, message=FALSE}
-# Loading the parallel library
-#library(parallel)
-# Use available cores minus one
-#ncpus <- detectCores() - 1
-# Create the parallel cluster
-#cl <- makeCluster(ncpus)
-
-# Parallel run
+# # Loading the parallel library
+# library(parallel)
+# # Use available cores minus one
+# ncpus <- detectCores() - 1
+# # Create the parallel cluster
+# cl <- makeCluster(ncpus)
+# 
+# # Parallel run
 # rarcatout <- rarcat(formula, data = mvad, diss = diss, robust = TRUE, B = 500,
 #                     algo = "hierarchical", method = "ward.D",
 #                     fixed = TRUE, kcluster = 6,
@@ -233,7 +233,7 @@ A typical utilisation of `regressboot` is shown below (caution, this uses the Wi
 # maximizing the CH index.
 # bootout <- regressboot(clustering ~ funemp, data = mvad, diss = diss, B = 500,
 #                        algo = "hierarchical", method = "ward.D",
-#                        fixed = FALSE, kcluster = 10, cqi = "CH", 
+#                        fixed = FALSE, kcluster = 10, cqi = "CH",
 #                        parallel = "snow", ncpus = ncpus, cl = cl)
 # Without parallel computing
 bootout <- regressboot(clustering ~ funemp, data = mvad, diss = diss, B = 50,
@@ -356,12 +356,12 @@ Moving directly to the new functions, we force this time the number of clusters 
 ```{r, message=FALSE}
 # Evaluate the validity of the original analysis and the reliability of its
 # findings by applying RARCAT with all given covariates and constructed types
-# rarcat <- rarcat(clustering ~ funemp, mvad, diss = diss, B = 500, 
-#                  algo = "hierarchical", method = "ward.D", 
+# rarcat <- rarcat(clustering ~ funemp, mvad, diss = diss, B = 500,
+#                  algo = "hierarchical", method = "ward.D",
 #                  fixed = TRUE, kcluster = 6,
 #                  parallel = "snow", ncpus = ncpus, cl = cl)
-rarcat <- rarcat(clustering ~ funemp, mvad, diss = diss, B = 50, 
-                 algo = "hierarchical", method = "ward.D", 
+rarcat <- rarcat(clustering ~ funemp, mvad, diss = diss, B = 50,
+                 algo = "hierarchical", method = "ward.D",
                  fixed = TRUE, kcluster = 6)
 rarcat$original.analysis
 rarcat$robust.analysis

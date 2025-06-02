@@ -48,7 +48,7 @@ rarcat <- function(formula, data, diss,
       for(j in 1:nrow(assess)) {
         
         # Run the pooling function for each combination of cluster and covariate
-        res <- bootpool(bootout, modelDF[,1], i, assess$factor[j], fisher_transform)
+        res <- bootpool(bootout, data[,all.vars(formula)[1]], i, assess$factor[j], fisher_transform)
         # Formula for the prediction interval
         var <- qt(1 - conflevel/2, bootout$B - 2)*
           sqrt(res$standard.error^2 + res$bootstrap.stddev^2)

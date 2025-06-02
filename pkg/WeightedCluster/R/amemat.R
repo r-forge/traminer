@@ -1,5 +1,5 @@
 
-amemat <- function(diss, indices, modelFormula, modelDF, algo="pam", method="ward.D",
+amemat <- function(diss, indices, formula, dataset, algo="pam", method="ward.D",
                    fixed = FALSE, kcluster=10, cqi="CH", count=FALSE) {
   
   if(!(cqi %in% c("PBC", "HG", "HGSD", "ASW", "ASWw", "CH", "R2", "CHsq", 
@@ -39,25 +39,29 @@ amemat <- function(diss, indices, modelFormula, modelDF, algo="pam", method="war
   }
   
   # Bootstrap covariates
-  replicate <- modelDF[indices,]
+  replicate <- dataset[indices,]
   # Recreate ids for safety
   replicate$id <- indices
   # Optimal solution
-  replicate$solution <- clustering
+  replicate[,all.vars(formula)[1]] <- clustering
   
   # Preallocate list
-  output_list <- vector("list", length(unique(replicate$solution)))
+  output_list <- vector("list", length(unique(clustering)))
   
-  for(i in unique(replicate$solution)) {
+  modelDF <- model.frame(formula, replicate)
+  modelFormula <- paste("membership ~", paste(colnames(modelDF)[-1], collapse = " + "))
+  
+  for(i in unique(clustering)) {
     
     if(count) print(i)
     
-    replicate$membership <- replicate$solution == i
-    mod <- glm(modelFormula, replicate, family = "binomial")
+    modelDF$membership <- modelDF[,1] == i
+    mod <- glm(modelFormula, modelDF, family = "binomial")
     tmp <- summary(margins::margins(mod))
     
     # One estimate for each association and each individual in this bootstrap cluster
-    sub <- dplyr::select(dplyr::filter(replicate, solution == i, !duplicated(id)), id)
+    sub <- replicate[replicate[,all.vars(formula)[1]] == i & 
+                       !duplicated(replicate$id), "id", drop = FALSE]
     effects <- matrix(tmp$AME, nrow = nrow(sub), ncol = nrow(tmp), byrow = T)
     colnames(effects) <- tmp$factor
     errors <- matrix(tmp$SE, nrow = nrow(sub), ncol = nrow(tmp), byrow = T)
@@ -68,6 +72,6 @@ amemat <- function(diss, indices, modelFormula, modelDF, algo="pam", method="war
   
   output <- do.call(rbind, output_list)
   # With all individuals (and missing observations depending on the sample)
-  output <- dplyr::left_join(data.frame(id = seq_len(nrow(modelDF))), output, by = "id")
+  output <- dplyr::left_join(data.frame(id = seq_len(nrow(dataset))), output, by = "id")
   return(c(as.matrix(output[,-1])))
 }

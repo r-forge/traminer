@@ -12,16 +12,14 @@ regressboot <- function(formula, data, diss, B=500, count=FALSE,
     stop("Please give a single number as kcluster (see documentation)")
   }
   
-  modelDF <- model.frame(formula, data)
-  modelFormula <- paste("membership ~", paste(colnames(modelDF)[-1], collapse = " + "))
-  
-  res <- boot::boot(diss, amemat, B, modelFormula=modelFormula, modelDF=modelDF, 
+  res <- boot::boot(diss, amemat, B, formula=formula, dataset=data, 
                     algo=algo, method=method, cqi=cqi, kcluster=kcluster, fixed=fixed, 
                     count=count, parallel=parallel, ncpus=ncpus, cl=cl)
   originres <- res$t0
   bootres <- t(res$t)
   
   # Create a list of associations
+  modelDF <- model.frame(formula, data)
   varlist <- unlist(lapply(colnames(modelDF[-1]), function(i) {
     if(is.factor(modelDF[[i]])) {
       paste0(i, levels(modelDF[[i]])[-1])
@@ -31,7 +29,7 @@ regressboot <- function(formula, data, diss, B=500, count=FALSE,
     }
   }))
   varlist <- sort(varlist)
-  n <- nrow(modelDF)
+  n <- nrow(data)
   
   # Extract information once
   first <- bootres[1:n,]

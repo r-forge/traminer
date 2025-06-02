@@ -59,4 +59,3 @@ bootpool <- function(bootout, clustering, clusnb, covar, fisher_transform = FALS
               "bootstrap.ranef" = lme4::ranef(rob)$bootstrap[,1],
               "individual.ranef" = lme4::ranef(rob)$id[,1]))
 }
-
