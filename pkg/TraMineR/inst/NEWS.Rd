@@ -9,6 +9,11 @@
             \code{dissdomassoc()}: issue with ties when ranking values for spearman correlation.
             \item  
             \code{disscenter()}: wrong distance values returned when allcenter=TRUE.
+            \item
+            \code{seqformat()}: useless test on \code{covar} when \code{to} is not \code{"SRS"}.
+            \item
+            \code{seqformat()} with \code{from="SPELL"} and \code{to="STS"}: unreadable 
+            list of cases with spells ending before start time.
         }
     }
 }

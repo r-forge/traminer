@@ -42,10 +42,10 @@ most central sequence. If \code{group} is set, an index is returned per group. W
 	where \eqn{SS} is the sum of squares (see \code{\link{dissvar}}).
 }
 \value{
-	When \code{medoid.index=NULL}, the vector with the dissimilarity of each case with its group center, \cr
-    or When \code{allcenter} is \code{TRUE}, a data frame with distances of all cases (rows) to all group centers (columns).
+	When \code{medoid.index=NULL}, the vector with the dissimilarity of each case with its group center or \cr
+    when \code{allcenter} is \code{TRUE}, a data frame with distances of all cases (rows) to all group centers (columns). \cr
     When \code{medoid.index="first"}, vector of the index of first encountered medoid per group.\cr
-    When \code{medoid.index="first"}, list of indexes of all occurrences of each group medoid.
+    When \code{medoid.index="all"}, list of indexes of all occurrences of each group medoid.
 }
 
 \references{

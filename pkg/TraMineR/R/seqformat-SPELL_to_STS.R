@@ -173,10 +173,10 @@ SPELL_to_STS <- function(seqdata, id=1, begin=2, end=3, status=4,
 			}
 			else if (all(lid %in% birthyrid1)) {
     			birthy <- birthyr1[birthyrid1==lid[i]]
-    			if(nbseq<40){
+    			#if(nbseq<40){
                     #print(paste("spell 1 = ", spell[1,begin]))
     			    #print(paste("birthyr = ", birthy))
-                }
+                #}
     			age1 <- spell[1,begin] - birthy
     			if (!is.na(age1) & age1 < 0) { ## first spell starts before birthyr
                     nstartbefore <- nstartbefore + 1
