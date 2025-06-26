@@ -77,7 +77,7 @@ seqformat <- function(data, var = NULL, from, to, compress = FALSE, nrep = NULL,
     msg.stop("'stsep' must be a character")
 
   # to SRS
-  if (!is.null(covar))
+  if (!is.null(covar) & to == "SRS")
     checkindexes(covar)
 
   # to TSE

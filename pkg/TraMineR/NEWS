@@ -1,10 +1,10 @@
 ## =========
-Version 2.3-12 [2025-02-05]
+Version 2.3-12 [2025-06-26]
 
 Bug fixes:
 
   - dissdomassoc() issue with ties when ranking values for spearman correlation.
-
+  - disscenter() wrong distance values returned when allcenter=TRUE.
 
 ## =========
 Version 2.2-11 [2024-12-08]

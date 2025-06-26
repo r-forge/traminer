@@ -1,12 +1,14 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-12 [2025-02-05] }{
+\section{Changes in version 2.3-12 [2025-06-26] }{
 
     \subsection{Bug fixes}{
         \itemize{
             \item
             \code{dissdomassoc()}: issue with ties when ranking values for spearman correlation.
+            \item  
+            \code{disscenter()}: wrong distance values returned when allcenter=TRUE.
         }
     }
 }
