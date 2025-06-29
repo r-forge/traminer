@@ -73,11 +73,11 @@ disscentertrim <- function(diss, group=NULL, medoids.index=NULL, allcenter=FALSE
 		if (!isFALSE(allcenter)) {
 			ret[, i] <- 0
 			others <- as.integer(sort(ind[!cond]))
-            # weighted sum of distances to group members
+            # for each case, weighted sum of distances to group members
 			dT <- .Call(C_tmrWeightedInertiaContribExt, diss, grpindiv, others, weights)
 			dTindiv <- 1:sum(cond)
-            # subtracting weighted mean of intra distances
-			dT <- dT - weighted.mean(dT[dTindiv], weights[grpindiv])/2
+            # subtracting weighted mean of intra sum of distances to grp members
+			dT <- dT - weighted.mean(dT[dTindiv], weights[grpindiv])/2 #gr Jul 25 fixed missing /2
 
 			ret[grpindiv, i] <- dT[dTindiv]
 			ret[others, i] <- dT[-(dTindiv)]

@@ -2,9 +2,9 @@
 
 \name{seqformat}
 \alias{seqformat}
-\title{Conversion between sequence formats}
+\title{Conversion between sequence representation formats}
 \description{
-  Convert a sequence data set from one format to another.
+  Convert a sequence data set from one representation format to another.
 }
 \usage{
 seqformat(data, var = NULL, from, to, compress = FALSE, nrep = NULL, tevent,
@@ -81,7 +81,7 @@ seqformat(data, var = NULL, from, to, compress = FALSE, nrep = NULL, tevent,
     % to SRS
     List of Integers or Strings.
     When \code{to = "SRS"}, indexes or names of \code{data} columns to include as
-    covariates in the output.
+    covariates in the output. Ignored otherwise. Applies only when \code{data} is a data frame with both sequence and covariate data. Must be used in conjunction with \code{var}.
     Covariate values are replicated across the shifted replicated rows.
   }
   \item{SPS.in}{
@@ -338,6 +338,11 @@ biofam.seq <- seqdef(biofam, 10:25, alphabet = 0:7,
 bf.spell <- seqformat(biofam.seq, from = "STS", to = "SPELL",
   pdata = biofam, pvar = c("idhous", "birthyr"))
 head(bf.spell)
+
+## Converting to shifted replicated sequences (SRS)
+bf.srs <- seqformat(biofam, var=10:25, from="STS", to="SRS", 
+                    covar=c("sex","plingu02"))
+tail(bf.srs)
 
 
 ## ======================================

@@ -1,6 +1,6 @@
 Package: TraMineR
 Version: 2.3-12
-Date: 2025-06-26
+Date: 2025-06-29
 Title: Trajectory Miner: a Sequence Analysis Toolkit
 Authors@R: c(
   person("Alexis", "Gabadinho",
@@ -14,7 +14,7 @@ Authors@R: c(
     role = "aut",
     comment = c(ORCID = "0000-0002-6212-1567")),
   person("Pierre-Alexandre", "Fonta",
-    role = "aut"),
+    role = "ctb"),
   person("Gilbert", "Ritschard",
     role = c("aut", "cre", "cph"),
     email = "gilbert.ritschard@unige.ch",
