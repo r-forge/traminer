@@ -1,9 +1,17 @@
 ## =========
-Version 2.3-13 [2025-06-29]
+Version 2.3-13 [2025-08-02]
 
-Misc.:
+Changes in existing functions:
 
-  - No changes.
+  - plot.stslist(), plot method for object of class stslist, gains
+    new attributes sampling and sample.meth to plot only a subsample 
+    of the sequences. Handy when large number of sequences must be
+    plotted. 
+
+Bug fixes:
+
+  - plot.stslist(), plot method for object of class stslist: bad weight 
+    assignment when idxs is not seq(1, to=length(idxs)).
 
 
 ## =========

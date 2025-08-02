@@ -5,9 +5,15 @@
 plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
   cpal = NULL, missing.color = NULL, ylab = NULL, yaxis = TRUE, xaxis = TRUE,
   ytlab = NULL, las = par("las"), xtlab = NULL, xtstep = NULL, tick.last = NULL,
-  cex.axis = par("cex.axis"), tlim, cex.plot, ylas, ...) {
+  cex.axis = par("cex.axis"),
+  sampling = NULL,
+  sample.meth = c("systematic","random"),
+  tlim, cex.plot, ylas,
+  ...) {
 
   TraMineR.check.depr.args(alist(idxs = tlim, cex.axis = cex.plot, las = ylas))
+
+  sample.meth <- match.arg(sample.meth, c("systematic","random"))
 
 	## Storing the optional graphical parameters in a list
 	glist <- list(...)
@@ -21,6 +27,7 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
   if ("space" %in% names(list(...))) space <- list(...)[["space"]]
   #las <- par("las")
   #if ("las" %in% names(list(...))) las <- list(...)[["las"]]
+
 
 	n <- nrow(x)
 	seql <- ncol(x)
@@ -47,7 +54,10 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
 	else if (idxs[1]==0)
 			idxs <- 1:n
 	else if (max(idxs) > n)
-			idxs <- 1:n
+			idxs <- idxs[idxs < n+1] #idxs <- 1:n
+
+    if(is.null(sampling))
+        sampling <- length(idxs)
 
 	## Sorting
 	if (!is.null(sortv)) {
@@ -80,9 +90,6 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
 		statl <- c(statl, nr)
 	}
 
-	ssamp <- x[idxs,]
-	seqbar <- apply(ssamp, 1, seqgbar, statl=statl, seql=seql)
-
 	## WEIGHTS
 	## Weights
 	weights <- attr(x, "weights")
@@ -95,6 +102,35 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
 	## instead of NULL
 	if (all(weights==1))
 		weighted <- FALSE
+
+
+    ## subsample when more sequences than sampling
+    if (length(idxs) > sampling){
+        if (sample.meth == "systematic"){
+            sel <- as.integer(seq(1, to=length(idxs), length.out=sampling))
+        } else if (sample.meth == "random"){
+        ## selecting using cumulated weight
+        #sel <- idxs[1]
+        #normweig <- sampling * weights/sum(weights)
+        #cumweight <- cumsum(normweig)
+        #for (p in 2:sampling){
+        #  psel <- which(cumweight>=p)[1] #- weights[idxs[p-1]])[1]
+        #  sel <- c(sel, psel)
+        #}
+
+            ## Random sample with prob weights
+            sel <- sample.int(length(idxs), size=sampling, prob=weights[idxs])
+            sel <- sel[order(sel)]
+        } else {
+          msg.stop("Unknown sample.meth value ", sample.meth)
+        }
+
+    } else {
+        sel <- 1:length(idxs)
+    }
+	ssamp <- x[idxs[sel],]
+	seqbar <- apply(ssamp, 1, seqgbar, statl=statl, seql=seql)
+
 
 	if (weighted) {wlab <- "weighted "}
 	else {wlab <- NULL}
@@ -110,7 +146,7 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
     }
 
 	## The PLot
-    barplot(seqbar,col=cpal, width=weights,
+    barplot(seqbar,col=cpal, width=weights[idxs[sel]],
 		ylab=ylab,
 		horiz=TRUE,
 		yaxt="n",
@@ -140,7 +176,7 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
 		else
             sp <- space
 
-		idxmax <- length(idxs)
+		idxmax <- length(idxs[sel])
 
 		if (!weighted) {
 			y.lab.pos <- sp+0.5
@@ -152,12 +188,14 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
 			}
 		}
 		else {
-			y.lab.pos <- (weights[1]/2)+sp
-			sep <- sp*mean(weights)
+			y.lab.pos <- (weights[idxs[sel]][1]/2)+sp
+			sep <- sp*mean(weights[idxs[sel]])
 
 			if (idxmax>1) {
-				for (p in 2:idxmax)
-					y.lab.pos <- c(y.lab.pos, sum(weights[1:p])+(p*sep)-weights[p]/2)
+				for (p in 2:idxmax){
+                    psel <- idxs[sel][p]
+					y.lab.pos <- c(y.lab.pos, sum(weights[idxs[sel]][1:p])+(p*sep)-weights[psel]/2)
+                }
 			}
 		}
 
@@ -170,6 +208,7 @@ plot.stslist <- function(x, idxs = NULL, weighted = TRUE, sortv = NULL,
         }
         else if (length(ytlab)!=length(idxs))
                 stop("Length of ytlab does not match number of sequences!")
+        ytlab <- ytlab[sel]
 
         plist <- list(side=2, at=y.lab.pos, mgp=c(1.5,0.5,0), labels=ytlab, las=las, tick=FALSE, cex.axis=cex.axis)
         plist <- c(plist,glist)

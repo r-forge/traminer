@@ -5,18 +5,30 @@
 This is the plot method for state sequence objects of class \code{stslist} created by the \code{seqdef} function. It produces a sequence index plot.
 }
 \usage{
-\method{plot}{stslist}(x, idxs = NULL, weighted = TRUE, sortv = NULL,
-  cpal = NULL, missing.color = NULL, ylab = NULL,
-  yaxis = TRUE, xaxis = TRUE, ytlab = NULL, las = par("las"),
-  xtlab = NULL, xtstep = NULL, tick.last = NULL, cex.axis = par("cex.axis"),
+\method{plot}{stslist}(x, 
+  idxs = NULL, 
+  weighted = TRUE, 
+  sortv = NULL,
+  cpal = NULL, missing.color = NULL, 
+  ylab = NULL,
+  yaxis = TRUE, 
+  xaxis = TRUE, 
+  ytlab = NULL, 
+  las = par("las"),
+  xtlab = NULL, 
+  xtstep = NULL, 
+  tick.last = NULL, 
+  cex.axis = par("cex.axis"),
+  sampling = NULL,
+  sample.meth = c("systematic","random"), 
   tlim, cex.plot, ylas, ...)
 }
 \arguments{
 	\item{x}{A state sequence object created with the \code{\link{seqdef}} function.}
 
-	\item{idxs}{Indexes of the sequences to be plotted (default value is \code{1:10}), for instance \code{20:50} to plot sequences 20 to 50, \code{c(2,8,12,25)} to plot sequences 2,8,12 and 25 in \code{seqdata}. If set to \code{0}, all sequences in \code{seqdata} are plotted.}
+	\item{idxs}{Indexes of the sequences to be plotted (default value is \code{1:10}), for instance \code{20:50} to plot sequences 20 to 50, \code{c(2,8,12,25)} to plot sequences 2,8,12 and 25 in \code{seqdata}. If set to \code{0}, all sequences in \code{seqdata} are plotted. When \code{sortv} is not \code{NULL}, \code{idxs} applies to the sorted sequences.}
 
-      \item{weighted}{Logical: Should the bar representing each sequence be proportional to its weight? Ignored when no weights are assigned to sequences (see \code{\link{seqdef}}.)}
+    \item{weighted}{Logical: Should the bar representing each sequence be proportional to its weight? Ignored when no weights are assigned to sequences (see \code{\link{seqdef}}.)}
 
 	\item{sortv}{A sorting variable or a sort method (one of \code{"from.start"} or \code{"from.end"}). See details.}
 
@@ -50,6 +62,11 @@ This is the plot method for state sequence objects of class \code{stslist} creat
   \item{tick.last}{Logical. Should a tick mark be enforced at the last position on the x-axis? If unspecified, the \code{tick.last} attribute of the \code{x} object is used.}
 
   \item{cex.axis}{Axis annotation magnification. See \code{\link{par}}.}
+  
+  \item{sampling}{Integer or \code{NULL}. Size of displayed subsample of sequences. See details. If \code{NULL} (default), no sampling is applied.}
+
+  \item{sample.meth}{Character string. Sampling method. One of \code{"systematic"} (default) and \code{"random"}.}
+
 
   \item{tlim}{Deprecated. Use \code{idxs} instead.}
   \item{cex.plot}{Deprecated. Use \code{cex.axis} instead.}
@@ -68,7 +85,9 @@ This method is invoked by several advanced plot functions such as  \code{seqiplo
 When a \code{sortv} variable is provided, the sequences are sorted bottom-up according to its values. With \code{sortv = "from.start"}, sequence are sorted by the elements of the alphabet at the successive positions starting from the beginning of the sequences. Method \code{"from.end"} proceeds similarly, but backward from the last position.
 
 %The interest of sequence index plots has for instance been stressed by \cite{Scherer (2001)} and \cite{Brzinsky-Fay et al. (2006)}.
-Index plots of thousands of sequences result in very heavy graphic files when stored in vectorial (PDF or POSTSCRIPT) format because each sequence, even if hidden, is drawn individually. To reduce the file size, we suggest saving the figures in bitmap format by using for instance \code{\link{png}} instead of \code{\link{postscript}} or \code{\link{pdf}}.
+Index plots of thousands of sequences result in very heavy graphic files when stored in vectorial (PDF or POSTSCRIPT) format because each sequence, even if hidden, is drawn individually. To reduce the file size, we suggest saving the figures in bitmap format by using for instance \code{\link{png}} instead of \code{\link{postscript}} or \code{\link{pdf}}. 
+
+Alternatively, attribute \code{sampling} could be used. The maximum number of non-hidden sequences that can be shown being limited by the resolution of the output device, setting a reasonably high (about 300) subsample size of sequences to plot improves speed and output size while providing a good approximation of the full index plot. Of course, sampling applies only when the number of sequences exceeds the \code{sampling} value.
 }
 
 \seealso{\code{\link{seqplot}}

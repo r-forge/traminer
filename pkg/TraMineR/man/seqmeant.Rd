@@ -3,7 +3,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Mean durations in each state}
 \description{
-Compute the mean total time spent in each state of the alphabet for the set of sequences given as input.
+Compute the mean (across all sequences) of the total time spent in each state of the alphabet.
 }
 \usage{
 seqmeant(seqdata, weighted=TRUE, with.missing=FALSE, prop=FALSE, serr=FALSE)
@@ -22,7 +22,7 @@ seqmeant(seqdata, weighted=TRUE, with.missing=FALSE, prop=FALSE, serr=FALSE)
 An object of class \emph{stslist.meant}. There are \code{print} and \code{plot} methods for such objects.
 }
 
-\seealso{\code{\link{plot.stslist.meant}} for basic plots of \emph{stslist.meant} objects and \code{\link{seqmtplot}} (\code{\link{seqplot}} with \code{type="mt"}) argument for more sophisticated plots of the mean durations allowing grouping and legend.}
+\seealso{\code{\link{plot.stslist.meant}} for basic plots of \emph{stslist.meant} objects and \code{\link{seqmtplot}} (\code{\link{seqplot}} with argument \code{type="mt"}) for more sophisticated plots with grouping and color legend.}
 
 \author{Alexis Gabadinho}
 

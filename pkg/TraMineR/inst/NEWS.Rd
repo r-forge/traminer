@@ -1,11 +1,20 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
-\section{Changes in version 2.3-13 [2025-06-29] }{
+\section{Changes in version 2.3-13 [2025-08-02] }{
 
-    \subsection{Misc.}{
+    \subsection{Changes in existing functions}{
         \itemize{
             \item
-            No changes.
+            \code{plot.stslist()}, plot method for object of class \code{stslist}, 
+            gains new attributes \code{sampling} and \code{sample.meth} to plot only a subsample 
+            of the sequences. Handy when large number of sequences must be plotted.
+        }
+    }
+    
+    \subsection{Bug fixes}{
+        \itemize{
+            \item
+            \code{plot.stslist()}, plot method for object of class \code{stslist}: bad weight     assignment when \code{idxs} is not \code{seq(1, to=length(idxs))}.
         }
     }
 }
@@ -18,14 +27,14 @@
             \item
             \code{dissdomassoc()}: issue with ties when ranking values for spearman correlation.
             \item  
-            \code{disscenter()}: wrong distance values returned when allcenter=TRUE.
+            \code{disscenter()}: wrong distance values returned when \code{allcenter=TRUE}.
             \item
             \code{seqformat()}: useless test on \code{covar} when \code{to} is not \code{"SRS"}.
             \item
             \code{seqformat()} with \code{from="SPELL"} (\code{SPELL_to_STS}): unreadable 
             list of cases with spells ending before start time.
             \item
-            \code{seqformat()}: several internal checkindexes badly specified.
+            \code{seqformat()}: several internal \code{checkindexes()} badly specified.
         }
     }
 }
@@ -48,7 +57,7 @@
             \item
             \code{dissrep()} error when seqdata is a single sequence.
             \item
-            \code{seqecreate()} (and \code{tmrsequenceseveral} cpp function): segfault error when intEvent is NULL. (Fix required by Brian Ripley)
+            \code{seqecreate()} (and \code{tmrsequenceseveral} cpp function): segfault error when \code{intEvent} is \code{NULL}. (Fix required by Brian Ripley)
         }
     }
 }
