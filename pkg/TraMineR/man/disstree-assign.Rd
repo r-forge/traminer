@@ -25,7 +25,7 @@ Rules are expected to create a full partition of the space of possible values of
 }
 
 
-\seealso{\code{\link{disstree}}, \code{\link{disstreeleaf}}, \code{\link{disstree.get.rules}}}
+\seealso{\code{\link{disstree}} and examples therein, \code{\link{disstreeleaf}}, \code{\link{disstree.get.rules}}}
 \author{Gilbert Ritschard)}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

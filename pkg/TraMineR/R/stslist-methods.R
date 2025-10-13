@@ -32,6 +32,13 @@ print.stslist <- function(x, format='STS', extended=FALSE, ...) {
 	## If one column we keep the original data.frame method
 	## Otherwise we copy attributes and update "start" value
 
+  if(!missing(j) && is.character(j)) {
+    jj <- which(colnames(x) %in% j)
+    if (length(jj) < length(j))
+        msg.stop("Unknown column names!")
+    j <- jj
+  }
+
   ## For negative j, we first build the new subscript set
   if (!missing(j) && j[1]<0) {
     k <- -j

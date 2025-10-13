@@ -21,7 +21,7 @@ disstree.get.rules(tree, collapse="; ")
 }
 
 
-\seealso{\code{\link{disstree}}, \code{\link{disstreeleaf}}, \code{\link{disstree.assign}}}
+\seealso{\code{\link{disstree}} and examples therein, \code{\link{disstreeleaf}}, \code{\link{disstree.assign}}}
 \author{Gilbert Ritschard)}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

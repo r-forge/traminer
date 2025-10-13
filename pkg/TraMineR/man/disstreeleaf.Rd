@@ -22,7 +22,7 @@ disstreeleaf(tree, label=FALSE, collapse=", ")
 }
 
 
-\seealso{\code{\link{disstree}} for examples, \code{\link{disstree.get.rules}}, and \code{\link{disstree.assign}}.}
+\seealso{\code{\link{disstree}} and examples therein, \code{\link{disstree.get.rules}}, and \code{\link{disstree.assign}}.}
 \author{Matthias Studer and Gilbert Ritschard)}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

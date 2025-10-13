@@ -71,9 +71,9 @@ most central sequence. If \code{group} is set, an index is returned per group. W
   \cr
   \code{\link{dissassoc}} to test association between objects represented by their dissimilarities and a covariate.
   \cr
-  \code{\link{disstree}} for an induction tree analyse of objects characterized by a dissimilarity matrix.
+  \code{\link{disstree}} for an induction tree analysis of objects characterized by a dissimilarity matrix.
   \cr
-  \code{\link{dissmfacw}} to perform multi-factor analysis of variance from pairwise dissimilarities.
+  \code{\link{dissmfacw}} to perform a multi-factor analysis of variance from pairwise dissimilarities.
 }
 
 \examples{
