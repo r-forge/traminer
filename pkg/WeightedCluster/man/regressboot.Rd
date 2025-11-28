@@ -85,17 +85,20 @@ clustqual
 mvad$clustering <- clustqual$clustering$cluster2
 mvad$membership <- mvad$clustering == 2
 
-# Run logistic regression model for the association between the clustering and a covariate of interest
+# Run logistic regression model for the association between the clustering 
+# and a covariate of interest
 mod <- glm(membership ~ funemp, mvad, family = "binomial")
 
 # Model results
 summary(margins(mod))
 
-## As in the original analysis, hierarchical clustering with Ward method is implemented
-## An optimal clustering solution with n between 2 and 10 is evaluated each time by
-## maximizing the CH index
-## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-bootout <- regressboot(clustering ~ funemp, mvad, diss = diss, B = 50, 
+## As in the original analysis, we use hierarchical clustering with Ward
+## An optimal clustering solution with n between 2 and 10 is evaluated each time 
+## by maximizing the CH index
+
+## Warning!!
+## For illustration purposes, we use a too small number of bootstraps!
+bootout <- regressboot(clustering ~ funemp, mvad, diss = diss, B = 30, 
                       algo = "hierarchical", method = "ward.D", 
                       kcluster = 10)
 table(bootout$optimal.kcluster)

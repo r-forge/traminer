@@ -79,7 +79,7 @@ formula <- clustering ~ funemp + gcse5eq
 ## As in the original analysis, hierarchical clustering with Ward method is implemented
 ## The number of clusters is fixed to 6 here
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-rarcatout <- rarcat(formula, mvad, diss, B = 50, 
+rarcatout <- rarcat(formula, mvad, diss, B = 30, 
                     algo = "hierarchical", method = "ward.D", 
                     fixed = TRUE, kcluster = 6)
 

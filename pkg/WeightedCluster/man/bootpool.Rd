@@ -33,7 +33,7 @@ Roth, L., Studer, M., Zuercher, E., and Peytremann-Bridevaux, I. (2024). Robustn
 
 Studer, M. (2013). WeightedCluster library manual: A practical guide to creating typologies of trajectories in the social sciences with R. University of Geneva.
 
-Fernandez-Castilla, B., Maes, M., Declercq, L., Jamshidi, L., Beretvas, S. N., Onghena, P., and Van den Noortgate, W. (2019). A demonstration and evaluation of the use of cross-classified random-effects models for meta-analysis. Behavior research methods, 51(3), 1286–1304.
+Fernandez-Castilla, B., Maes, M., Declercq, L., Jamshidi, L., Beretvas, S. N., Onghena, P., and Van den Noortgate, W. (2019). A demonstration and evaluation of the use of cross-classified random-effects models for meta-analysis. Behavior research methods, 51(3), 1286-1304.
 }
 \author{
 Leonard Roth
