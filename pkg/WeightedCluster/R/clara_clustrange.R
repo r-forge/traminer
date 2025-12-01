@@ -77,7 +77,8 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
   message(" [>] Starting iterations...\n")
   ## Launch parallel loop
   # calc_pam <- foreach(loop=1:R, .export=c("davies_bouldin_internal"), .packages = c('TraMineR', 'cluster', 'WeightedCluster', 'fastcluster')) %dofuture%{#on stocke chaque sample
-  calc_pam <- foreach(loop = 1:R, .options.future = list(seed = TRUE, globals = structure(TRUE, add = c("sample.size", "seqdist.args", "m", "dnoise", "dlambda")))) %dofuture% { # on stocke chaque sample
+  calc_pam <- foreach(loop = 1:R, .options.future = list(seed = TRUE, globals = c("agseqdata", "ac", "seqdist.args", 
+  "sample.size", "kvals",  "method", "sample.size", "seqdist.args", "m", "dnoise", "dlambda", "p"))) %dofuture% { # on stocke chaque sample
     ltime <- Sys.time()
     mysample <- sample.int(nrow(agseqdata), size = sample.size, prob = ac$probs, replace = TRUE)
     ## Re-aggregate!
@@ -144,7 +145,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
         ## mean_diss <- sum(rowSums((memb^m)*diss2)*ac$aggWeights)
         mean_diss <- sum(rowSums((memb^m) * diss2) * ac$probs)
 
-        db <- fuzzy_davies_bouldin_internal(diss2, memb, medoids, weights = ac$aggWeights)$db
+        db <- WeightedCluster:::fuzzy_davies_bouldin_internal(diss2, memb, medoids, weights = ac$aggWeights)$db
 
         alpha <- 1
         hightest.memb <- apply(memb, 1, function(x) {
@@ -170,7 +171,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
         ## mean_diss <- sum(rowSums((memb^m)*diss2)*ac$aggWeights)
         mean_diss <- sum(rowSums((memb^m) * diss3) * ac$probs)
 
-        db <- fuzzy_davies_bouldin_internal(diss2, memb[, -ncol(memb), drop = FALSE], medoids, weights = ac$aggWeights)$db
+        db <- WeightedCluster:::fuzzy_davies_bouldin_internal(diss2, memb[, -ncol(memb), drop = FALSE], medoids, weights = ac$aggWeights)$db
 
         alpha <- 1
         hightest.memb <- apply(memb[, -ncol(memb), drop = FALSE], 1, function(x) {
@@ -185,7 +186,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
         memb <- apply(diss2, 1, which.min)
 
         mean_diss <- sum(alphabeta[1, ] * ac$probs)
-        db <- davies_bouldin_internal(diss2, memb, medoids, weights = ac$aggWeights)$db
+        db <- WeightedCluster:::davies_bouldin_internal(diss2, memb, medoids, weights = ac$aggWeights)$db
         pbm <- ((1 / length(medoids)) * (max(diss2[medoids, ]) / mean_diss))^2
         ams <- sum(sil * ac$probs)
       }

@@ -83,7 +83,7 @@ summary(margins(mod))
 ## An optimal clustering solution with n between 2 and 10 is evaluated each time by
 ## maximizing the CH index
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-bootout <- regressboot(clustering ~ funemp, mvad, diss = diss, B = 50, 
+bootout <- regressboot(clustering ~ funemp, mvad, diss = diss, B = 30, 
                       algo = "hierarchical", method = "ward.D", 
                       kcluster = 10)
 table(bootout$optimal.kcluster)
