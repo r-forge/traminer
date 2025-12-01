@@ -77,7 +77,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
   message(" [>] Starting iterations...\n")
   ## Launch parallel loop
   # calc_pam <- foreach(loop=1:R, .export=c("davies_bouldin_internal"), .packages = c('TraMineR', 'cluster', 'WeightedCluster', 'fastcluster')) %dofuture%{#on stocke chaque sample
-  calc_pam <- foreach(loop = 1:R, .options.future = list(seed = TRUE, globals = c("agseqdata", "ac", "seqdist.args", 
+  calc_pam <- foreach(loop = 1:R, .options.future = list(seed = TRUE, packages = c('TraMineR', 'cluster', 'WeightedCluster', 'fastcluster', "vegclust"), globals = c("agseqdata", "ac", "seqdist.args", 
   "sample.size", "kvals",  "method", "sample.size", "seqdist.args", "m", "dnoise", "dlambda", "p"))) %dofuture% { # on stocke chaque sample
     ltime <- Sys.time()
     mysample <- sample.int(nrow(agseqdata), size = sample.size, prob = ac$probs, replace = TRUE)
@@ -101,9 +101,9 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
         ## Weighted FCMdd clustering on subsample
         memb <- as.memb(cutree(hc, k = kvals[k]))
         algo <- ifelse(method == "fuzzy", "FCMdd", "NCdd")
-        clusteringC <- wfcmdd(diss, memb = memb, weights = ac2$aggWeights, method = algo, m = m, dnoise = dnoise, dlambda=dlambda) # FCMdd algo sur la matrice de distance
+        clusteringC <- WeightedCluster:::wfcmdd(diss, memb = memb, weights = ac2$aggWeights, method = algo, m = m, dnoise = dnoise, dlambda=dlambda) # FCMdd algo sur la matrice de distance
         fanny <- fanny(diss, kvals[k], diss = TRUE, memb.exp = m, iniMem.p = memb, tol = 0.00001)
-        clustering <- wfcmdd(diss, memb = fanny$membership, weights = ac2$aggWeights, method = algo, m = m, dnoise = dnoise, dlambda=dlambda) # FCMdd algo sur la matrice de distance
+        clustering <- WeightedCluster:::wfcmdd(diss, memb = fanny$membership, weights = ac2$aggWeights, method = algo, m = m, dnoise = dnoise, dlambda=dlambda) # FCMdd algo sur la matrice de distance
         if (clusteringC$functional < clustering$functional) {
           clustering <- clusteringC
         }
