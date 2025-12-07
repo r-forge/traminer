@@ -1,6 +1,6 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
-\section{Changes in version 2.3-13 [2025-09-25] }{
+\section{Changes in version 2.3-13 [2025-12-06] }{
 
     \subsection{Changes in existing functions}{
         \itemize{
@@ -8,6 +8,10 @@
             \code{plot.stslist()}, plot method for object of class \code{stslist}, 
             gains new attributes \code{sampling} and \code{sample.meth} to plot only a subsample 
             of the sequences. Handy when large number of sequences must be plotted.
+            \item
+            \code{dissrf()}, weights are normalized to sum up to the number of cases and, when k=1, computation is skipped and the overall medoid of the data is returned.
+            \item
+            \code{dissrf()}, explicit warnings when negative degrees of freedom.
         }
     }
     
