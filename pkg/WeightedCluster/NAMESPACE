@@ -10,11 +10,10 @@ importFrom("future", "plan", "multisession", "sequential")
 importFrom("foreach", "foreach")
 importFrom("progressr", "handlers", "handler_progress", "progressor")
 importFrom("doFuture", "%dofuture%")
-importFrom("doFuture", "%dofuture%")
 importFrom("fastcluster", "hclust")
 importFrom("vegclust", "as.memb", "crossmemb")
 importFrom("utils", "flush.console", "getS3method")
-importFrom("dplyr", "desc", "%>%", "filter", "select", "left_join", "arrange")
+
 
 export(
 as.clustrange,

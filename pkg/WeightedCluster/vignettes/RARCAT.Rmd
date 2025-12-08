@@ -28,15 +28,15 @@ knitr::knit_hooks$set(time_it = local({
 knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"), time_it=TRUE)
 ```
 
-In a standard Sequence Analysis, similar trajectories are clustered together to create a typology of trajectories, which is then often used to evaluate the association between sequence patterns and covariates inside regression models. The sampling uncertainty, which affects both the derivation of the typology and associated regressions, is typically ignored in this analysis, an oversight that may lead to wrong statistical conclusions.
+In a standard Sequence Analysis, similar trajectories are clustered together to create a typology of trajectories, which is then often used to evaluate the association between sequence patterns and covariates inside regression models. The sampling uncertainty, which affects both the derivation of the typology and associated regressions, is typically ignored in this analysis, an oversight that may lead to wrong statistical conclusions. 
 
-This document provides an introduction to the `R` code proposed to assess the robustness of regression results obtained from this standard analysis. Bootstrap samples are drawn from the data, and for each bootstrap, a new typology replicating the original one is constructed, followed by the estimation of the corresponding regression models. The bootstrap estimates are then combined using a multilevel modelling framework. 
-
-The document is structured in two parts. First, a short tutorial with a streamlined standard analysis on sequence data and a robustness assessment made with the `rarcat` function. Then, an extended tutorial with the same data illustration and a detailed explanation of the new functions, their arguments and their outputs. Furthermore, readers interested in the methods and the precise interpretation of the results are referred to:
+RARCAT aims to overcome this limitation by assessing the robustness of regression results obtained from this standard analysis. It works as follows. Bootstrap samples are drawn from the data, and for each bootstrap, a new typology replicating the original one is constructed, followed by the estimation of the corresponding regression models. The bootstrap estimates are then combined using a multilevel modelling framework. The method and the exact interpretation of the results are fully discussed in the following reference:
 
 - Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303. https://doi.org/10.1186/s12874-024-02435-8.
 
 __You are kindly asked to cite the above reference if you use the methods presented in this document.__
+
+This document focuses on the `R` code needed to use RARCAT. It is structured in two parts. First, a short tutorial with a streamlined standard analysis on sequence data and a robustness assessment made with the `rarcat` function. Then, an extended tutorial with the same data illustration and a detailed explanation of the functions, their arguments and their outputs. 
 
 Let us start by setting the seed for reproducible results.
 
@@ -62,7 +62,7 @@ mvad.lab <- c("employment", "further education", "higher education", "joblessnes
 mvad.shortlab <- c("EM","FE","HE","JL","SC","TR")
 
 ## Creating the state sequence object
-mvad.seq <- seqdef(mvad, 17:86, alphabet = mvad.alphabet, states = mvad.shortlab, 
+mvad.seq <- seqdef(mvad[, 17:86], alphabet = mvad.alphabet, states = mvad.shortlab, 
                    labels = mvad.lab, xtstep = 6)
 ```
 
@@ -106,11 +106,10 @@ Multiple commands would normally be required to explore all possible combination
 ```{r, message=FALSE}
 # Add the clustering solution to the dataset
 mvad$clustering <- clustqual$clustering$cluster6
-# Formula for the association between clustering and covariates of interest
-formula <- clustering ~ funemp + gcse5eq
-# Run separate logistic regressions for each cluster and compute the corresponding AMEs
+# The first argument is a formula for the association between clustering and covariates of interest
+# The function estimates separate logistic regressions for each cluster and compute the corresponding AMEs
 # with their confidence interval
-rarcatout <- rarcat(formula, data=mvad, diss=diss, robust=FALSE)
+rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data=mvad, diss=diss, robust=FALSE)
 rarcatout$original.analysis
 ```
 
@@ -127,7 +126,7 @@ The Robustness Assessment of Regressions using Cluster Analysis Typologies (RARC
 # findings by applying RARCAT with 50 bootstrap replications.
 # As in the original analysis, hierarchical clustering with Ward method is implemented.
 # The number of clusters is fixed to 6 here.
-rarcatout <- rarcat(formula, data = mvad, diss = diss, robust = TRUE, B = 50, 
+rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data = mvad, diss = diss, robust = TRUE, B = 50, 
                     algo = "hierarchical", method = "ward.D", 
                     fixed = TRUE, kcluster = 6)
 rarcatout$robust.analysis

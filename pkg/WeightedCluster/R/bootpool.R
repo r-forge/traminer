@@ -5,20 +5,20 @@ bootpool <- function(bootout, clustering, clusnb, covar, fisher_transform = FALS
   if(!all(names(bootout) == c("B", "optimal.kcluster", "cluster.solution", 
                               "covar.name", "original.cluster", "original.ame", 
                               "bootstrap.ame", "std.err"))) {
-    stop("Please give the output of the function regressboot as argument")
+    stop(" [!] Please give the output of the function regressboot as argument")
   }
   # Ensure correct size of the clustering solution
   if(nrow(bootout$cluster.solution) != length(clustering)) {
-    stop("Please give a clustering solution that has the same size as the original dataset")
+    stop(" [!] Please give a clustering solution that has the same size as the original dataset")
   }
   # Ensure that the association can be retrieved
   if(!(covar %in% bootout$covar.name)) {
-    stop("Please check that the covar argument has the correct format 
+    stop(" [!] Please check that the covar argument has the correct format 
          (as in bootout$covar.name)")
   }
   # Ensure that the cluster number exists
   if(!(clusnb %in% clustering)) {
-    stop("Please give a cluster number as appearing in the clustering solution")
+    stop(" [!] Please give a cluster number as appearing in the clustering solution")
   }
   
   # Retrieve the average marginal effects and standard errors from the bootstrap procedure
@@ -36,19 +36,19 @@ bootpool <- function(bootout, clustering, clusnb, covar, fisher_transform = FALS
   prep$weight <- 1/prep$sterror^2
   prep$stweight <- prep$weight/mean(prep$weight)
   
-  # Function from the DescTools package
-  if(fisher_transform) prep$ame <- DescTools::FisherZ(prep$ame)
+  # Atanh for Fisher's z-transformation
+  if(fisher_transform) prep$ame <- atanh(prep$ame)
   
   rob <- suppressMessages(lme4::lmer(ame ~ (1|id) + (1|bootstrap), 
                                      weights = prep$stweight, data = prep))
   output <- summary(rob)
   
   if(fisher_transform) {
-    
-    output$coefficients[1] <- DescTools::FisherZInv(output$coefficients[1])
+    #tanh for inverse Fisher's z-transformation
+    output$coefficients[1] <- tanh(output$coefficients[1])
     output$coefficients[2] <- output$coefficients[2] * (1 - tanh(output$coefficients[1])^2)
-    output$varcor$bootstrap <- DescTools::FisherZInv(as.numeric(output$varcor$bootstrap))
-    output$varcor$id <- DescTools::FisherZInv(as.numeric(output$varcor$id))
+    output$varcor$bootstrap <- tanh(as.numeric(output$varcor$bootstrap))
+    output$varcor$id <- tanh(as.numeric(output$varcor$id))
   }
   
   return(list("nobs" = nrow(prep), 
