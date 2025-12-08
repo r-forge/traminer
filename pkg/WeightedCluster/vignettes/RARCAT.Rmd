@@ -110,7 +110,7 @@ mvad$clustering <- clustqual$clustering$cluster6
 # The function estimates separate logistic regressions for each cluster and compute the corresponding AMEs
 # with their confidence interval
 rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data=mvad, diss=diss, robust=FALSE)
-rarcatout$original.analysis
+rarcatout
 ```
 
 The results in the table above are AMEs, which measure the expected change in probability of belonging to a given cluster if the covariate takes a given value, together with their 95% confidence intervals. Thus, after adjustment for the GCSEs, father unemployment status is only marginally associated with membership to cluster 6, which contains the children unemployment trajectories (the p-value is actually 0.06).
@@ -119,42 +119,53 @@ On the other hand, there are strong associations apparent between the GCSEs obta
 
 ## Robustness assessment
 
-The Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure allows for evaluating the reproducibility of the analysis on resamples from the data. We focus here on a quick implementation of the procedure and refer to the extended tutorial below or the article by Roth et al. (2024) for further details. The function `rarcat` is run again with `robust = TRUE` and further arguments for the procedure that replicates the typology and associated regressions on bootstrap samples of the data, thus enabling assessing the robustness of the original estimates by comparing them to summary estimates in the form of pooled AMEs and 95% predictions intervals.
+The Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) procedure allows for evaluating the reproducibility of the analysis on resamples from the data. We focus here on a quick implementation of the procedure and refer to the extended tutorial below or the article by Roth et al. (2024) for further details. The function `rarcat` is run again with the following further arguments:
+
+
+- `formula`: A formula object with the clustering solution on the left side and the covariates of interest.
+- `data`: The dataset (data frame) with column names corresponding to the information in formula. The number of individuals (row number) should match the dimension of `diss`. The clustering solution should be available in the data. 
+- `diss`: The numerical dissimilarity matrix used for clustering. Only a pre-computed matrix (i.e., where pairwise dissimilarities do not depend on the resample) is currently supported.
+- `B`: The integer number of bootstrap. Set to 500 by default to attain a satisfactory precision around the estimates as the procedure involves multiple steps.
+- kmedoid: Logical. If `TRUE`, "pam" (calling the function `wcKMedRange`) is used, and "hierarchical" is used otherwise.
+- `hclust.method`: A character string with the method argument of `hclust`, "ward.D" by default.
+- `fixed`: Logical. TRUE implies that the number of clusters is the same in every bootstrap. FALSE (default) implies that an optimal number of clusters is evaluated each time.
+- `ncluster`: Integer. Either the number of clusters in every bootstrap if `fixed` is TRUE or the maximum number of clusters (starting from 2) to be evaluated in each bootstrap if `fixed` is FALSE.
+- `cqi`: A character string with the cluster quality index to be evaluated for each new partition. Any column of `as.clustrange` is supported, "HC" (the Hubert's C index) by default.
+- `parallel`:  Logical. Whether to initialize the parallel processing of the future package using the default `multisession` strategy. If `FALSE` (default), then the current plan is used. If `TRUE`, `multisession` plan is initialized using default values.
+- `progressbar`: Logical. Whether to initialize a progressbar using the future package. If `FALSE` (default), then the current progress bar handlers is used . If `TRUE`, a new global progress bar handlers is initialized..
+
+
+Setting  `robust = TRUE`, the procedure that replicates the typology and associated regressions on bootstrap samples of the data, thus enabling assessing the robustness of the original estimates by comparing them to summary estimates in the form of pooled AMEs and 95% predictions intervals.
 
 ```{r, message=FALSE}
 # Evaluate the validity of the original analysis and the reliability of its
 # findings by applying RARCAT with 50 bootstrap replications.
 # As in the original analysis, hierarchical clustering with Ward method is implemented.
 # The number of clusters is fixed to 6 here.
-rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data = mvad, diss = diss, robust = TRUE, B = 50, 
-                    algo = "hierarchical", method = "ward.D", 
-                    fixed = TRUE, kcluster = 6)
-rarcatout$robust.analysis
+rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data = mvad, diss = diss, robust = TRUE, B = 500, 
+                    kmedoid = FALSE, hclust.method = "ward.D", 
+                    fixed = TRUE, ncluster = 6)
+rarcatout
 ```
 
-The results stay fairly close to the ones from the original analysis (seen earlier), in particular regarding the "significant" associations. The relationship between father unemployment status and unemployment trajectories (cluster 6) seems somewhat stronger than it did on the original sample, and the relationship between GCSEs and long training spells (cluster 4) is a bit weaker. The other relevant associations are virtually unchanged. Thus, we conclude that the original analysis appear to be valid and robust to sampling variation. However, fixing the number of clusters (six here) throughout the bootstrap procedure may not always be warranted.
+Now, a second table presents the estimates of the RARCAT analysis. The results stay fairly close to the ones from the original analysis (first table), in particular regarding the "significant" associations. The relationship between father unemployment status and unemployment trajectories (cluster 6) seems somewhat stronger than it did on the original sample, and the relationship between GCSEs and long training spells (cluster 4) is a bit weaker. The other relevant associations are virtually unchanged. Thus, we conclude that the original analysis appear to be valid and robust to sampling variation. However, fixing the number of clusters (six here) throughout the bootstrap procedure may not always be warranted.
 
 ## Parallel computing
 
-In the example above, we have run the function `rarcat` with the number of bootstrap $B=50$, which is less than the recommended number (500 in the function documentation). This was done to speed up the computing. Alternatively, parallel computing may be used. The code below shows how to do this for Windows users. The function `rarcat` also accepts arguments for parallel computing on different operating systems (see the function `boot` documentation for more details).
+In the example above, we have run the function `rarcat` with the number of bootstrap $B=500$, which is less than the recommended number (500 in the function documentation). This was done to speed up the computing. Alternatively, parallel computing may be used using the `future` framework. While you can initialize parallel computing in the `rarcat` call, it's generally advized to do it using the `plan` function (see the documentation for more detail. 
 
 ```{r, message=FALSE}
 # # Loading the parallel library
-# library(parallel)
-# # Use available cores minus one
-# ncpus <- detectCores() - 1
-# # Create the parallel cluster
-# cl <- makeCluster(ncpus)
-# 
+library(future)
+plan(multisession)
 # # Parallel run
-# rarcatout <- rarcat(formula, data = mvad, diss = diss, robust = TRUE, B = 500,
-#                     algo = "hierarchical", method = "ward.D",
-#                     fixed = TRUE, kcluster = 6,
-#                     parallel = "snow", ncpus = ncpus, cl = cl)
-# rarcatout$robust.analysis
+rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data = mvad, diss = diss, robust = TRUE, B = 500, 
+                    kmedoid = FALSE, hclust.method = "ward.D", 
+                    fixed = TRUE, ncluster = 6, progressbar=TRUE)
+# rarcatout
 ```
 
-The bootstrap procedure is now at least four times faster and the estimates become sufficiently accurate, in the sense that a new run gives almost exactly the same values.
+The bootstrap procedure is now at least four times faster and the estimates become sufficiently accurate, in the sense that a new run gives almost exactly the same values. By setting `progressbar=TRUE`, a progress bar with estimated computation time is provided (not meaningful in a document). 
 
 # Extended tutorial
 
@@ -162,7 +173,7 @@ The bootstrap procedure is now at least four times faster and the estimates beco
 
 ### Association with a covariate
 
-We will use here the same dataset (`mvad`) and dissimilarity matrix (`diss`) as before. For sake of illustration, we start by considering the two clusters solution. These clusters are visualised below with state distribution plots.
+We will use here the same dataset (`mvad`) and dissimilarity matrix (`diss`) as before. For sake of illustration, we start by considering the two clusters solution. These clusters are visualized below with state distribution plots.
 
 ```{r, fig.width=8, fig.height=4}
 seqdplot(mvad.seq, group=clustqual$clustering$cluster2, border=NA)
@@ -202,8 +213,8 @@ Hennig (2007) proposed to use the new partitions derived in step 2 to evaluate c
 library(fpc)
 # Cluster-wise stability assessment by bootstrap
 stab <- clusterboot(diss, B = 500, distances = TRUE, clustermethod = disthclustCBI, 
-                    method = "ward.D", k = 2, count = FALSE)
-round(stab$bootmean, 2)
+                    method = "ward.D", k = 6, count = FALSE)
+stab
 ```
 
 The estimated Jaccard coefficients are above 0.85, which indicate high cluster-wise stability, meaning that most of the individuals belonging to any of the two clusters in the original partition tend to be clustered again in the bootstrap partitions, particularly for the first cluster.

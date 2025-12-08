@@ -34,8 +34,6 @@ seqnull,
 seqnullcqi, 
 seqpropclust,
 seqclararange,
-regressboot,
-bootpool,
 rarcat
 )
 
@@ -62,6 +60,10 @@ S3method(summary, clustrangefamily)
 S3method(plot, seqclararange)
 S3method(print, bootclustrange)
 S3method(plot, bootclustrange)
+
+S3method(print, rarcat)
+S3method(plot, rarcat)
+S3method(summary, rarcat)
 
 
 S3method(print, seqnullcqi)
