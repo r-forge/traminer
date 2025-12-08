@@ -172,21 +172,22 @@ rarcat <- function(formula, data, diss,
 		}
 	  }
 	  message("OK.")
-	  
-	}
-	ret$bootout <- list(cluster.solution=cluster.solution, optimal.number=optimal.number, 
+	  ret$bootout <- list(cluster.solution=cluster.solution, optimal.number=optimal.number, 
 						effects=effects, errors=errors)
-	ret$pooled.ame <- pooled.ame
-	ret$standard.error <- standard.error
-	ret$bootstrap.stddev <- bootstrap.stddev
-	ret$observation.stddev <- observation.stddev
-	## Indivudal &bootstrap ranef
-	ret$observation.ranef <- observation.ranef
-	ret$observation.stdres <- observation.stdres
+		ret$pooled.ame <- pooled.ame
+		ret$standard.error <- standard.error
+		ret$bootstrap.stddev <- bootstrap.stddev
+		ret$observation.stddev <- observation.stddev
+		## Indivudal &bootstrap ranef
+		ret$observation.ranef <- observation.ranef
+		ret$observation.stdres <- observation.stdres
+		ret$cluster.solution <- cluster.solution
+		ret$optimal.number <- optimal.number
+
+	}
+	
 	ret$factorName <- factorName
 	ret$clustering <- factor(clustering)
-	ret$cluster.solution <- cluster.solution
-	ret$optimal.number <- optimal.number
 	class(ret) <- "rarcat"
 	return(ret)
 }
@@ -263,7 +264,7 @@ print.rarcat <- function(x, conf.level=0.95, single.row = FALSE, digits = 3, ...
     invisible(list(base, rarcat))
 }
 
-summary.rarcat <- function(x, conf.level=0.95, single.row = FALSE, digits = 3, ...) {
+summary.rarcat <- function(x, ...) {
 	
 	cat("\nRARCAT Diagnostics\nDistribution of standardized observation random intercept\n")
 	for(cc in colnames(x$observation.stdres)){
@@ -277,40 +278,58 @@ summary.rarcat <- function(x, conf.level=0.95, single.row = FALSE, digits = 3, .
 	
 }
 
-plot.rarcat <- function(x, covar=x$factorName[1], pooled.ame=TRUE, naive.ame=TRUE,  
-						 legend.prop=NA, rows=NA, 
+plot.rarcat <- function(x, what="AME", covar=x$factorName[1], pooled.ame=TRUE, naive.ame=TRUE,  
+						 with.legend=TRUE, legend.prop=NA, rows=NA, 
 						cols=NA, main=NULL, xlab=paste(covar, "Average Marginal Effect"),  xlim=NULL, conf.level=0.95, ...){
+	if(!x$arguments$robust){
+		stop(" [!] Plot is only available for robust/RARCAT analysis")
+	}
 	savepar <- par(no.readonly = TRUE)
 	on.exit(par(savepar))
-	alpha <- (1-conf.level)
-	z_test <- qnorm(1 - alpha/2)
-	eff <- x$bootout$effects[[covar]]
-	if(is.null(xlim)) xlim <- range(c(sapply(x$AMElist, function(x) x[x$factor==covar, "AME"]), eff), na.rm=TRUE)
-	lout <- TraMineRInternalLayout(length(x$clusterNames), rows, cols, with.legend=FALSE, axes="all", legend.prop)
-	
-	layout(lout$laymat, heights=lout$heights, widths=lout$widths)
-	for(cc in seq_along(x$clusterNames)){
-		ccmain <- paste(ifelse(is.null(main), "Cluster", main), x$clusterNames[cc], sep=" - ")
-		hh <- hist(eff[x$clustering==x$clusterNames[cc], ], xlim=xlim, xlab=xlab, main=ccmain, ...)
-		if(pooled.ame){
-			pp <- x$pooled.ame[covar, x$clusterNames[cc]]
-			var <- qt(1 - alpha/2, x$arguments$R - 2)* sqrt(x$standard.error[covar, x$clusterNames[cc]]^2 + x$bootstrap.stddev[covar, x$clusterNames[cc]]^2)		
-			lower <- pp - var
-			upper <- pp + var
-			abline(v=pp, col="red")
-			polygon(c(lower, lower, upper, upper), c(0, max(hh$counts), max(hh$counts), 0), col = adjustcolor("red", alpha.f=.3), border = NA)
-			
-			max(hh$counts)
+	if(what=="AME"){
+		alpha <- (1-conf.level)
+		z_test <- qnorm(1 - alpha/2)
+		eff <- x$bootout$effects[[covar]]
+		if(is.null(xlim)) xlim <- range(c(sapply(x$AMElist, function(x) x[x$factor==covar, "AME"]), eff), na.rm=TRUE)
+		lout <- TraMineRInternalLayout(length(x$clusterNames), rows, cols, with.legend=with.legend, axes="all", legend.prop)
+		
+		layout(lout$laymat, heights=lout$heights, widths=lout$widths)
+		for(cc in seq_along(x$clusterNames)){
+			ccmain <- paste(ifelse(is.null(main), "Cluster", main), x$clusterNames[cc], sep=" - ")
+			hh <- hist(eff[x$clustering==x$clusterNames[cc], ], xlim=xlim, xlab=xlab, main=ccmain, ...)
+			if(pooled.ame){
+				pp <- x$pooled.ame[covar, x$clusterNames[cc]]
+				var <- qt(1 - alpha/2, x$arguments$R - 2)* sqrt(x$standard.error[covar, x$clusterNames[cc]]^2 + x$bootstrap.stddev[covar, x$clusterNames[cc]]^2)		
+				lower <- pp - var
+				upper <- pp + var
+				abline(v=pp, col="red")
+				polygon(c(lower, lower, upper, upper), c(0, max(hh$counts), max(hh$counts), 0), col = adjustcolor("red", alpha.f=.3), border = NA)
+				
+				max(hh$counts)
+			}
+			if(naive.ame){
+				tmp <- x$AMElist[[x$clusterNames[cc]]]
+				cond <- tmp$factor==covar
+				lower <- tmp$AME[cond] - z_test*tmp$SE[cond]
+				upper <- tmp$AME[cond] + z_test*tmp$SE[cond]
+				abline(v=tmp$AME[cond], col="blue")
+				polygon(c(lower, lower, upper, upper), c(0, max(hh$counts), max(hh$counts), 0), col = adjustcolor("blue", alpha.f=.3), border = NA)
+			}
 		}
-		if(naive.ame){
-			tmp <- x$AMElist[[x$clusterNames[cc]]]
-			cond <- tmp$factor==covar
-			lower <- tmp$AME[cond] - z_test*tmp$SE[cond]
-			upper <- tmp$AME[cond] + z_test*tmp$SE[cond]
-			abline(v=tmp$AME[cond], col="blue")
-			polygon(c(lower, lower, upper, upper), c(0, max(hh$counts), max(hh$counts), 0), col = adjustcolor("blue", alpha.f=.3), border = NA)
+		 
+		plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
+		legend("topleft", legend=c("Naive estimate (with CI)", "RARCAT estimate (with CI)"), fill=c("blue", "red"))
+    }else if(what=="ranef"){
+		if(is.null(xlim)) xlim <- range(c(x$observation.stdres), na.rm=TRUE)
+		lout <- TraMineRInternalLayout(length(x$clusterNames), rows, cols, with.legend=with.legend, axes="all", legend.prop)
+		
+		layout(lout$laymat, heights=lout$heights, widths=lout$widths)
+		for(cc in seq_along(x$clusterNames)){
+			ccmain <- paste(ifelse(is.null(main), "Cluster", main), x$clusterNames[cc], sep=" - ")
+			hh <- hist(x$observation.stdres[x$clustering==x$clusterNames[cc], covar], xlim=xlim, xlab=xlab, main=ccmain, ...)
 		}
-	}
+	}	
+
 		
 }
 
