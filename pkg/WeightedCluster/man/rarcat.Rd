@@ -33,7 +33,7 @@ rarcat(formula, data, diss,
   \item{cqi}{A character string with the cluster quality index to be evaluated for each new partition. Any column of \code{as.clustrange} is supported, "CH" (the Calinski-Harabasz index) by default. Also works with \code{algo}= "pam".}
   \item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link[future]{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link[future]{plan}} is used. If \code{TRUE}, \code{\link[future]{multisession}} \code{\link[future]{plan}} is initialized using default values.}
   \item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link[progressr]{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link[progressr]{handlers}} is initialized.}
-  \item{fisher_transform}{Logical. TRUE means that a Fisher transformation is applied in the \code{bootpool} function. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.}
+  \item{fisher_transform}{Logical. TRUE means that a Fisher transformation is applied in the multilevel model estimation step. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.}
   \item{conf.level}{Confidence level for the confidence intervals. 0.95 by default.}
   \item{digits}{Number of significant digits to print (3 by default).}
   \item{single.row}{Logical. Whether to show confidence interval on the same or separate line (Default=FALSE).}
@@ -65,7 +65,7 @@ The output of \code{rarcattables} contains the following tables:
   \item{observation.stddev}{The estimate for the standard deviation of the bootstrap random effect.}
   \item{bootstrap.ranef}{A vector of size \code{B} containing the estimated random effects for each bootstrap.}
   \item{observation.ranef}{A vector of size \code{m} containing the estimated random effects for each observation in the reference cluster.}
-  
+
   \item{original.analysis}{Average Marginal Effects (AMEs) estimated with multivariable logistic regressions and representing the expected change in the probability of belonging to a trajectory group (a reference cluster) for a change in the level of a variable (a covariate of interest), together with their confidence intervals.}
   \item{robust.analysis}{Pooled AMEs from the bootstrap procedure and their prediction intervals, representing the range of expected values if the clustering and associated regressions were performed on a new sample from the same underlying distribution. This table provide robust estimates for a typology-based association study.}
 }

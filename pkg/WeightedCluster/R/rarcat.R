@@ -129,7 +129,7 @@ rarcat <- function(formula, data, diss,
 	## Indivudal &bootstrap ranef
 	bootstrap.ranef <- matrix(NA, nrow=R, ncol=length(factorName), dimnames=list(as.character(seq_len(R)), factorName))
 	observation.ranef <- matrix(NA, nrow=nrow(data), ncol=length(factorName), dimnames=list(as.character(ids), factorName))
-	observation.stdres <- matrix(NA, nrow=nrow(data), ncol=length(factorName), dimnames=list(as.character(ids), factorName))
+	observation.stdranef <- matrix(NA, nrow=nrow(data), ncol=length(factorName), dimnames=list(as.character(ids), factorName))
 	
 	for (ff in factorName) {
 		effects[[ff]] <- sapply(res_list, function(x) (x)[, ff]) 
@@ -168,7 +168,7 @@ rarcat <- function(formula, data, diss,
 		  
 			#bootstrap.ranef[clustcond, ff] <- lme4::ranef(rob)$bootstrap[,1]
 			observation.ranef[clustcond, ff] <- lme4::ranef(rob)$id[,1]
-			observation.stdres[clustcond, ff] <- observation.ranef[clustcond, ff]/observation.stddev[ff, cc]
+			observation.stdranef[clustcond, ff] <- observation.ranef[clustcond, ff]/observation.stddev[ff, cc]
 		}
 	  }
 	  message("OK.")
@@ -180,7 +180,7 @@ rarcat <- function(formula, data, diss,
 		ret$observation.stddev <- observation.stddev
 		## Indivudal &bootstrap ranef
 		ret$observation.ranef <- observation.ranef
-		ret$observation.stdres <- observation.stdres
+		ret$observation.stdranef <- observation.stdranef
 		ret$cluster.solution <- cluster.solution
 		ret$optimal.number <- optimal.number
 
@@ -267,9 +267,9 @@ print.rarcat <- function(x, conf.level=0.95, single.row = FALSE, digits = 3, ...
 summary.rarcat <- function(x, ...) {
 	
 	cat("\nRARCAT Diagnostics\nDistribution of standardized observation random intercept\n")
-	for(cc in colnames(x$observation.stdres)){
+	for(cc in colnames(x$observation.stdranef)){
 		cat("\n", cc, "\n")
-		print(table(cut(x$observation.stdres, breaks=c(-Inf, -2, -1, 1, 2, Inf), labels=c("< -2", "-2....-1", "-1...1", "1...2", ">2"))), ...)
+		print(table(cut(x$observation.stdranef, breaks=c(-Inf, -2, -1, 1, 2, Inf), labels=c("< -2", "-2....-1", "-1...1", "1...2", ">2"))), ...)
 		cat("\n")
 	}
 	
@@ -320,13 +320,13 @@ plot.rarcat <- function(x, what="AME", covar=x$factorName[1], pooled.ame=TRUE, n
 		plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
 		legend("topleft", legend=c("Naive estimate (with CI)", "RARCAT estimate (with CI)"), fill=c("blue", "red"))
     }else if(what=="ranef"){
-		if(is.null(xlim)) xlim <- range(c(x$observation.stdres), na.rm=TRUE)
+		if(is.null(xlim)) xlim <- range(c(x$observation.stdranef), na.rm=TRUE)
 		lout <- TraMineRInternalLayout(length(x$clusterNames), rows, cols, with.legend=with.legend, axes="all", legend.prop)
 		
 		layout(lout$laymat, heights=lout$heights, widths=lout$widths)
 		for(cc in seq_along(x$clusterNames)){
 			ccmain <- paste(ifelse(is.null(main), "Cluster", main), x$clusterNames[cc], sep=" - ")
-			hh <- hist(x$observation.stdres[x$clustering==x$clusterNames[cc], covar], xlim=xlim, xlab=xlab, main=ccmain, ...)
+			hh <- hist(x$observation.stdranef[x$clustering==x$clusterNames[cc], covar], xlim=xlim, xlab=xlab, main=ccmain, ...)
 		}
 	}	
 
