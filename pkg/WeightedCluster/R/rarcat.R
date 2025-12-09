@@ -5,7 +5,7 @@ rarcat <- function(formula, data, diss,
                    fixed=FALSE, ncluster=10, cqi="HC",
                    parallel=FALSE, progressbar=FALSE,
                    fisher.transform=FALSE, 
-				   lmerCtrl=lme4::lmerControl(optimizer = "bobyqa",optCtrl = list(maxfun = 2e5))) {
+				   lmerCtrl=lme4::lmerControl()) {
   
   
   # Ensure dissimilarity matrix and dataset have the same size

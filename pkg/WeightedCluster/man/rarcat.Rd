@@ -82,7 +82,8 @@ Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustnes
 Leonard Roth
 }
 \examples{
-
+library(WeightedCluster)
+debug(amemat)
 ## Set the seed for reproducible results
 set.seed(1)
 
@@ -90,7 +91,7 @@ set.seed(1)
 data(mvad)
 
 ## Reducing sample size to speed up computations
-mvad <- mvad[1:200,]
+ mvad <- mvad[1:100,]
 
 
 ## Creating the state sequence object
@@ -112,7 +113,7 @@ mvad$clustering <- clustqual$clustering$cluster2
 ## As in the original analysis, hierarchical clustering with Ward method is implemented
 ## The number of clusters is fixed to 2 here, larger values should often be used.
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-rarcatout <- rarcat(clustering ~ funemp + livboth, mvad, diss, R = 30, 
+rarcatout <- rarcat(clustering ~ Grammar + gcse5eq, mvad, diss, R = 30, 
                     kmedoid=TRUE, fixed = TRUE, ncluster = 2)
 
 ## Assess the robustness of the original analysis

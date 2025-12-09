@@ -27,7 +27,7 @@ amemat <- function(diss, indices, formula, modelDF, kmedoid = FALSE, hclust.meth
 	}
 	clustering <- quality$clustering[, row.names(quality$stats)[best]]
   }
-  clustering <- as.character(clustering)
+  clustering <- as.numeric(factor(clustering))
   ## Association study
   # Bootstrap covariates
   
@@ -45,15 +45,15 @@ amemat <- function(diss, indices, formula, modelDF, kmedoid = FALSE, hclust.meth
   
   
   #modelFormula <- paste("membership ~", paste(colnames(modelDF)[-1], collapse = " + "))
-  output_list <- vector("list", length(unique(clustering)))
+  output_list <- list()
 
 	ndupl <-  !duplicated(indices)
-	clustering <- as.numeric(factor(clustering))
+	
   for(i in unique(clustering)) {
     
     if(debug) print(i)
     
-    bdata$membership <- bdata[,1] == i
+    bdata$membership <- clustering == i
     mod <- glm(membershipFormula, bdata, family = "binomial")
     tmp <- summary(margins::margins(mod))
 	ids <- indices[clustering == i & ndupl]
