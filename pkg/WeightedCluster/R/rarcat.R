@@ -177,9 +177,10 @@ rarcat <- function(formula, data, diss,
 			observation.ranef[clustcond, ff] <- lme4::ranef(rob)$id[,1]
 			if(observation.stddev[ff, cc]!=0){
 				observation.stdranef[clustcond, ff] <- observation.ranef[clustcond, ff]/observation.stddev[ff, cc]
-			}else{
-				warning(" Observation-level standard deviation estimated at zero for covariate ", ff, " cluster ", cc) 
 			}
+			#else{
+				#warning(" Observation-level standard deviation estimated at zero for covariate ", ff, " cluster ", cc) 
+			#}
 		}
 	  }
 	  message("OK.")

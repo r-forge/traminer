@@ -37,7 +37,7 @@ rarcat(formula, data, diss,
   \item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link[future]{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link[future]{plan}} is used. If \code{TRUE}, \code{\link[future]{multisession}} \code{\link[future]{plan}} is initialized using default values.}
   \item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link[progressr]{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link[progressr]{handlers}} is initialized.}
   \item{fisher.transform}{Logical. TRUE means that a Fisher transformation is applied in the multilevel model estimation step. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.}
-  \item{lmerControl}{Control parameter for lme4 (see \code{\link{lmerControl}}}
+  \item{lmerCtrl}{Control parameter for lme4 (see \code{\link[lme4]{lmerControl}}}
   \item{x}{rarcat object to be printed or plotted.}
   \item{object}{rarcat object for summary (diagnostic tools).}
   \item{conf.level}{Confidence level for the confidence intervals. 0.95 by default.}
@@ -86,7 +86,7 @@ Leonard Roth
 data(mvad)
 
 ## Reducing sample size to speed up computations
-mvad <- mvad[1:100,]
+mvad <- mvad[1:200,]
 
 
 ## Creating the state sequence object
@@ -113,7 +113,7 @@ rarcatout <- rarcat(clustering ~ Grammar + gcse5eq, mvad, diss, R = 30,
 
 ## Assess the robustness of the original analysis
 rarcatout
-plot(rarcatout, covar="gcse5eqyes")
-plot(rarcatout, covar="gcse5eqyes", what="ranef")
-summary(rarcatout)
+#plot(rarcatout, covar="gcse5eqyes")
+#plot(rarcatout, covar="gcse5eqyes", what="ranef")
+#summary(rarcatout)
 }
