@@ -8,7 +8,7 @@ amemat <- function(diss, indices, formula, modelDF, kmedoid = FALSE, hclust.meth
   ## Clustering the boostrapped sample
   if(fixed||ncluster==2) {
 	if(kmedoid) {
-		clustering <- wcKMedoid(diss=d, k=ncluster, cluster.only=TRUE)
+		clustering <- wcKMedoids(diss=d, k=ncluster, cluster.only=TRUE)
 	} else {
 		tree <- fastcluster::hclust(as.dist(d), method = hclust.method)
 		clustering <- cutree(tree, k=ncluster)

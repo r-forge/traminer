@@ -1,6 +1,6 @@
 
 rarcat <- function(formula, data, diss, 
-                   robust=TRUE, R=500, debug=FALSE, 
+                   robust=TRUE, R=500, 
                    kmedoid=FALSE, hclust.method="ward.D", 
                    fixed=FALSE, ncluster=10, cqi="HC",
                    parallel=FALSE, progressbar=FALSE,
@@ -177,6 +177,8 @@ rarcat <- function(formula, data, diss,
 			observation.ranef[clustcond, ff] <- lme4::ranef(rob)$id[,1]
 			if(observation.stddev[ff, cc]!=0){
 				observation.stdranef[clustcond, ff] <- observation.ranef[clustcond, ff]/observation.stddev[ff, cc]
+			}else{
+				warning(" Observation-level standard deviation estimated at zero for covariate ", ff, " cluster ", cc) 
 			}
 		}
 	  }
@@ -273,17 +275,17 @@ print.rarcat <- function(x, conf.level=0.95, single.row = FALSE, digits = 3, ...
     invisible(list(base, rarcat))
 }
 
-summary.rarcat <- function(x, ...) {
+summary.rarcat <- function(object, ...) {
 	
 	cat("\nRARCAT Diagnostics\nDistribution of standardized observation random intercept\n")
-	for(cc in colnames(x$observation.stdranef)){
+	for(cc in colnames(object$observation.stdranef)){
 		cat("\n", cc, "\n")
-		print(table(cut(x$observation.stdranef[, cc], breaks=c(-Inf, -2, -1, 1, 2, Inf), labels=c("< -2", "-2....-1", "-1...1", "1...2", ">2"))), ...)
+		print(table(cut(object$observation.stdranef[, cc], breaks=c(-Inf, -2, -1, 1, 2, Inf), labels=c("< -2", "-2....-1", "-1...1", "1...2", ">2"))), ...)
 		cat("\n")
 	}
 	
 	cat("\nStandard errors\n")
-	print(x$standard.error, quote=FALSE, ...)
+	print(object$standard.error, quote=FALSE, ...)
 	
 }
 

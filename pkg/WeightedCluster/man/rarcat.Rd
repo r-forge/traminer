@@ -1,5 +1,8 @@
 \name{rarcat}
 \alias{rarcat}
+\alias{plot.rarcat}
+\alias{print.rarcat}
+\alias{summary.rarcat}
 \title{
 Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT)
 }
@@ -9,15 +12,16 @@ Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT)
 \usage{
 rarcat(formula, data, diss, 
         robust=TRUE, R=500, 
-        kmedoid=kmedoid, hclust.method="ward.D", 
+        kmedoid=FALSE, hclust.method="ward.D", 
         fixed=FALSE, ncluster=10, cqi="HC",
         parallel=FALSE, progressbar=FALSE,
-        fisher_transform=FALSE)
+        fisher.transform=FALSE, 
+		lmerControl=lmerControl(optimizer = "bobyqa",optCtrl = list(maxfun = 2e5)))
 \method{plot}{rarcat}(x, what="AME", covar=x$factorName[1], pooled.ame=TRUE, naive.ame=TRUE,  
 						 with.legend=TRUE, legend.prop=NA, rows=NA, 
 						cols=NA, main=NULL, xlab=paste(covar, "Average Marginal Effect"),  xlim=NULL, conf.level=0.95,...)
 \method{print}{rarcat}(x, conf.level=0.95, single.row = FALSE, digits = 3, ...)
-\method{summary}{rarcat}(x, ...)
+\method{summary}{rarcat}(object, ...)
 }
 \arguments{
   \item{formula}{A formula object with the clustering solution on the left side and the covariates of interest on the ride side.}
@@ -25,7 +29,6 @@ rarcat(formula, data, diss,
   \item{diss}{The numerical dissimilarity matrix used for clustering. Only a pre-computed matrix (i.e., where pairwise dissimilarities do not depend on the resample) is currently supported.}
   \item{robust}{Logical. TRUE (the default) indicates that RARCAT should be performed. FALSE implies a much faster function run but only output the original analysis, which is a standard regression analysis for all combinations of reference clusters and covariates.}
   \item{R}{The integer number of bootstrap. Set to 500 by default to attain a satisfactory precision around the estimates as the procedure involves multiple steps.}
-  \item{count}{Logical. Whether the bootstrap runs are counted on the screen or not.}
   \item{kmedoid}{The clustering algorithm as a character string. Currently only "pam" (calling the function \code{wcKMedRange}) and "hierarchical" (calling the function \code{fastcluster::hclust}) are supported. By default "pam".}
   \item{hclust.method}{A character string with the method argument of \code{hclust}, "ward.D" by default.}
   \item{fixed}{Logical. TRUE implies that the number of clusters is the same in every bootstrap. FALSE (default) implies that an optimal number of clusters is evaluated each time.}
@@ -33,7 +36,10 @@ rarcat(formula, data, diss,
   \item{cqi}{A character string with the cluster quality index to be evaluated for each new partition. Any column of \code{as.clustrange} is supported, "CH" (the Calinski-Harabasz index) by default. Also works with \code{algo}= "pam".}
   \item{parallel}{Logical. Whether to initialize the parallel processing of the \code{future} package using the default \code{\link[future]{multisession}} strategy. If \code{FALSE} (default), then the current \code{\link[future]{plan}} is used. If \code{TRUE}, \code{\link[future]{multisession}} \code{\link[future]{plan}} is initialized using default values.}
   \item{progressbar}{Logical. Whether to initialize a progressbar using the \code{future} package. If \code{FALSE} (default), then the current progress bar \code{\link[progressr]{handlers}} is used . If \code{TRUE}, a new global progress bar \code{\link[progressr]{handlers}} is initialized.}
-  \item{fisher_transform}{Logical. TRUE means that a Fisher transformation is applied in the multilevel model estimation step. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.}
+  \item{fisher.transform}{Logical. TRUE means that a Fisher transformation is applied in the multilevel model estimation step. This can be recommended in case of extreme associations (close to the -1 or 1 boundaries). FALSE by default.}
+  \item{lmerControl}{Control parameter for lme4 (see \code{\link{lmerControl}}}
+  \item{x}{rarcat object to be printed or plotted.}
+  \item{object}{rarcat object for summary (diagnostic tools).}
   \item{conf.level}{Confidence level for the confidence intervals. 0.95 by default.}
   \item{digits}{Number of significant digits to print (3 by default).}
   \item{single.row}{Logical. Whether to show confidence interval on the same or separate line (Default=FALSE).}
@@ -75,9 +81,6 @@ Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustnes
 \author{
 Leonard Roth
 }
-\seealso{
-\code{\link{regressboot}}, \code{\link{bootpool}}
-}
 \examples{
 
 ## Set the seed for reproducible results
@@ -86,8 +89,12 @@ set.seed(1)
 ## Loading the data (TraMineR package)
 data(mvad)
 
+## Reducing sample size to speed up computations
+mvad <- mvad[1:100,]
+
+
 ## Creating the state sequence object
-mvad.seq <- seqdef(mvad, 17:86)
+mvad.seq <- seqdef(mvad[, 17:86])
 
 ## Distance computation
 diss <- seqdist(mvad.seq, method="LCS")
@@ -99,17 +106,15 @@ hc <- fastcluster::hclust(as.dist(diss), method="ward.D")
 clustqual <- as.clustrange(hc, diss=diss, ncluster=6)
 
 ## A six clusters solution is chosen here
-mvad$clustering <- clustqual$clustering$cluster6
+mvad$clustering <- clustqual$clustering$cluster2
 
-## A formula object with the the covariates of interest (to be related to the typology)
-formula <- clustering ~ funemp + gcse5eq
-
+## The formula should include the typology (dependent) and the covariates of interest
 ## As in the original analysis, hierarchical clustering with Ward method is implemented
-## The number of clusters is fixed to 6 here
+## The number of clusters is fixed to 2 here, larger values should often be used.
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-rarcatout <- rarcat(formula, mvad, diss, B = 30, 
+rarcatout <- rarcat(clustering ~ funemp + gcse5eq, mvad, diss, R = 30, 
                     kmedoid=FALSE, hclust.method = "ward.D", 
-                    fixed = TRUE, ncluster = 6)
+                    fixed = TRUE, ncluster = 2)
 
 ## Assess the robustness of the original analysis
 rarcatout
