@@ -16,7 +16,7 @@ rarcat(formula, data, diss,
         fixed=FALSE, ncluster=10, cqi="HC",
         parallel=FALSE, progressbar=FALSE,
         fisher.transform=FALSE, 
-		lmerCtrl=lmerControl(optimizer = "bobyqa",optCtrl = list(maxfun = 2e5)))
+		lmerCtrl=lme4::lmerControl())
 \method{plot}{rarcat}(x, what="AME", covar=x$factorName[1], pooled.ame=TRUE, naive.ame=TRUE,  
 						 with.legend=TRUE, legend.prop=NA, rows=NA, 
 						cols=NA, main=NULL, xlab=paste(covar, "Average Marginal Effect"),  xlim=NULL, conf.level=0.95,...)
@@ -82,16 +82,11 @@ Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustnes
 Leonard Roth
 }
 \examples{
-library(WeightedCluster)
-debug(amemat)
-## Set the seed for reproducible results
-set.seed(1)
-
 ## Loading the data (TraMineR package)
 data(mvad)
 
 ## Reducing sample size to speed up computations
- #mvad <- mvad[1:300,]
+mvad <- mvad[1:100,]
 
 
 ## Creating the state sequence object
