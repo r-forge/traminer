@@ -113,8 +113,7 @@ mvad$clustering <- clustqual$clustering$cluster2
 ## The number of clusters is fixed to 2 here, larger values should often be used.
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
 rarcatout <- rarcat(clustering ~ funemp + gcse5eq, mvad, diss, R = 30, 
-                    kmedoid=FALSE, hclust.method = "ward.D", 
-                    fixed = TRUE, ncluster = 2)
+                    kmedoid=TRUE, fixed = TRUE, ncluster = 2)
 
 ## Assess the robustness of the original analysis
 rarcatout

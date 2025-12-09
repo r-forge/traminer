@@ -95,7 +95,7 @@ rarcat <- function(formula, data, diss,
 	## Parallelized bootstrapping loop 	
 	res_list <- foreach(i = seq_len(R), .options.future = list(seed = TRUE, 
 							globals=c("diss", "boot_indices", "formula", "modelDF", "kmedoid", "hclust.method",
-									"fixed", "ncluster", "cqi", "debug",  "p", "amemat_internal"),  # reproducible RNG
+									"fixed", "ncluster", "cqi",  "p", "amemat_internal"),  # reproducible RNG
 						packages = c("WeightedCluster", "stats", "progressr", "margins"))) %dofuture% {
 
 		  # Subsample indices
@@ -111,7 +111,7 @@ rarcat <- function(formula, data, diss,
 						fixed = fixed, 
 						ncluster=ncluster, 
 						cqi=cqi, 
-						debug=debug)
+						debug=FALSE)
 		p()
 		ame
 	}
