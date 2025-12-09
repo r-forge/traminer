@@ -14,22 +14,27 @@ rarcat <- function(formula, data, diss,
   if(length(ncluster) > 1) {
 	stop(" [!] Please give a single number as kcluster (see documentation)")
   }
+  if(!(cqi %in% c("PBC", "HG", "HGSD", "ASW", "ASWw", "CH", "R2", "CHsq", 
+                   "R2sq", "HC"))) {
+    stop("Incorrect evaluation measure")
+  }
+  if(ncluster < 2) stop("At least two clusters required")
   
   # Return object
   ret <- list(arguments = list(formula=formula, robust=robust, R=R,  
                    kmedoid=kmedoid, hclust.method=hclust.method, 
                    fixed=fixed, ncluster=ncluster, cqi=cqi, fisher.transform=fisher.transform))
   
-  pooledData <- data[,all.vars(formula)[1]]
   #Update the formula with membership as dependent
   # Extract the right-hand side (RHS)
   rhs <- deparse(formula[[3]])  
-
+  lhs <- deparse(formula[[2]])  
   modelDF <- model.frame(formula, data)
+  ret$formula <- formula
   # Update formula, ensuring we keep the original environment of the formula
-  ret$membershipFormula <- as.formula(paste("membership~", rhs), env = environment(formula))
+  membershipFormula <- paste("membership~", rhs)
 
-  clustering <- modelDF[, 1]
+  clustering <- modelDF[, lhs]
    #<- paste("membership ~", paste(colnames(modelDF)[-1], collapse = " + "))
   ret$AMElist <- list()
   
@@ -37,7 +42,7 @@ rarcat <- function(formula, data, diss,
   
   for(i in ret$clusterNames) {
     modelDF$membership <- clustering == i
-    mod <- glm(ret$membershipFormula, modelDF, family = "binomial")
+    mod <- glm(membershipFormula, modelDF, family = "binomial")
     ret$AMElist[[i]] <- summary(margins::margins(mod))
     #print(tmp)
 	
@@ -84,21 +89,22 @@ rarcat <- function(formula, data, diss,
 	## Should we add the original indices in the first bootstraps ?
 	boot_indices <- replicate(R, sample(seq_len(nrow(data)), replace = TRUE), simplify = FALSE)
 	#boot_indices[[1]] <- seq_len(nrow(data))
+	amemat_internal <- getFromNamespace("amemat", "WeightedCluster")
 	
 	## Parallelized bootstrapping loop 	
 	res_list <- foreach(i = seq_len(R), .options.future = list(seed = TRUE, 
-							globals=c("diss", "boot_indices", "formula", "data", "kmedoid", "hclust.method",
-									"fixed", "ncluster", "cqi", "debug",  "p"),  # reproducible RNG
-						packages = c("WeightedCluster", "stats", "progressr"))) %dofuture% {
+							globals=c("diss", "boot_indices", "formula", "modelDF", "kmedoid", "hclust.method",
+									"fixed", "ncluster", "cqi", "debug",  "p", "amemat_internal"),  # reproducible RNG
+						packages = c("WeightedCluster", "stats", "progressr", "margins"))) %dofuture% {
 
 		  # Subsample indices
 		indices <- boot_indices[[i]]
 		  
 		# Bootstrap
-		ame <- amemat(diss = diss,
+		ame <- amemat_internal(diss = diss,
 						indices=indices,
 						formula = formula,
-						data = data,
+						modelDF = modelDF,
 						kmedoid = kmedoid, 
 						hclust.method=hclust.method,
 						fixed = fixed, 
