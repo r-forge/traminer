@@ -91,7 +91,7 @@ set.seed(1)
 data(mvad)
 
 ## Reducing sample size to speed up computations
- mvad <- mvad[1:100,]
+ #mvad <- mvad[1:300,]
 
 
 ## Creating the state sequence object
@@ -118,7 +118,7 @@ rarcatout <- rarcat(clustering ~ Grammar + gcse5eq, mvad, diss, R = 30,
 
 ## Assess the robustness of the original analysis
 rarcatout
-plot(rarcatout, covar="funempyes")
-plot(rarcatout, covar="funempyes", what="ranef")
+plot(rarcatout, covar="gcse5eqyes")
+plot(rarcatout, covar="gcse5eqyes", what="ranef")
 summary(rarcatout)
 }

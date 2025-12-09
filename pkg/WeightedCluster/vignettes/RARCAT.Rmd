@@ -152,7 +152,7 @@ Now we can run it using parallel processing.
 # findings by applying RARCAT with 50 bootstrap replications.
 # As in the original analysis, hierarchical clustering with Ward method is implemented.
 # The number of clusters is fixed to 6 here.
-rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data = mvad, diss = diss, robust = TRUE, R = 500, 
+rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data = mvad, diss = diss, robust = TRUE, R = 100, 
                     kmedoid = FALSE, hclust.method = "ward.D", 
                     fixed = TRUE, ncluster = 6)
 rarcatout
@@ -242,7 +242,7 @@ plot(rarcatout, what="ranef", covar="funempyes")
 We can also identify outliers by looking at the observation level standardized random effect. Those are available in the `observation.stdranef` component of the `rarcat` object. Absolute values above 2 or even 3 are generally used to identify outliers. To get an idea of deviating observation by cluster, we use an absolute value of 1. We then plot identified sequences in each of the clusters.
 
 ```{r, message=FALSE, fig.width=8, fig.height=10}
-outliers <- abs(rarcatout$observation.stdranef)>2
+outliers <- abs(rarcatout$observation.stdranef[, "funempyes"])>2
 seqIplot(mvad.seq[outliers, ], group=mvad$clustering[outliers])
 ```
 
