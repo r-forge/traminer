@@ -278,3 +278,10 @@ Hennig, C. (2007) Cluster-wise assessment of cluster stability. Computational St
 Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303. https://doi.org/10.1186/s12874-024-02435-8.
 
 Studer M. WeightedCluster Library Manual A practical guide to creating typologies of trajectories in the social sciences with R. 2013.
+
+
+
+```{r, include=FALSE}
+plan(sequential)
+```
+
