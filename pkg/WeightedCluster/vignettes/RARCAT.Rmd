@@ -125,7 +125,7 @@ The Robustness Assessment of Regressions using Cluster Analysis Typologies (RARC
 - `formula`: A formula object with the clustering solution on the left side and the covariates of interest.
 - `data`: The dataset (data frame) with column names corresponding to the information in formula. The number of individuals (row number) should match the dimension of `diss`. The clustering solution should be available in the data. 
 - `diss`: The numerical dissimilarity matrix used for clustering. Only a pre-computed matrix (i.e., where pairwise dissimilarities do not depend on the resample) is currently supported.
-- `B`: The integer number of bootstrap. Set to 500 by default to attain a satisfactory precision around the estimates as the procedure involves multiple steps.
+- `R`: The integer number of bootstrap. Set to 500 by default to attain a satisfactory precision around the estimates as the procedure involves multiple steps.
 - kmedoid: Logical. If `TRUE`, "pam" (calling the function `wcKMedRange`) is used, and "hierarchical" is used otherwise.
 - `hclust.method`: A character string with the method argument of `hclust`, "ward.D" by default.
 - `fixed`: Logical. TRUE implies that the number of clusters is the same in every bootstrap. FALSE (default) implies that an optimal number of clusters is evaluated each time.
@@ -135,7 +135,17 @@ The Robustness Assessment of Regressions using Cluster Analysis Typologies (RARC
 - `progressbar`: Logical. Whether to initialize a progressbar using the future package. If `FALSE` (default), then the current progress bar handlers is used . If `TRUE`, a new global progress bar handlers is initialized..
 
 
-Setting  `robust = TRUE`, the procedure that replicates the typology and associated regressions on bootstrap samples of the data, thus enabling assessing the robustness of the original estimates by comparing them to summary estimates in the form of pooled AMEs and 95% predictions intervals.
+Parallel processing can be set up by using the `parallel=TRUE` argument. However, it is generally recommended to set up the parallel environment by yourselves. This ensure that the parallel environment is initialized only once and that it match your environment. This is achieved by using the `plan()` function of the future framework (see the documentation for more detail). If you do so, `rarcat` automatically uses parallel computations. You can do it by running the following code before `rarcat()`. If you use `plan()`, you shouldn't use the `parallel=TRUE` argument.
+
+```{r, message=FALSE}
+# # Loading the parallel library
+library(future)
+plan(multisession)
+```
+
+
+Now we can run it using parallel processing.
+
 
 ```{r, message=FALSE}
 # Evaluate the validity of the original analysis and the reliability of its
@@ -144,20 +154,11 @@ Setting  `robust = TRUE`, the procedure that replicates the typology and associa
 # The number of clusters is fixed to 6 here.
 rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data = mvad, diss = diss, robust = TRUE, R = 500, 
                     kmedoid = FALSE, hclust.method = "ward.D", 
-                    fixed = TRUE, ncluster = 6, parallel = TRUE)
+                    fixed = TRUE, ncluster = 6)
 rarcatout
 ```
 
 Now, a second table presents the estimates of the RARCAT analysis. The results stay fairly close to the ones from the original analysis (first table), in particular regarding the "significant" associations. The relationship between father unemployment status and unemployment trajectories (cluster 6) is somewhat stronger than it did on the original sample, and the relationship between GCSEs and long training spells (cluster 4) is a bit weaker. The other relevant associations are virtually unchanged. Thus, we conclude that the original analysis appear to be valid and robust to sampling variation. However, fixing the number of clusters (six here) throughout the bootstrap procedure may not always be warranted.
-
-### Parallel computing
-While using `parallel=TRUE` is easier, it is generally recommended to set up the parallel environment by yourselves. This ensure that the parallel environment is initialized only once and that it match your environment. This should be achieved by using the `plan()` function of the future framework (see the documentation for more detail). If you do so, `rarcat` automatically uses parallel computations (even without `parallel=TRUE`). You can do it by running the following code before `rarcat()` and removing the `parallel=TRUE` argument.
-
-```{r, message=FALSE}
-# # Loading the parallel library
-library(future)
-plan(multisession)
-```
 
 
  
@@ -177,7 +178,7 @@ In this section we further detail some of these steps. First, we consider the es
 
 ## Estimating the Number of Clusters
 
-Usually, the number of groups of a typology is not known in advance, but rather estimated from the data, for instance by maximizing (or minimizing) a given cluster quality index. The RARCAT procedure can account for the estimation of the number of groups chosen through CQI maximization (or minimization). This is achieved by specifying `fixed=FALSE`, the maximum number of groups to consider (here `ncluster=10`) as well as the target CQI (here the Hubert's C index). 
+Usually, the number of groups of a typology is not known in advance, but rather estimated from the data, for instance by maximizing (or minimizing) a given cluster quality index. The RARCAT procedure can account for the estimation of the number of groups chosen through CQI maximization (or minimization). This is achieved by specifying `fixed=FALSE`, the maximum number of groups to consider (here `ncluster=10`) as well as the target CQI (here the Hubert's C index). To limit computation time, we only used `R=50` here, but this should be increased in any application.
 
 
 ```{r, message=FALSE}
@@ -187,31 +188,29 @@ Usually, the number of groups of a typology is not known in advance, but rather 
 # maximizing the HC index.
 
 # As we previously initalized parallel computing, it is used in these computations
-vary.rarcat <- rarcat(clustering ~ funemp, data = mvad, diss = diss, R = 500,
+vary.rarcat <- rarcat(clustering ~ funemp, data = mvad, diss = diss, R = 50,
                        kmedoid=FALSE, hclust.method = "ward.D",
                        fixed = FALSE, ncluster = 10, cqi = "HC")
 vary.rarcat
 ```
 
-The output now print information about the distributions of the optimal number of groups per bootstrap, i.e. the one identified by maximizing the HC index. Here, most bootstrap partitions have nine or ten clusters. The RARCAT procedure can take into account the different number of groups across the bootstrap in its computation of the robust AME.  
-
-Logically, the "naive" approach provides the same results, but the robust ones changes as we modified the boostrap procedure.
+The output now print information about the distributions of the optimal number of groups per bootstrap, i.e. the one identified by maximizing the HC index. Here, most bootstrap partitions have nine or ten clusters. The RARCAT procedure can take into account the different number of groups across the bootstrap in its computation of the robust AME.  Logically, the "naive" approach provides the same results, but the robust ones changes as we modified the bootstrap procedure.
 
 ## Plotting the AME
 
 RARCAT works by estimating for each observation the AME of its cluster in each bootstrap. We can plot these AME (across individuals and bootstraps) using the `plot()` function and specifying the `covar` (covariable) of interest. 
 
 
-```{r, fig.width=8, fig.height=5}
+```{r, fig.width=8, fig.height=10}
 # Histogram of the estimated AMEs for all individuals and all bootstraps
-plot(vary.rarcat, covar="funempyes")
+plot(rarcatout, covar="funempyes")
 ```
 
 The plot also shows the estimated overall AME using the naive (in blue) or RARCAT approach (in red). Corresponding confidence intervals are also represented using colored shaded area. 
 
 For some clusters, we identify an unimodal distribution of the AME, usually with a low dispersion. This denotes that the results for this specific cluster are stable. The observations initially regrouped in this cluster were clustered in clusters with similar AME values across the bootstraps. We can therefore be confident about our interpretation (whether a positive, negative, neutral association). 
 
-On the contrary, if there's a large dispersion of the AME, the boostraps lead to the estimation of different values, showing less stable results. We can therefore be less confident and the RARCAT confidence interval will generally be larger. 
+On the contrary, if there's a large dispersion of the AME, the bootstraps lead to the estimation of different values, showing less stable results. We can therefore be less confident and the RARCAT confidence interval will generally be larger. 
 
 Multimodal distributions of the AME generally reveal an interesting situation. It often means that a subgroup of observations switch to a different cluster, with a different AME, in several of the bootstraps. This can happens for instance in presence of observation lying in-between types. We can identify those observations by looking at the outliers (see below).
 
@@ -221,13 +220,13 @@ The final RARCAT estimates are computed or pooled using a multilevel models. Thi
 
 ### Diagnostics
 
-We rely on a cross-classified multilevel model, using boostrap and indiviudal as upper level, to pool the results. The residual standard errors provides us information on the remaining estimation related to the boostrapping procedure. It should therefore be low if we have a sufficiently large number of iteration. The `summary()` function provide several informations.  
+We rely on a cross-classified multilevel model, using bootstrap and indiviudal as upper level, to pool the results. The residual standard errors provides us information on the remaining estimation related to the bootstrapping procedure. It should therefore be low if we have a sufficiently large number of iteration. The `summary()` function provide several informations.  
 
 ```{r, message=FALSE}
-summary(vary.rarcat)
+summary(rarcatout)
 ```
 
-In our example, the standard errors are low. The number of boostrap was therefore sufficient. If those numbers are too high, increasing the number of boostrap should fix it. 
+In our example, the standard errors are low. The number of bootstrap was therefore sufficient. If those numbers are too high, increasing the number of bootstrap should fix it. 
 
 
 ### Outliers
@@ -235,15 +234,15 @@ In our example, the standard errors are low. The number of boostrap was therefor
 The previous output also shows the number of outliers for each covariate. These observations lies far from the average estimate in at least some of the bootstrap. Interestingly, outliers are generally regrouped in some of the clusters only. We can look at the distribution of standardized observation-level random effects per clusters. These random effects can be interpreted as estimated deviation from the pooled estimates. Therefore, we can use them to identify  observations (i.e. sequences) that are not well represented by their pooled estimates. 
 
 
-```{r, message=FALSE}
-plot(vary.rarcat, what="ranef", covar="funempyes")
+```{r, message=FALSE, fig.width=8, fig.height=10}
+plot(rarcatout, what="ranef", covar="funempyes")
 ```
 
 
 We can also identify outliers by looking at the observation level standardized random effect. Those are available in the `observation.stdranef` component of the `rarcat` object. Absolute values above 2 or even 3 are generally used to identify outliers. To get an idea of deviating observation by cluster, we use an absolute value of 1. We then plot identified sequences in each of the clusters.
 
-```{r, message=FALSE}
-outliers <- abs(vary.rarcat$observation.stdranef)
+```{r, message=FALSE, fig.width=8, fig.height=10}
+outliers <- abs(rarcatout$observation.stdranef)>2
 seqIplot(mvad.seq[outliers, ], group=mvad$clustering[outliers])
 ```
 

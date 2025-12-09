@@ -4,7 +4,8 @@ rarcat <- function(formula, data, diss,
                    kmedoid=FALSE, hclust.method="ward.D", 
                    fixed=FALSE, ncluster=10, cqi="HC",
                    parallel=FALSE, progressbar=FALSE,
-                   fisher.transform=FALSE) {
+                   fisher.transform=FALSE, 
+				   lmerControl=lmerControl(optimizer = "bobyqa",optCtrl = list(maxfun = 2e5))) {
   
   
   # Ensure dissimilarity matrix and dataset have the same size
@@ -135,7 +136,7 @@ rarcat <- function(formula, data, diss,
 	## Indivudal &bootstrap ranef
 	bootstrap.ranef <- matrix(NA, nrow=R, ncol=length(factorName), dimnames=list(as.character(seq_len(R)), factorName))
 	observation.ranef <- matrix(NA, nrow=nrow(data), ncol=length(factorName), dimnames=list(as.character(ids), factorName))
-	observation.stdranef <- matrix(NA, nrow=nrow(data), ncol=length(factorName), dimnames=list(as.character(ids), factorName))
+	observation.stdranef <- matrix(0, nrow=nrow(data), ncol=length(factorName), dimnames=list(as.character(ids), factorName))
 	
 	for (ff in factorName) {
 		effects[[ff]] <- sapply(res_list, function(x) (x)[, ff]) 
@@ -157,7 +158,7 @@ rarcat <- function(formula, data, diss,
 			if(fisher.transform) prep$ame <- atanh(prep$ame)
 		  
 			rob <- suppressMessages(lme4::lmer(ame ~ (1|id) + (1|bootstrap), 
-											 weights = prep$stweight, data = prep))
+											 weights = prep$stweight, data = prep,  control =lmerControl))
 			output <- summary(rob)
 
 			if(fisher.transform) {
@@ -174,7 +175,9 @@ rarcat <- function(formula, data, diss,
 		  
 			#bootstrap.ranef[clustcond, ff] <- lme4::ranef(rob)$bootstrap[,1]
 			observation.ranef[clustcond, ff] <- lme4::ranef(rob)$id[,1]
-			observation.stdranef[clustcond, ff] <- observation.ranef[clustcond, ff]/observation.stddev[ff, cc]
+			if(observation.stddev[ff, cc]!=0){
+				observation.stdranef[clustcond, ff] <- observation.ranef[clustcond, ff]/observation.stddev[ff, cc]
+			}
 		}
 	  }
 	  message("OK.")
@@ -275,7 +278,7 @@ summary.rarcat <- function(x, ...) {
 	cat("\nRARCAT Diagnostics\nDistribution of standardized observation random intercept\n")
 	for(cc in colnames(x$observation.stdranef)){
 		cat("\n", cc, "\n")
-		print(table(cut(x$observation.stdranef, breaks=c(-Inf, -2, -1, 1, 2, Inf), labels=c("< -2", "-2....-1", "-1...1", "1...2", ">2"))), ...)
+		print(table(cut(x$observation.stdranef[, cc], breaks=c(-Inf, -2, -1, 1, 2, Inf), labels=c("< -2", "-2....-1", "-1...1", "1...2", ">2"))), ...)
 		cat("\n")
 	}
 	
@@ -327,7 +330,7 @@ plot.rarcat <- function(x, what="AME", covar=x$factorName[1], pooled.ame=TRUE, n
 		legend("topleft", legend=c("Naive estimate (with CI)", "RARCAT estimate (with CI)"), fill=c("blue", "red"))
     }else if(what=="ranef"){
 		if(is.null(xlim)) xlim <- range(c(x$observation.stdranef), na.rm=TRUE)
-		lout <- TraMineRInternalLayout(length(x$clusterNames), rows, cols, with.legend=with.legend, axes="all", legend.prop)
+		lout <- TraMineRInternalLayout(length(x$clusterNames), rows, cols, with.legend=FALSE, axes="all", legend.prop)
 		
 		layout(lout$laymat, heights=lout$heights, widths=lout$widths)
 		for(cc in seq_along(x$clusterNames)){
