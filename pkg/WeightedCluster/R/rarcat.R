@@ -5,7 +5,7 @@ rarcat <- function(formula, data, diss,
                    fixed=FALSE, ncluster=10, cqi="HC",
                    parallel=FALSE, progressbar=FALSE,
                    fisher.transform=FALSE, 
-				   lmerControl=lmerControl(optimizer = "bobyqa",optCtrl = list(maxfun = 2e5))) {
+				   lmerCtrl=lme4::lmerControl(optimizer = "bobyqa",optCtrl = list(maxfun = 2e5))) {
   
   
   # Ensure dissimilarity matrix and dataset have the same size
@@ -158,7 +158,7 @@ rarcat <- function(formula, data, diss,
 			if(fisher.transform) prep$ame <- atanh(prep$ame)
 		  
 			rob <- suppressMessages(lme4::lmer(ame ~ (1|id) + (1|bootstrap), 
-											 weights = prep$stweight, data = prep,  control =lmerControl))
+											 weights = prep$stweight, data = prep,  control =lmerCtrl))
 			output <- summary(rob)
 
 			if(fisher.transform) {

@@ -16,7 +16,7 @@ rarcat(formula, data, diss,
         fixed=FALSE, ncluster=10, cqi="HC",
         parallel=FALSE, progressbar=FALSE,
         fisher.transform=FALSE, 
-		lmerControl=lmerControl(optimizer = "bobyqa",optCtrl = list(maxfun = 2e5)))
+		lmerCtrl=lmerControl(optimizer = "bobyqa",optCtrl = list(maxfun = 2e5)))
 \method{plot}{rarcat}(x, what="AME", covar=x$factorName[1], pooled.ame=TRUE, naive.ame=TRUE,  
 						 with.legend=TRUE, legend.prop=NA, rows=NA, 
 						cols=NA, main=NULL, xlab=paste(covar, "Average Marginal Effect"),  xlim=NULL, conf.level=0.95,...)
@@ -90,7 +90,7 @@ set.seed(1)
 data(mvad)
 
 ## Reducing sample size to speed up computations
-mvad <- mvad[1:100,]
+mvad <- mvad[1:200,]
 
 
 ## Creating the state sequence object
@@ -112,7 +112,7 @@ mvad$clustering <- clustqual$clustering$cluster2
 ## As in the original analysis, hierarchical clustering with Ward method is implemented
 ## The number of clusters is fixed to 2 here, larger values should often be used.
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-rarcatout <- rarcat(clustering ~ funemp + gcse5eq, mvad, diss, R = 30, 
+rarcatout <- rarcat(clustering ~ funemp + livboth, mvad, diss, R = 30, 
                     kmedoid=TRUE, fixed = TRUE, ncluster = 2)
 
 ## Assess the robustness of the original analysis
