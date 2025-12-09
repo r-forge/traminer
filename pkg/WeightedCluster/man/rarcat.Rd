@@ -18,11 +18,11 @@ rarcat(formula, data, diss,
         fisher.transform=FALSE, 
 		lmerCtrl=lme4::lmerControl())
 \method{plot}{rarcat}(x, what="AME", covar=x$factorName[1], 
-						pooled.ame=TRUE, naive.ame=TRUE,  
-						with.legend=TRUE, legend.prop=NA, rows=NA, 
-						cols=NA, main=NULL, 
-						xlab=paste(covar, "Average Marginal Effect"),
-						xlim=NULL, conf.level=0.95,...)
+		pooled.ame=TRUE, naive.ame=TRUE,  
+		with.legend=TRUE, legend.prop=NA, rows=NA, 
+		cols=NA, main=NULL, 
+		xlab=paste(covar, "Average Marginal Effect"),
+		xlim=NULL, conf.level=0.95,...)
 \method{print}{rarcat}(x, conf.level=0.95, single.row = FALSE, digits = 3, ...)
 \method{summary}{rarcat}(object, ...)
 }
