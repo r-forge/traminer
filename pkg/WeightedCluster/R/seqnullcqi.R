@@ -227,11 +227,12 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 			}
 	}
 		p <- progressor(R)
+		seqnull.args <- list(seqdata=seqdata, model=model, ...)
 		#parObject <- foreach::foreach(loop=1:R,  .packages = c('TraMineR', 'WeightedCluster'), .options.future = list(seed = TRUE)) %dofuture% {#on stocke chaque
 		parObject <- foreach(loop=1:R, .options.future = list(seed = TRUE, 
 								packages = c('TraMineR', 'WeightedCluster', 'fastcluster'), 
-								globals = c("seqdata", "model", "seqdist.args", "ncluster", "hclust.method"))) %dofuture% {#on stocke chaque
-			suppressMessages(ss <- seqnull(seqdata, model=model, ...))
+								globals = c("seqnull.args", "seqdist.args", "ncluster", "hclust.method"))) %dofuture% {#on stocke chaque
+			suppressMessages(ss <- do.call(seqnull, seqnull.args))
 			sarg <- seqdist.args
 			sarg$seqdata <- ss
 			suppressMessages(diss <- do.call(seqdist, sarg))
