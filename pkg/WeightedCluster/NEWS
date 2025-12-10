@@ -6,7 +6,10 @@ NEW VIGNETTES
   o RARCAT: Short R Tutorial on Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT) with sequence analysis.
   
 SMALL FIXES
-  o Updated LaTeX code in WeightedClusterFR
+  o Updated LaTeX code in WeightedClusterFR.
+  o Improved future framework handling for parallel processing (might also affect single threaded analyses).
+  o seqnullcqi() now use fastcluster for improved processing time.
+  o wcCmpCluster now use "ward.D" instead of the old "ward" name.
 
               CHANGES IN WeightedCluster VERSION 1.8-1
 
