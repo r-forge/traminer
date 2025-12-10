@@ -238,7 +238,7 @@ When the agglomeration schedule has been created, the final stages of this sched
 wardTree <- as.seqtree(wardCluster, seqdata=mvadseq, diss=mvaddist, ncluster=6)
 @
 
-Once the tree is constructed, the \code{seqtreedisplay} function of the \pkg{TraMineR} library \citep{StuderRitschardGabadinhoMuller2011SMR} makes it possible to represent it graphically. The free GraphViz software \citep{Gansner99anopen} must be installed and accessible for the function to work properly.\footnote{The program can be downloaded from \url{http://www.graphviz.org/}.} The option \code{showdepth=TRUE} displays the levels of the groupings on the right of the graph.
+Once the tree is constructed, the \code{seqtreedisplay} function of the \pkg{TraMineR} library \citep{StuderRitschardGabadinhoMuller2011SMR} makes it possible to represent it graphically. The free GraphViz software \citep{Gansner99anopen} must be installed and accessible for the function to work properly.\footnote{The program can be downloaded from \url{https://www.graphviz.org/}.} The option \code{showdepth=TRUE} displays the levels of the groupings on the right of the graph.
 
 <<seqtreedisplay, echo=FALSE, results="hide", eval=FALSE, fig.keep="none">>=
 seqtreedisplay(wardTree, type="d", border=NA, filename="wardtree.png", showdepth=TRUE, showtree=FALSE)
@@ -586,7 +586,7 @@ dsa <- dissassoc(mvaddist, mvad$test, weights=mvad$weight, weight.permutation="d
 print(dsa$stat)
 @
 
-We may include several covariates by building a sequence regression trees with the \code{seqtree} and \code{seqtreedisplay}\footnote{The free GraphViz software \citep{Gansner99anopen} must be installed and accessible for the function to work properly. It can be downloaded from \url{http://www.graphviz.org/}.} functions \citep{StuderRitschardGabadinhoMuller2011SMR}.\footnote{The ANOVA approach can also be extended to the multifactor case using the \code{dissmfacw} function.}
+We may include several covariates by building a sequence regression trees with the \code{seqtree} and \code{seqtreedisplay}\footnote{The free GraphViz software \citep{Gansner99anopen} must be installed and accessible for the function to work properly. It can be downloaded from \url{https://www.graphviz.org/}.} functions \citep{StuderRitschardGabadinhoMuller2011SMR}.\footnote{The ANOVA approach can also be extended to the multifactor case using the \code{dissmfacw} function.}
 
 <<seqtree-link-covar, echo=FALSE, results="hide", eval=FALSE, fig.keep="none">>=
 set.seed(1)

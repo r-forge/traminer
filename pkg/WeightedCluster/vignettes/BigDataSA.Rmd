@@ -146,5 +146,5 @@ The XB and AMS index favor a four or six cluster solution. Several plots are ava
 
 
 ```{r seqdplotclustf, dev="png", fig.width=8, fig.height=8}
-fuzzyseqplot(biofam.seq, group=bfclaraf$clustering$cluster4, type="I", sortv="membership", membership.threashold=0.4)
+fuzzyseqplot(biofam.seq, group=bfclaraf$clustering$cluster4, type="I", sortv="membership", membership.threshold=0.4)
 ```

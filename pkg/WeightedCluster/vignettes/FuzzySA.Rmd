@@ -93,15 +93,15 @@ summary(fclust$membership)
 A graphical representation of the typology can be obtained by weighting each sequences according to its membership strength [@Studer2018]. Using this strategy, one can represent distribution plots (see the `seqplot` function of the `TraMineR` package). The `fuzzyseqplot` function from the `WeightedCluster` can be used to do so. 
 
 ```{r plotfd, fig.width=8, fig.height=5}
-## Displaying the resulting clustering with membership threshold of 0.4
+## Displaying the resulting clustering 
 fuzzyseqplot(biofam.seq, group=fclust$membership, type="d")
 ```
 
-Following a similar strategy, one can further order the sequences according to the membership strength (argument `sortv="membership"`) in an index plot (argument `type="I"`) and remove sequences with low membership strengths (argument `membership.threashold =0.4`). In this plot, each sequence is represented using a thin line. The sequences at the top are the one with the highest membership strength. They therefore describe the best the *full* cluster membership. 
+Following a similar strategy, one can further order the sequences according to the membership strength (argument `sortv="membership"`) in an index plot (argument `type="I"`) and remove sequences with low membership strengths (argument `membership.threshold =0.4`). In this plot, each sequence is represented using a thin line. The sequences at the top are the one with the highest membership strength. They therefore describe the best the *full* cluster membership. 
 
 ```{r plotf, fig.width=8, fig.height=5}
 ## Displaying the resulting clustering with membership threshold of 0.4
-fuzzyseqplot(biofam.seq, group=fclust$membership, type="I", membership.threashold =0.4, sortv="membership")
+fuzzyseqplot(biofam.seq, group=fclust$membership, type="I", membership.threshold =0.4, sortv="membership")
 ```
 ## Regression models
 
