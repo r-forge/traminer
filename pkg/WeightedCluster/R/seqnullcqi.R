@@ -228,7 +228,9 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 	}
 		p <- progressor(R)
 		#parObject <- foreach::foreach(loop=1:R,  .packages = c('TraMineR', 'WeightedCluster'), .options.future = list(seed = TRUE)) %dofuture% {#on stocke chaque
-		parObject <- foreach(loop=1:R, .options.future = list(seed = TRUE)) %dofuture% {#on stocke chaque
+		parObject <- foreach(loop=1:R, .options.future = list(seed = TRUE, 
+								packages = c('TraMineR', 'WeightedCluster', 'fastcluster'), 
+								globals = c("seqdata", "model", "seqdist.args", "ncluster", "hclust.method"))) %dofuture% {#on stocke chaque
 			suppressMessages(ss <- seqnull(seqdata, model=model, ...))
 			sarg <- seqdist.args
 			sarg$seqdata <- ss
@@ -236,7 +238,7 @@ seqnullcqi <- function(seqdata, clustrange, R, model=c("combined", "duration", "
 			if(kmedoid){
 				nc <- wcKMedRange(diss=diss, kvals=2:ncluster)$stats
 			}else{
-				hc <- hclust(as.dist(diss), method="ward.D")
+				hc <- fastcluster::hclust(as.dist(diss), method=hclust.method)
 				nc <- as.clustrange(hc, diss=diss, ncluster=ncluster)$stats
 			}
 			rm(diss)
