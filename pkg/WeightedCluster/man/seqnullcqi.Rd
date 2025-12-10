@@ -85,11 +85,11 @@ A brief introduction to the \code{R} code needed to use parametric bootstraps fo
 \examples{
 data(biofam)
 
-## Create the sequence object
-bf.seq <- seqdef(biofam[sample.int(nrow(biofam), 70),10:25])
+## Create the sequence object (subsample to reduce computation time)
+bf.seq <- seqdef(biofam[sample.int(nrow(biofam), 50),10:25])
 
 ## Library fastcluster greatly improve computation time when using hclust
-# library(fastcluster)
+library(fastcluster)
 ## Computing distances
 diss <- seqdist(bf.seq, method="HAM")
 ## Hierarchical clustering
@@ -97,7 +97,7 @@ hc <- hclust(as.dist(diss), method="ward.D")
 # Computing cluster quality measures.
 clustqual <- as.clustrange(hc, diss=diss, ncluster=5)
 
-# Compute cluster quality measure for the null model "combined"
+# Compute cluster quality measure for the "combined" null model 
 # seqdist.args should be the same as for seqdist above except the sequence data.
 # Clustering methods should be the same as above.
 bcq <- seqnullcqi(bf.seq, clustqual, R=3, model=c("combined"), 
