@@ -17,7 +17,15 @@ crispness <- function(ff, norm=TRUE){
 	return(uu)
 }
 
-fuzzyseqplot <- function(seqdata, group=NULL, membership.threashold=0, type="i", members.weighted=TRUE, memb.exp=1, ...){
+fuzzyseqplot <- function(seqdata, group=NULL, membership.threshold = 0, membership.threashold = NULL, type="i", members.weighted=TRUE, memb.exp=1, ...){
+	
+	# Handle deprecated argument
+	if (!is.null(membership.threashold)) {
+		# Warn user
+		warning("Argument 'membership.threashold' is deprecated. ", 
+				"Please use 'membership.threshold' instead.", call. = FALSE)
+		membership.threshold <- membership.threashold
+	}
 	
 	if(is.null(group)||is.factor(group)){
 		seqplot(seqdata, group=group, ...)
@@ -42,7 +50,7 @@ fuzzyseqplot <- function(seqdata, group=NULL, membership.threashold=0, type="i",
 		groupnames <- colnames(group)
 	}
 	clustering <- rep(groupnames, each=nrow(group))
-	cond <- as.vector(group) >= membership.threashold
+	cond <- as.vector(group) >= membership.threshold
 	seqdata <- seqdata[cond, ]
 	clustering <- clustering[cond]
 	args <- list(seqdata=seqdata, group=clustering, type=type, ...)

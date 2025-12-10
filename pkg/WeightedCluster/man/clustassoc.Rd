@@ -59,6 +59,8 @@ Matthias Studer
 
 \seealso{
 See Also \code{\link{as.clustrange}} for cluster quality indexes, and the \code{\link[TraMineR]{dissmfacw}} function from the \code{TraMineR} package.
+
+See also the corresponding vignette \href{../doc/ClusterExternalValidSA.html}{Cluster External Validity (vignette)}
 }
 \examples{
 data(mvad)

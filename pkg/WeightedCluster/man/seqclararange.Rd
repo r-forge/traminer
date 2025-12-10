@@ -67,7 +67,10 @@ To minimize the computation, the operation is repeated for different number of g
 
 
 \seealso{
-See also as \code{\link{plot.seqclararange}} to plot the results. 
+See \code{\link{plot.seqclararange}} to plot the results.
+
+See also the corresponding vignette \href{../doc/BigDataSA.html}{Short R Tutorial: Sequence Analysis Typologies for Large Databases}
+
 }
 \examples{
 data(biofam) #load illustrative data
@@ -82,18 +85,26 @@ biofam.seq <- seqdef(biofam[1:100, 10:25], alphabet=0:7, states=statelab)
 ## Clara clustering
 bfclara <- seqclararange(biofam.seq, R = 3, sample.size = 10, kvals = 2:3, 
   seqdist.args = list(method = "HAM"), parallel=FALSE, 
-  stability=TRUE)
+  stability=FALSE)
+
 
 
 #Show the cluster quality measures.
 bfclara
 #Plot and normalize the values for easier identification of minimum and maximum values.
 plot(bfclara, norm="range")
+seqdplot(biofam.seq, group=bfclara$clustering$cluster3)
+
+\dontrun{
+## To look at the stability set it to TRUE in the seqclararange call.
+bfclara <- seqclararange(biofam.seq, R = 3, sample.size = 10, kvals = 2:3, 
+  seqdist.args = list(method = "HAM"), parallel=FALSE, 
+  stability=TRUE)
 ## Stability values.
 plot(bfclara, stat="stabmean")
 plot(bfclara, stat="stability")
+}
 
-seqdplot(biofam.seq, group=bfclara$clustering$cluster3)
 
 ## Cluster quality indices estimation using boostrap
 

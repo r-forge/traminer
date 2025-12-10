@@ -7,7 +7,7 @@
 Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT)
 }
 \description{
-\code{rarcat} is a wrapper for the functions \code{regressboot} and \code{bootpool} that performs the entire RARCAT procedure on all possible associations between a typology and covariates of interest. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} vignette for all details on the corresponding methods and their utility.
+\code{rarcat} computes the entire RARCAT procedure on all possible associations between a typology and covariates of interest. See Roth et al. (2024) or the R tutorial as \code{WeightedCluster} vignette for all details on the corresponding methods and their utility.
 }
 \usage{
 rarcat(formula, data, diss, 
@@ -64,25 +64,33 @@ rarcat(formula, data, diss,
 The \code{rarcat} function runs a standard typology-based association study and evaluates the impact of sampling uncertainty on the results, thus assessing the reproducibility of the analysis.
 }
 \value{
-The output of \code{rarcattables} contains the following tables:
+The output is a \code{rarcat} contains the following components:
   
-  The output of \code{bootpool} is a list with the following components:
-  \item{nobs}{An integer with the number of observations (i.e., number of estimated AMES from the function \code{regressboot}) used to compute the robust estimates in the multilevel model. Due to missing observations when an individual does not appear in a bootstrap, \code{nobs < m} x \code{B}, where \code{m < M} is the number of individuals in a given cluster, \code{M} is the total number of individuals and \code{B} is the total number of bootstrap in \code{regressboot}.}
-  \item{pooled.ame}{A numeric value indicating the pooled AME, which is the mean change in cluster membership probability for a change in the level of the covariate of interest over all bootstraps and all individuals belonging to the reference cluster in the original typology.}
-  \item{standard.error}{Standard error of the pooled AME, which diminishes asymptotically as the number of bootstrap increases.}
-  \item{bootstrap.stddev}{The estimate for the standard deviation of the bootstrap random effect. This can be used to construct a prediction interval for the association of interest (see Roth et al. 2024 for details on how to compute this).}
-  \item{observation.stddev}{The estimate for the standard deviation of the bootstrap random effect.}
-  \item{bootstrap.ranef}{A vector of size \code{B} containing the estimated random effects for each bootstrap.}
-  \item{observation.ranef}{A vector of size \code{m} containing the estimated random effects for each observation in the reference cluster.}
-
-  \item{original.analysis}{Average Marginal Effects (AMEs) estimated with multivariable logistic regressions and representing the expected change in the probability of belonging to a trajectory group (a reference cluster) for a change in the level of a variable (a covariate of interest), together with their confidence intervals.}
-  \item{robust.analysis}{Pooled AMEs from the bootstrap procedure and their prediction intervals, representing the range of expected values if the clustering and associated regressions were performed on a new sample from the same underlying distribution. This table provide robust estimates for a typology-based association study.}
+	\item{arguments}{A list with all the arguments passed to \code{rarcat}.}
+	\item{formula}{The formula used in the \code{rarcat} call.}
+	\item{factorName}{The name of the factors/covariates/coefficients used in the model.}
+	\item{clusterNames}{The names of the clusters provided to \code{rarcat}.}
+	\item{clustering}{The original clustering used in the \code{rarcat} formula call.}
+	\item{AMElist}{The list of AME object, see \link[margins]{margins} for the naive analysis.}
+	\item{bootout}{The boostrap results storing the AME and standard error per observation and clustering solutions.}    
+	\item{pooled.ame}{The pooled AME.}
+	\item{standard.error}{The standard error of the pooled AME.}
+	\item{bootstrap.stddev}{The estimated standard deviation of the AME between bootstraps.}
+	\item{observation.stddev}{The estimated standard deviation of the AME between observations.}
+	\item{observation.ranef}{The estimated observation-level random effect of the AME .}
+	\item{observation.stdranef}{The estimated standardized observation-level random effect of the AME.}
+	\item{cluster.solution}{The cluster solution in each bootstrap.}
+	\item{optimal.number}{The retained number of clusters in each bootstraps.}
 }
 \references{
 Roth, L., Studer, M., Zuercher, E., & Peytremann-Bridevaux, I. (2024). Robustness assessment of regressions using cluster analysis typologies: a bootstrap procedure with application in state sequence analysis. BMC medical research methodology, 24(1), 303. https://doi.org/10.1186/s12874-024-02435-8.
 }
+\seealso{
+  \href{../doc/RARCAT.html}{Vignette: R Tutorials: Robustness Assessment of Regressions using Cluster Analysis Typologies}
+}
+
 \author{
-Leonard Roth
+Leonard Roth, Matthias Studer
 }
 \examples{
 ## Loading the data (TraMineR package)
@@ -116,7 +124,12 @@ rarcatout <- rarcat(clustering ~ Grammar + gcse5eq, mvad, diss, R = 30,
 
 ## Assess the robustness of the original analysis
 rarcatout
-#plot(rarcatout, covar="gcse5eqyes")
-#plot(rarcatout, covar="gcse5eqyes", what="ranef")
-#summary(rarcatout)
+
+\dontrun{
+## Ensure the plotting windows is large enough
+## prior to running those lines.
+plot(rarcatout, covar="gcse5eqyes")
+plot(rarcatout, covar="gcse5eqyes", what="ranef")
+summary(rarcatout)
+}
 }

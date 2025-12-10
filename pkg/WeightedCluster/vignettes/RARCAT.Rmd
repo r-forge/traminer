@@ -149,7 +149,7 @@ Now we can run it using parallel processing.
 
 ```{r, message=FALSE}
 # Evaluate the validity of the original analysis and the reliability of its
-# findings by applying RARCAT with 50 bootstrap replications.
+# findings by applying RARCAT with 100 bootstrap replications (at least 500 are gnerally recommended).
 # As in the original analysis, hierarchical clustering with Ward method is implemented.
 # The number of clusters is fixed to 6 here.
 rarcatout <- rarcat(clustering ~ funemp + gcse5eq, data = mvad, diss = diss, robust = TRUE, R = 100, 

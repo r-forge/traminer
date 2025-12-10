@@ -79,12 +79,14 @@ A brief introduction to the \code{R} code needed to use parametric bootstraps fo
 
 \seealso{
 	See Also \code{\link{seqnull}} for description of the null models.
+	
+	See also the corresponding vignette \href{../doc/ClusterValidSA.html}{Short R Tutorial: Validating Sequence Analysis Typologies Using Parametric Bootstrap}
 }
 \examples{
 data(biofam)
 
 ## Create the sequence object
-bf.seq <- seqdef(biofam[sample.int(nrow(biofam), 100),10:25])
+bf.seq <- seqdef(biofam[sample.int(nrow(biofam), 70),10:25])
 
 ## Library fastcluster greatly improve computation time when using hclust
 # library(fastcluster)
@@ -93,12 +95,12 @@ diss <- seqdist(bf.seq, method="HAM")
 ## Hierarchical clustering
 hc <- hclust(as.dist(diss), method="ward.D")
 # Computing cluster quality measures.
-clustqual <- as.clustrange(hc, diss=diss, ncluster=7)
+clustqual <- as.clustrange(hc, diss=diss, ncluster=5)
 
 # Compute cluster quality measure for the null model "combined"
 # seqdist.args should be the same as for seqdist above except the sequence data.
 # Clustering methods should be the same as above.
-bcq <- seqnullcqi(bf.seq, clustqual, R=5, model=c("combined"), 
+bcq <- seqnullcqi(bf.seq, clustqual, R=3, model=c("combined"), 
 				seqdist.args=list(method="HAM"),
 				hclust.method="ward.D")
 

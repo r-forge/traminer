@@ -7,7 +7,8 @@ Plot sequences according to a fuzzy clustering.
 \description{
 This funciton propose a graphical representation of a fuzzy clustering results where sequences are weighted according to their cluster membership strength.}
 \usage{
-fuzzyseqplot(seqdata, group = NULL, membership.threashold = 0, type = "i", 
+fuzzyseqplot(seqdata, group = NULL, membership.threshold = 0, 
+			membership.threashold = NULL, type = "i", 
 			members.weighted = TRUE, memb.exp = 1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -18,8 +19,11 @@ fuzzyseqplot(seqdata, group = NULL, membership.threashold = 0, type = "i",
   \item{group}{
 	A fuzzy partition of the data, either as a membership matrix or as a \code{fanny} object.
 }
-  \item{membership.threashold}{
-Numeric. Minimum membership strength to be included in plots.
+	\item{membership.threshold}{
+		Numeric. Minimum membership strength to be included in plots (Default 0).
+	}
+  \item{membership.threashold}{Deprecated. Previous spelling of \code{membership.threshold}. 
+  Using this argument is discouraged; use \code{membership.threshold} instead.
 }
   \item{type}{the type of the plot. Available types are \code{"d"} for state distribution plots (chronograms), \code{"f"} for sequence frequency plots, \code{"i"} for selected sequence index plots, \code{"I"} for whole set index plots, \code{"ms"} for plotting the sequence of modal states, \code{"mt"} for mean times plots, \code{"pc"} for parallel coordinate plots and "r" for representative sequence plots.
 }
@@ -44,6 +48,8 @@ Studer, M. (2018). Divisive property-based and fuzzy clustering for sequence ana
 
 \seealso{
 	See also \code{\link[cluster]{fanny}} for fuzzy clustering.
+	
+	See also the corresponding vignette \href{../doc/FuzzySA.html}{Short R Tutorial: Fuzzy and Property-Based Clustering for Sequence Analysis}
 
 }
 \examples{
