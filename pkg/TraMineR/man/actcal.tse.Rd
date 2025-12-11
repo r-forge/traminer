@@ -35,4 +35,5 @@ actcal.tse <- seqformat(actcal, 13:24, from = "STS",to = "TSE",
 actcal.eseq <- seqecreate(id=actcal.tse$id,
 	time=actcal.tse$time, event=actcal.tse$event)
 }
+\author{Gilbert Ritschard and Matthias Studer}
 \keyword{Datasets}

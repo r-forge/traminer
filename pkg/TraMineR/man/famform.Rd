@@ -17,4 +17,5 @@ This data set is used in TraMineR's manual to crosscheck some results with those
 Elzinga, Cees H. (2008). Sequence analysis: Metric representations of categorical time
 series. Non published manuscript. VU University, Amsterdam.
 }
+\author{Gilbert Ritschard and Alexis Gabadinho}
 \keyword{Datasets}

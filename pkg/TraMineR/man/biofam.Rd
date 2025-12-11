@@ -58,4 +58,5 @@ data(bfspell)
   In \emph{XIVe Rencontre de la Société francophone de classification
   (SFC 2007), Paris, 5 - 7 septembre 2007}, pp. 157--160.
 }
+\author{Gilbert Ritschard and Alexis Gabadinho}
 \keyword{Datasets}

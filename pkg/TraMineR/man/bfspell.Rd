@@ -34,5 +34,6 @@ data(bfspell)
 \seealso{
 \code{\link{biofam}}
 }
+\author{Gilbert Ritschard and Alexis Gabadinho}
 
 \keyword{Datasets}
