@@ -4,7 +4,7 @@
 \title{Example data set with missing values and weights}
 
 \description{
-Example data set used to demonstrate the handling of missing values and weights.
+Example data set used in \code{\link{seqdef}} to demonstrate the handling of missing values and weights.
 
 The state columns (variable) are named \code{'P1'} to \code{'P13'}.
 

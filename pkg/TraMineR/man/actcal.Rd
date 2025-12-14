@@ -39,5 +39,16 @@ The data set contains also the following covariates:\cr
 \format{A data frame with 2000 rows, 12 state variables, 1 id variable and 11 covariates.}
 \source{Swiss Household Panel}
 \references{\url{https://forscenter.ch/projects/swiss-household-panel/}}
+
+\examples{
+data(actcal)
+# labels for plot color legends
+actcal.lab <- c("> 37 hours", "19-36 hours", "1-18 hours", "no work")
+# state sequence object of the first six sequences
+actcal.seq <- seqdef(actcal[1:6 ,13:24], labels=actcal.lab)
+
+print(actcal.seq)
+}
+
 \author{Gilbert Ritschard and Alexis Gabadinho}
 \keyword{Datasets}

@@ -1,6 +1,6 @@
 Package: TraMineR
 Version: 2.3-13
-Date: 2025-12-06
+Date: 2025-12-14
 Title: Trajectory Miner: a Sequence Analysis Toolkit
 Authors@R: c(
   person("Alexis", "Gabadinho",

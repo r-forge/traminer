@@ -1,5 +1,5 @@
 ## =========
-Version 2.3-13 [2025-12-06]
+Version 2.3-13 [2025-12-14]
 
 Changes in existing functions:
 
@@ -16,8 +16,13 @@ Bug fixes:
 
   - plot.stslist(), plot method for object of class stslist: bad weight 
     assignment when idxs is not seq(1, to=length(idxs)).
-  - subsetting state sequence (stslist) objects with [] did not work 
+  - Subsetting state sequence (stslist) objects with [] did not work 
     when selecting columns with column names.
+    
+Misc.:
+  - Authors added in description of provided data sets.
+  - Examples added in description of biofam, mvad, actcal, 
+    and famform datasets.
 
 
 ## =========

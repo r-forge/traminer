@@ -58,5 +58,21 @@ data(bfspell)
   In \emph{XIVe Rencontre de la Société francophone de classification
   (SFC 2007), Paris, 5 - 7 septembre 2007}, pp. 157--160.
 }
+
+\examples{
+data(biofam)
+bf.alph <- 0:7
+bf.shortlab <- c("P","L","M","LM","C","LC","LMC","D")
+bf.lab <- c("Parent", "Left", "Married", "Left+Marr",
+"Child", "Left+Child", "Left+Marr+Child", "Divorced")
+
+## Creating the state sequence object for cases 1 to 6  
+bf.seq <- seqdef(biofam[1:6, 10:25], alphabet=bf.alph, 
+                states=bf.shortlab, labels=bf.lab,
+                weights=biofam[1:6,"wp00tbgs"])
+print(bf.seq)
+                
+}
+
 \author{Gilbert Ritschard and Alexis Gabadinho}
 \keyword{Datasets}

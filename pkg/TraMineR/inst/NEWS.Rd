@@ -1,6 +1,6 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
-\section{Changes in version 2.3-13 [2025-12-06] }{
+\section{Changes in version 2.3-13 [2025-12-14] }{
 
     \subsection{Changes in existing functions}{
         \itemize{
@@ -20,7 +20,16 @@
             \item
             \code{plot.stslist()}, plot method for object of class \code{stslist}: bad weight     assignment when \code{idxs} is not \code{seq(1, to=length(idxs))}.
             \item
-            subsetting state sequence (\code{stslist}) objects with \code{[]} did not work when selecting columns with column names.
+            Subsetting state sequence (\code{stslist}) objects with \code{[]} did not work when selecting columns with column names.
+        }
+    }
+    
+    \subsection{Misc.}{
+        \itemize{
+            \item
+            Authors added in description of provided data sets.
+            \item
+            Examples added in description of \code{biofam}, \code{mvad}, \code{actcal}, and \code{famform} data sets.
         }
     }
 }

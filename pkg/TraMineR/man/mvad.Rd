@@ -40,5 +40,22 @@ The data set contains also ids (\code{id}) and sample weights (\code{weight}) as
 McVicar, Duncan and Anyadike-Danes, Michael (2002). Predicting Successful and Unsuccessful Transitions from School to Work by Using Sequence Methods,
 \emph{Journal of the Royal Statistical Society. Series A (Statistics in Society)}, 165, 2, pp. 317--334.
 }
+
+\examples{
+data(mvad)
+mvad.alph <- c("employment", "FE", "HE", "joblessness", 
+    "school", "training")
+mvad.labels <- c("employment", "further education", 
+    "higher education", "joblessness", "school", "training")
+mvad.shortlab <- c("EM", "FE", "HE", "JL", "SC", "TR")
+
+mvad.seq <- seqdef(mvad[1:6,17:86], alphabet = mvad.alph, 
+    states = mvad.shortlab, labels = mvad.labels, 
+    weights=mvad[1:6,]$weights, xtstep = 6)
+
+print(mvad.seq, format="SPS")
+
+}
+
 \author{Gilbert Ritschard and Alexis Gabadinho}
 \keyword{Datasets}
