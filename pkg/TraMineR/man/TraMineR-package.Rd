@@ -6,7 +6,7 @@
 Trajectory Miner: Sequence Analysis Toolkit
 }
 \description{
-(Version: 2.3-13) Set of sequence analysis tools for manipulating,
+(Version: 2.3-14) Set of sequence analysis tools for manipulating,
 describing and rendering categorical sequences, and more generally
 mining sequence data in the field of social sciences. Although
 this sequence analysis package is primarily intended for state or

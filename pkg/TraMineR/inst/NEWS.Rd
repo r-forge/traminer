@@ -1,6 +1,17 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
-\section{Changes in version 2.3-13 [2025-12-14] }{
+
+\section{Changes in version 2.3-14 [2025-12-14] }{
+    
+    \subsection{Misc.}{
+        \itemize{
+            \item
+            No changes.
+        }
+    }
+}
+
+\section{Changes in version 2.2-13 [2025-12-14] }{
 
     \subsection{Changes in existing functions}{
         \itemize{
@@ -30,6 +41,8 @@
             Authors added in description of provided data sets.
             \item
             Examples added in description of \code{biofam}, \code{mvad}, \code{actcal}, and \code{famform} data sets.
+            \item
+            Fixed outdated and non-canonical URLs in vignette.
         }
     }
 }

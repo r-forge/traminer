@@ -1,5 +1,11 @@
 ## =========
-Version 2.3-13 [2025-12-14]
+Version 2.3-14 [2025-12-14]
+
+Misc.:
+  - no changes
+
+## =========
+Version 2.2-13 [2025-12-14]
 
 Changes in existing functions:
 
@@ -23,6 +29,7 @@ Misc.:
   - Authors added in description of provided data sets.
   - Examples added in description of biofam, mvad, actcal, 
     and famform datasets.
+  - Fixed outdated and non-canonical URLs in vignette.
 
 
 ## =========

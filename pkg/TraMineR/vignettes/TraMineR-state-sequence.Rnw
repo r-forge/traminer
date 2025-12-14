@@ -53,7 +53,7 @@ The functions can then easily retrieve this information to ensure presentation h
   University of Geneva\\
   CH-1211 Geneva 4, Switzerland\\
   E-mail: \email{alexis.gabadinho@unige.ch}\\
-  URL: \url{http://mephisto.unige.ch/}
+  URL: \url{https://traminer.unige.ch/}
 }
 %% It is also possible to add a telephone and fax number
 %% before the e-mail in the following format:
@@ -168,7 +168,7 @@ graphdir <- "Graphics/"
 
 \begin{document}
 
-\raisebox{14.3cm}[0cm][0cm]{\parbox{\linewidth}{\small\normalfont This vignette is distributed with the \R package \traminer. Please cite as:\\[.5ex]
+\raisebox{14.3cm}[0cm][0cm]{\parbox{\linewidth}{\small\normalfont This vignette (with updated links) is distributed with the \R package \traminer. Please cite as:\\[.5ex]
 Gabadinho, A., G. Ritschard, N.S. M\"{u}ller and M. Studer (2011). ``Analyzing and Visualizing State Sequences in \proglang{R} with \pkg{TraMineR}.'' \textit{Journal of Statistical Software}, \textbf{40}(4), 1--37. DOI \href{http://dx.doi.org/10.18637/jss.v040.i04}{10.18637/jss.v040.i04}}}
 
 \section{Introduction}
@@ -226,8 +226,7 @@ We may indeed imagine many other ways of looking at categorical sequences such a
 Transforming state sequences into event sequences and resorting to tools for mining frequent subsequences permits us to gain interesting knowledge about the typical sequencing of states or events \citep{billa:furn:prsk:2006,RitschardGabadinhoMullerStuder2008IJDMMM}.
 A very common approach in the life course literature is \textit{event history} or \textit{survival} analysis \citep{Mayer-1990,Yamaguchi-1991,HosmerLemeshow1999,blos:golsch:rohw:2007} which focuses on the occurrence of a specific event or somewhat equivalently on the duration---time to event---until a given state transition. Though not addressed here, all these techniques may usefully complement the considered state sequence techniques.
 
-The \traminer {} \proglang{R} package is available from the Comprehensive \R Archive Network at \url{http:
-//CRAN.R-project.org/package=TraMineR} and offers many analysis and visualization tools for either state or event sequences. These tools include already known methods, as well as new developments. We focus in this article on the functions intended for state sequence analysis. The paper is organized as follows. In Section~\ref{sec_overview}, we introduce the \traminer library, describe the \Datasett{mvad} data set used for illustration and give a first example of analysis that can be run with \traminer.
+The \traminer {} \proglang{R} package is available from the Comprehensive \R Archive Network at \url{https://CRAN.R-project.org/package=TraMineR} and offers many analysis and visualization tools for either state or event sequences. These tools include already known methods, as well as new developments. We focus in this article on the functions intended for state sequence analysis. The paper is organized as follows. In Section~\ref{sec_overview}, we introduce the \traminer library, describe the \Datasett{mvad} data set used for illustration and give a first example of analysis that can be run with \traminer.
 Section~\ref{sec_identifying-formats} defines the different forms of sequential data that are supported by the package. In Section~\ref{sec_seq_object}, we introduce the central concept of \emph{state sequence object}.
 Section~\ref{sec:Visualizing-individual-sequences} introduces two basic visualization tools and describes the general plotting principles used by the package.
 Section~\ref{sec_describing-visualizing-sequences} is devoted to the summarization and visual rendering of sets of sequences, while Section~\ref{sec_sequence-complexity} is concerned with individual sequence indicators. In Section~\ref{sec_similarities}, we present the metrics that were implemented for measuring pairwise dissimilarities between sequences. In Section~\ref{sec_further_statistical_analysis}, we illustrate how dissimilarities measures
@@ -243,9 +242,10 @@ can be used for further statistical analysis. Finally, we make some concluding r
 It puts together most of the features proposed separately by other software for sequential data and offers many original tools for managing, analyzing and rendering categorical sequences.
 
 Other statistical programs that can handle state sequences include \citet{Abbott1997optimize}'s no-longer-maintained \proglang{Optimize} program, \proglang{TDA} \citep{RohwerPotter2002}, which is freely
-available at \url{http://www.stat.ruhr-uni-bochum.de/tda.html}, the add-on for \proglang{Stata} by
+available at \url{https://www.stat.rub.de/tda.html}, the add-on for \proglang{Stata} by
 \cite{Brzinsky-FayKohlerLuniak2006}, which is freely available for licensed \proglang{Stata} users, and the dedicated
-\proglang{CHESA} program by \citet{Elzinga-2007b}, available from \url{http://home.fsw.vu.nl/ch.elzinga/}.
+\proglang{CHESA} program by \citet{Elzinga-2007b}, which is no longer distributed. 
+%, available from \url{http://home.fsw.vu.nl/ch.elzinga/}.
 They all compute the optimal-matching edit distance between pairs of sequences and each of them offers specific useful facilities for describing sets of sequences. \traminer is, to our knowledge, the first such toolbox for the free \R statistical and graphical environment. Its salient characteristics are:
 
 \begin{itemize}
@@ -1566,7 +1566,7 @@ Proceeding the same way for the other clusters and taking the exponential of the
 %for extracting representative sequences \citep{Gabadinho_et_al_2009KDIR},
 for mining event sequences \citep{RitschardGabadinhoMullerStuder2008IJDMMM,MullerStuderRitschardGabadinho2010EGC,StuderMullerRitschardGabadinho2010EGC}, for studying the discrepancy of a set of sequences through ANOVA-like analyses and regression trees \citep{StuderRitschardGabadinhoMuller2011SMR}. In addition, it proposes utilities such as the conversion to and from various sequence formats \citep{RitschardGabadinhoStuderMuller2009DManag} that was briefly addressed in Section~\ref{sec_identifying-formats}.
 
-This rich set of features, in combination with other specialized \R packages, allows the user to run all steps of a complete sequence analysis in a single, free, powerful and multi-platform environment. It is also worth mentioning that development regarding state sequences continues. Related papers and information on current developments can be found on the package's Web page \url{http://mephisto.unige.ch/traminer}. We encourage users to submit their feature requests using our dedicated tool at \url{http://r-forge.r-project.org/projects/traminer}.
+This rich set of features, in combination with other specialized \R packages, allows the user to run all steps of a complete sequence analysis in a single, free, powerful and multi-platform environment. It is also worth mentioning that development regarding state sequences continues. Related papers and information on current developments can be found on the package's Web page \url{https://traminer.unige.ch}. We encourage users to submit their feature requests using our dedicated tool at \url{https://r-forge.r-project.org/projects/traminer}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgments}
@@ -1607,7 +1607,7 @@ Aassve A, Billari F, Piccarreta R (2007).
 \bibitem[{Abbott(1997)}]{Abbott1997optimize}
 Abbott A (1997).
 \newblock \enquote{\proglang{Optimize}.}
-\newblock \urlprefix\url{http://home.uchicago.edu/~aabbott/om.html}.
+\newblock No longer available.%\urlprefix\url{http://home.uchicago.edu/~aabbott/om.html}.
 
 \bibitem[{Abbott and Forrest(1986)}]{Abbott:Forrest:1986}
 Abbott A, Forrest J (1986).
@@ -1672,7 +1672,7 @@ Dijkstra W, Taris T (1995).
 Elzinga CH (2007{\natexlab{a}}).
 \newblock \emph{\proglang{CHESA 2.1} User Manual}.
 \newblock Vrije Universiteit, Amsterdam.
-\newblock \urlprefix\url{http://home.fsw.vu.nl/ch.elzinga/}.
+\newblock No longer available.%\urlprefix\url{http://home.fsw.vu.nl/ch.elzinga/}.
 
 \bibitem[{Elzinga(2007{\natexlab{b}})}]{Elzinga2008SMR}
 Elzinga CH (2007{\natexlab{b}}).
@@ -1680,7 +1680,7 @@ Elzinga CH (2007{\natexlab{b}}).
   Time Series.}
 \newblock \emph{Manuscript}, Department of Social Science Research Methods,
   Vrije Universiteit, Amsterdam.
-\newblock \urlprefix\url{http://home.fsw.vu.nl/ch.elzinga/}.
+\newblock \urlprefix\url{https://www.researchgate.net/publication/228982046_Sequence_analysis_Metric_representations_of_categorical_time_series}.
 
 \bibitem[{Elzinga and Liefbroer(2007)}]{ElzingaLiefbroer2007EJP}
 Elzinga CH, Liefbroer AC (2007).
@@ -1704,7 +1704,7 @@ Gabadinho A, Ritschard G, Studer M, M\"{u}ller NS (2009).
   \pkg{{T}ra{M}ine{R}} package: {A} User's Guide.}
 \newblock \emph{Technical report}, Department of Econometrics and Laboratory of
   Demography, University of Geneva, Geneva.
-\newblock \urlprefix\url{http://mephisto.unige.ch/traminer/}.
+\newblock \urlprefix\url{https://traminer.unige.ch}.
 
 \bibitem[{Gabadinho \emph{et~al.}(2010)Gabadinho, Ritschard, Studer, and
   M\"{u}ller}]{GabadinhoRitschardStuderMuller2010EGC}
@@ -1770,7 +1770,7 @@ Maechler M, Rousseeuw P, Struyf A, Hubert M (2005).
 \newblock \enquote{Package `\pkg{cluster}': Cluster Analysis Basics and
   Extensions.}
 \newblock \emph{Reference manual}, R-project, CRAN.
-\newblock \urlprefix\url{http://CRAN.R-project.org/package=cluster}.
+\newblock \urlprefix\url{https://CRAN.R-project.org/package=cluster}.
 
 \bibitem[{Mayer and Tuma(1990)}]{Mayer-1990}
 Mayer KU, Tuma N (1990).
@@ -1804,7 +1804,7 @@ Needleman S, Wunsch C (1970).
 Neuwirth E (2007).
 \newblock \emph{\pkg{RColorBrewer}: ColorBrewer Palettes}.
 \newblock \proglang{R} package version 1.0-2,
-  \urlprefix\url{http://CRAN.R-project.org/package=RColorBrewer}.
+  \urlprefix\url{https://CRAN.R-project.org/package=RColorBrewer}.
 
 \bibitem[{Pollock(2007)}]{Pollock2007JRSSa}
 Pollock G (2007).
@@ -1820,7 +1820,7 @@ Pollock G (2007).
 \newblock \emph{\proglang{R}: A Language and Environment for Statistical
   Computing}.
 \newblock \proglang{R} Foundation for Statistical Computing, Vienna, Austria.
-\newblock {ISBN} 3-900051-07-0, \urlprefix\url{http://www.r-project.org}.
+\newblock {ISBN} 3-900051-07-0, \urlprefix\url{https://www.r-project.org}.
 
 \bibitem[{Ritschard \emph{et~al.}(2008)Ritschard, Gabadinho, M\"{u}ller, and
   Studer}]{RitschardGabadinhoMullerStuder2008IJDMMM}
@@ -1844,7 +1844,7 @@ Rohwer G, Ptter U (2002).
 \newblock \enquote{\proglang{{TDA}}: Transition Data Analysis.}
 \newblock \emph{Software}, Ruhr-Universit\"{a}t Bochum, Fakult\"{a}t f\"{u}r
   Sozialwissenschaften, Bochum.
-\newblock \urlprefix\url{http://www.ruhr-uni-bochum.de/tda.html}.
+\newblock \urlprefix\url{https://www.stat.rub.de/tda.html}.
 
 \bibitem[{Scherer(2001)}]{Scherer2001}
 Scherer S (2001).
