@@ -1,0 +1,633 @@
+---
+title: "Robust Clustering Methods for Sequence Analysis"
+subtitle: "A Practical Guide to Consensus and Noise Clustering in R"
+author: 
+  - "Leonhard Unterlerchner" 
+  - "Matthias Studer"
+date: "`r Sys.Date()`"
+
+output: 
+  bookdown::html_vignette2:
+      number_sections: true
+      toc: true
+      fig_caption: yes
+  bookdown::pdf_document2: 
+       number_sections: true
+       toc: true
+       keep_tex: true
+       fig_caption: yes
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_format = "all") })
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{Robust Clustering Methods for Sequence Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction {#secIntro}
+
+```{r, include=FALSE}
+
+knitr::knit_hooks$set(time_it = local({
+  now <- NULL
+  function(before, options) {
+    if (before) {
+      # record the current time before each chunk
+      now <<- Sys.time()
+    } else {
+      # calculate the time difference after a chunk
+      res <- difftime(Sys.time(), now, units = "secs")
+      # return a character string to show the time
+      paste("Time for this code chunk to run:", round(res,
+        2), "seconds")
+    }
+  }
+}))
+knitr::opts_chunk$set(fig.width = 6, fig.height = 5, fig.dpi = if (knitr::is_latex_output()) 300 else 96)
+# knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"), time_it=TRUE) # fait boguer les références des fiugres lorsque compilé en pdf
+knitr::opts_chunk$set(dev = "png") # format des figures
+knitr::opts_chunk$set(cache = FALSE# If FALSE cache is emptied when knitting  
+                      , cache.lazy = FALSE) # knitr n'execute pas le code si il a déjà tourné une fois et est resté dans le cache, il faut vider le cache de temps à autre dans le menu déroulant "Knit" 
+library(magick)
+
+```
+
+Sequence analysis (SA) is a holistic method for studying trajectories. Using a range of techniques, from visualization to explanation, this approach allows researchers to describe, compare, and identify patterns or irregularities in trajectories. 
+
+One key step is to create a typology of the trajectories with cluster analysis. This typology describes the various kinds of patterns observed and can be used as a categorical variable in subsequent analysis [@liaoSequenceAnalysisIts2022]. This makes clustering central to SA as it strongly shapes the subsequent analyses.
+
+However, it features among the main criticisms of SA for several reasons. First, typologies created using cluster analysis might be unstable or sample dependent, or more generally, perform poorly depending on the data characteristics. This raises concerns about the reliability of the results [@rothRobustnessAssessmentRegressions2024]. Second, these methods might perform poorly in the presence of outliers, when some observations lie between clusters, or when the data are weakly structured---i.e. cluster separation is unclear and clusters are not homogeneous (see Figure \@ref(fig:figClustStr)) [@balcanRobustHierarchicalClustering2014; @martinTransitionsApplyingOptimal2008, FIXMEworkingpaper]. Third, these methods might fail to identify uncommon subgroups. Infrequent types and outliers might be of key interest to identify atypical or emerging behaviours [@sacchiUbergangslosungenBeimEintritt2016; @unterlerchnerBackFeaturesInvestigating2023]. 
+
+Two clustering approaches ---noise and consensus clustering--- answer these limitations. This document describes these clustering algorithms and provides the `R` code to create typologies of trajectories using the `consClust` and `seqclararange` provided by the `WeightedCluster R` library [@studerWeightedClusterLibraryManual2013]. It also presents methods to evaluate the quality of the resulting clusterings. 
+
+The document is structured as follows. We start by presenting the data and its preparation in Section \@ref(secData). After briefly presenting cluster analysis in Section \@ref(secClustering), we present the creation and evaluation of typologies using consensus and noise clustering in Sections \@ref(secConsClust) and \@ref(secNoiseClust). We conclude with the advantages of each approach in Section \@ref(secConclusion). 
+
+**N.B** The running time is stated below computationally intensive chunks (time $\ge$ 1 sec.). 
+
+
+# Data Preparation {#secData}
+
+We rely on the `mvad` dataset to illustrate the use of `consClust` and `seqclarange` functions. This public dataset is distributed with the `TraMineR R` package. It contains the data used by @mcvicarPredictingSuccessfulUnsuccessful2002 for studying school-to-work transitions in Northern Ireland.
+
+First, we create a state sequence object using the `seqdef` command [@gabadinhoAnalyzingVisualizingState2011].  Trajectories can be plotted using the `seqIplot` command, see Figure \@ref(fig:figSeqMvad). 
+
+```{r include=FALSE}
+# Setting the random seed for reproducibility
+set.seed(1234)
+```
+
+
+```{r seqdefmvd, warning=FALSE, message=FALSE}
+# Loading the package
+library(WeightedCluster)
+
+# Loading illustrative data
+data(mvad)
+
+# Creating state sequence object
+mvad.seq <- seqdef(mvad[, 17:86], # The data containing information on trajectories
+                   labels = c("Employment", "Further Education", # The states 
+                              "Higher Education", "Joblessness", 
+                              "School", "Training"), 
+                   xtstep = 6)
+```
+
+
+```{r figSeqMvad, warning=FALSE, message=FALSE, fig.cap='MVAD trajectories, sorted from start'}
+
+# Plotting the squences
+seqIplot(mvad.seq, 
+         legend.prop=0.2, 
+         sortv = "from.start") # sequences are ordered by state.
+```
+
+
+Second, to perform cluster analysis, we compute a dissimilarity matrix comparing the trajectories using the `seqdist` command. We use the `LCS` dissimilarity measure capturing both differences in timing and sequencing within the trajectories. Its versatility makes it the standard choice in SA. For more details and other methods, see @studerWhatMattersDifferences2016.
+
+```{r seqdist, warning=FALSE, message=FALSE, time_it=TRUE}
+
+# Compute LCS dissimilarities
+diss <- seqdist(mvad.seq, 
+                method="LCS")
+
+```
+
+# Clustering Approaches {#secClustering}
+
+We now turn to the creation of typologies using cluster analysis. It is a data mining technique grouping similar observations into types. A multitude of clustering algorithms (CAs) have been proposed to fulfil different aims. A key distinction resides in the kind of typology returned by the algorithm, which can be crisp or fuzzy [@hennigHandbookClusterAnalysis2015]. 
+
+Both noise and consensus clustering can render each of these partition types. To allow an informed choice on this matter, we briefly discuss these approaches in the following lines.
+
+## Crisp Clustering
+Crisp clustering partitions a dataset so that each observation belongs to exactly one cluster and no clusters overlap. This makes crisp clustering compatible with any method handling categorical data. However, this approach compresses potentially rich dissimilarity information into a single categorical assignment. 
+
+Doing so, members of the same cluster may be falsely regarded as identical or highly similar even when important differences exist. Hybrid cases ---i.e. observations lying in between  several clusters--- must still be forced into only one cluster. In consequence, the identification of such observations is made difficult by crisp clustering refWorkingPaper.
+
+## Fuzzy Clustering
+Fuzzy clustering allows each data point to have graded membership in several clusters instead of being forced into exactly one group. This method is more suitable than crisp clustering when the clustering structure is weak, leading to unclear and overlapping boundaries between categories. Figure \@ref(fig:figClustStr) provides an example of two clusterings diverging in their structure strength. 
+
+```{r include= FALSE}
+# Set seed for reproducibility
+set.seed(1234)
+
+# Generate well-separated, compact clusters
+n <- 100
+
+# Cluster 1: Bottom-left, compact
+cluster1_compact <- data.frame(
+  x = rnorm(n, mean = 2, sd = 1),
+  y = rnorm(n, mean = 2, sd = 1),
+  group = "Cluster 1"
+)
+
+
+# Cluster 2: Top-right, compact  
+cluster2_compact <- data.frame(
+  x = rnorm(n, mean = 8, sd = 1),
+  y = rnorm(n, mean = 8, sd = 1),
+  group = "Cluster 2"
+)
+
+compact_data <- rbind(cluster1_compact, cluster2_compact)
+
+
+cluster1_dispersed <- data.frame(
+  x = rnorm(n, mean = 2, sd = 2),
+  y = rnorm(n, mean = 2, sd = 2),
+  group = "Cluster 1"
+)
+
+cluster2_dispersed <- data.frame(
+  x = rnorm(n, mean = 8, sd = 2),
+  y = rnorm(n, mean = 8, sd = 2),
+  group = "Cluster 2"
+)
+
+dispersed_data <- rbind(cluster1_dispersed, cluster2_dispersed)
+```
+
+```{r figClustStr,echo=FALSE , warning=FALSE, message=FALSE, fig.cap = "Clusterings with the same centers but showing Strong or Weak Structure"}
+
+par(mfrow = c(1, 2))
+# Get viridis colors
+viridis_colors <- viridis::cividis(2)
+# Base R plot for compact clusters
+plot(compact_data$x, compact_data$y, 
+     col = ifelse(compact_data$group == "Cluster 1", viridis_colors[1], viridis_colors[2]),
+     pch = 16, cex = 0.8,
+     main = "Strong Structure",
+     xlab = "",
+     ylab = "", 
+     xaxt='n',
+     yaxt='n',
+     ylim = c(-3,13), 
+     xlim = c(-3,13), 
+     cex.main = 1)
+points(x=c(2,8), y=c(2,8), col = "grey", pch = 4, lwd = 3)
+
+# Base R plot for dispersed clusters  
+plot(dispersed_data$x, dispersed_data$y,
+     col = ifelse(dispersed_data$group == "Cluster 1", viridis_colors[1], viridis_colors[2]),
+     pch = 16, cex = 0.8,
+     main = "Weak Structure",
+     xlab = "",
+     ylab = "",
+     xaxt='n',
+     yaxt='n',
+     ylim = c(-3,13), 
+     xlim = c(-3,13), 
+     cex.main = 1)
+points(x=c(2,8), y=c(2,8), col = "grey", pch = 4, lwd = 3)
+
+```
+
+By assigning membership degrees between 0 and 1, fuzzy methods can reveal hybrid cases, that is, observations that genuinely share characteristics of multiple clusters rather than fitting neatly into a single class. This soft assignment also improves robustness to noise and outliers because uncertain points can be given distributed memberships rather than being wrongly forced into one cluster [@studerDivisivePropertyBasedFuzzy2018; @ruspiniFuzzyClusteringHistorical2019; @helskeSequencesVariablesRethinking2023]. 
+
+# Consensus Clustering {#secConsClust}
+The first robust clustering method presented in this vignette is consensus clustering. It is a technique aiming to increase the robustness of the clustering results, by diminishing their sample dependence or by taking advantage of several clustering rationales. In a simulation study, we found consensus clustering to be particularly versatile and robust [workingpaper FIXMEREF]. It proceeds in two steps. 
+
+First, several clusterings are computed to form an ensemble of partitions of the same data. This first step allows the ensemble of partition to reflect the diversity of typologies that can be obtained on the same data. @montiConsensusClusteringResamplingBased2003 propose to generate the ensemble by clustering the same data with varying weights. To do so, we rely on Bayesian resampling. This simulates a bootstrap procedure but all observations are always present, albeit weighted differently [@hornikClueClusterEnsembles2023]. 
+
+The reweighted samples are then clustered using the computed weights and one of the specified CA. If several CAs were specified, each CA is used in an equal number of reweighted samples. In the first case, the aim is to reduce the typology sample dependence. In the second one, the aim is to achieve greater flexibility by benefiting simultaneously from several CAs [@hennigHandbookClusterAnalysis2015]. If multiple CAs are provided, each CA is applied to an equal share of the reweighted samples. 
+
+Second, a consensus is searched for among these partitions by a consensus function to obtain a typology which synthesizes the information from the ensemble of partitions. Doing so, the resulting typology is more robust. According to the used method, the consensus can be either a crisp or a fuzzy clustering.
+
+## Creating the typology {#secConsTypo}
+In this section we create a typology using the consensus clustering framework as proposed by @montiConsensusClusteringResamplingBased2003. To do so, we use the `consClust` command of the `WeightedCluster` package. The function takes a dissimilarity matrix `diss` as input data. The argument `base.clust` specifies the clustering algorithms to be used for creating the ensemble of `R` partitions. When several good candidates exist for the same task, specifying several CAs allows achieving greater flexibility [see FIXME workingpaper]. The argument `kvals` specifies the number of groups the algorithm looks for, `cons.method` sets the consensus function to rely on. In the following example, we rely on the `SE` method, which minimizes the sum of dissimilarities using Euclidean dissimilarities. Please refer to @hornikClueClusterEnsembles2023 for details on available methods. The argument `membership` defines whether the returned clustering takes the form of `fuzzy` membership matrices or `crisp` label vectors. The argument `k.fixed` prevents the consensus function from producing a typology with more groups than in the ensemble of partition. 
+
+In the following example, the typology is computed on a ensemble of 100 partitions obtained with PAM and Ward clustering algorithms (for details on these algorithms, see `FIXMEREF unterlerchnerStuder 2026`)
+
+Setting `parallel=TRUE`, a default parallel back-end is set up using the future framework [@bengtssonFutureUnifiedParallel2026]. When `parallel=FALSE`, any parallel back-end previously defined with the `plan` function will be used. The parallel protocol can then be adapted to specific environments, for instance, some High Performance Computing (HPC) servers rely on specific protocols (MPI,...). Setting `progressbar=TRUE` shows information (and estimated computation time) on the progress of the computations.
+
+```{r consClustTypo, warning=FALSE, message=FALSE, time_it=TRUE}
+# Creating the typology
+set.seed(1234)
+pamWardConsClust <- consClust(diss,
+                              base.clust = list("pam", "ward.D"), 
+                              R = 100, 
+                              kvals = 2:15,
+                              cons.method = "SE", 
+                              membership = "crisp",
+                              k.fixed = TRUE,
+                              agg.method = list("cRand"),
+                              keep.ensemble = TRUE,
+                              parallel = TRUE, 
+                              progressbar = FALSE)
+```
+
+The function returns a `consClust` object, containing the obtained consensus clusterings, the function call and Cluster Quality Indices (CQIs). If `keep.ensemble = TRUE `, the ensemble of partitions is stored in the returned object.
+
+## Evaluating and plotting the typology {#secConsEval}
+
+To guide the user on the adequate number of groups to keep for the final typology, CQIs can be displayed by typing the name of the returned object `pamWardConsClust` 
+
+```{r consClustCqi, warning=FALSE, message=FALSE}
+# Showing CQIs
+pamWardConsClust
+```
+
+Measures of agreement between the partitions used to obtain the consensus clustering are also provided. They allow the evaluation of the ensemble’s clustering stability. We propose relying on the Adjusted Rand Index (`cRand`). It measures the similarity between partitions. A value of 1 indicates two identical clusterings, 0 indicates similarity obtained by chance and highly dissimilar clusterings are associated with negative values [@hubertComparingPartitions1985]. @studerSequenceAnalysisLarge2024a propose the following similarity interpretation thresholds: strong
+(ARI $\ge$ 0.9), good (ARI $\ge$ 0.8) and weak (ARI $\ge$ 0.7).
+
+High `cRand` values indicate a high level of stability in the partition ensemble and, by extension, a more robust consensus typology. Low `cRand` values can be interpreted in two ways [@warrensUnderstandingAdjustedRand2022]. First, if the partitions are obtained with only one CA, this indicates that the partitions are dependent on the subsamples they are computed on and that a single clustering on the whole sample would not be robust. If the partitions are obtained from several CAs. A low `cRand` means that the CAs lead to different results. This can be expected if one uses consensus clustering to benefit from CAs following different rationales. However, since the first interpretation still applies in this case, the exact contribution of each dynamic to the index is unknown.
+
+CQIs can be plotted with the `plot` command, see Figure \@ref(fig:plotConsClustCqi). CH and CHsq showing high values, we normalized the CQIs using the argument `norm = zscore` to allow plotting all CQIs on the same figure with the argument `stats = "all"`.
+
+```{r plotConsClustCqi, warning=FALSE, message=FALSE, fig.cap="PAM and Ward consensus clustering CQIs (normalized)"}
+# Plotting CQIs
+par(cex = 0.75)
+plot(pamWardConsClust,
+     legendpos = "topleft",
+     stats = "all",
+     norm = "zscore") # CQIs are standarize
+```
+
+Internal CQIs (HG, CHsq and HC) indicate a nine or eleven-cluster solution, as they are maximized (minimized for HC) for these numbers of groups, see FIXMEworkingpaper for details on the use of CQIs to select the number of groups. The cRand is maximized for nine clusters and indicates a good level of agreement in the partition ensemble [@studerSequenceAnalysisLarge2024a]. We can now plot the trajectories according to the nine-groups typology (Figure \@ref(fig:consClustSeqplot)), which is more parsimonious.
+
+```{r include=FALSE}
+par(mar = c(2,2,2,2))
+```
+
+
+```{r consClustSeqplot, warning=FALSE, message=FALSE, fig.cap= "Crisp consensus Clustering in nine groups (PAM and Ward)"}
+# Plotting the consensus typology in nine groups
+par(mar = c(2,2,2,2))
+seqIplot(mvad.seq,
+         group = pamWardConsClust$clustering$cluster9, # Specitifing the cluster to use for plotting 
+         main = c("Further Ed. - Higher Ed.", "Joblessness", # naming the clusters in plot
+                  "Training - Employment", "Training",
+                  "School - Higher Ed.", "Further Ed. - Employment", 
+                  "Employment", "School - Employment", 
+                  "Futher Ed."), 
+         cex.legend = 0.8)
+```
+
+## Fuzzy Consensus clustering {#secConsFuzzy}
+
+We now compute the same consensus clustering but in its fuzzy version. It is done by using the argument `membership = "fuzzy"`.
+
+```{r consClustTypoFuzzy, warning=FALSE, message=FALSE, time_it=TRUE}
+# Creating the typology
+set.seed(1234)
+pamWardConsClustF <- consClust(diss,
+                              base.clust = list("pam", "ward.D"),
+                              R = 100, 
+                              kvals = 2:15, 
+                              cons.method = "SE", 
+                              membership = "fuzzy", 
+                              k.fixed = TRUE,
+                              agg.method = list("cRand"),
+                              keep.ensemble = TRUE,
+                              parallel = TRUE, 
+                              progressbar = FALSE)
+```
+
+The obtained typology can be plotted using the `fuzzyseqplot` function, see Figure \@ref(fig:plotConsFuzzy). In each panel sequences are sorted according to the membership probability. Each panel only displays sequences with a membership probability $\ge 0.4$. 
+
+```{r plotConsFuzzy, warning=FALSE, message=FALSE, fig.cap="Fuzzy consensus Clustering in nine groups (PAM and Ward), sorted by membership probability"}
+par(mar = c(2,2,2,2))
+fuzzyseqplot(mvad.seq, # sequences to plot 
+             group = pamWardConsClustF$clustering$cluster9, # grouping variable
+              main = c("Further Ed. - Higher Ed.", "Joblessness",# naming the clusters
+                       "Training - Employment", "Training",
+                       "School - Higher Ed.", "Further Ed. - Employment",
+                       "Employment", "School - Employment",
+                       "Futher Ed."), 
+             membership.threashold = 0.4,
+             sortv = "membership",
+             type = "I", # We plot an index plot
+             cex.legend = 0.8) 
+```
+
+The obtained fuzzy typology provides similar clusters to the crisp one. The added value being that the cluster's diversity can be better described by looking at the panels, where typical sequences are shown at the top.
+
+# Noise clustering {#secNoiseClust}
+
+Noise clustering is another advanced clustering technique. Contrary to most clustering algorithms, it does not provide exhaustive typologies. Observations are not coerced to belong to a cluster but can also remain unclassified. In such case, they are labelled as *noise*. 
+
+This approach has two advantages. First, unclassifiable observations are not assigned to clusters in which they would poorly fit. Doing so, clusters are better defined and more homogeneous. Second, by flagging them as *noise*, unclassifiable trajectories can be studied *per se* [@liaoSequenceAnalysisIts2022; @piccarretaIdentifyingQualifyingDeviant2023]. Such trajectories might be of great interest in some research designs, as they often denote particularly good (or ill) situations, or might be associated with particular outcomes in later life [@sacchiUbergangslosungenBeimEintritt2016; @unterlerchnerBackFeaturesInvestigating2023].
+
+In its fuzzy variant, if the noise group is set aside, one can consider that the membership degrees are not coerced to sum to one. Doing so the fuzzy noise clustering can be seen as a variant of possibilistic clustering, which provides more coherent membership degrees in the presence of noise in the data [@dursoFuzzyClustering2015].
+
+## Creating the typology {#secNoiseTypo}
+
+To create the typology, we use a fuzzy extension of the CLARA algorithm that allows labelling sequences as noise instead of assigning them to a cluster. CLARA is a medoid-based clustering method, but rather than clustering the whole dataset, medoids are searched for on a subsample.  The clustering is then extended to the dataset and this operation is repeated to ensure the robustness of the results. CLARA can be applied to large datasets. The fuzzy approach is well suited to the identification of noise, looking for exact analytical solutions being extremely computationally intensive. 
+
+We use the `seqclarange` command (with the argument `method = "noise"`) of the `WeightedCluster` package to create the typology with noise. `R` specifies the number of times the operation is repeated. The subsample size is defined by the `sample.size` argument. For more details on the use of `seqclarange` please refer to @studerSeqclararangeSequenceAnalysis2024.
+
+The argument `dnoise` is a tuning parameter controlling the algorithm’s sensitivity to noise. It is the required distance $\delta$ of an observation to any medoid for this observation to be considered as not belonging to any type. Defining this parameter plays a critical role in the typology creation, as it directly affects the number of observations labelled as noise. Higher $\delta$ values labellize fewer trajectories as noise. We discuss $\delta$ definition in detail and give examples in Section \@ref(secDnoise).
+
+@daveCharacterizationDetectionNoise1991 defines this distance using the average distance in the sample using the following formula, \textit{n} being the number of sequences, $\mathbf {x}$ the sequences and $\lambda$ an user-defined coefficient. 
+
+$\delta = \lambda \cdot \frac{2} {n(n-1)} \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} d(\mathbf{x}_i, \mathbf{x}_j)$. 
+
+Using the above formula and setting $\lambda$ to 0.8 leads to a $\delta$ of 68.4. Since we used Optimal Matching with constant costs, this value can be interpreted theoretically [@studerWhatMattersDifferences2016]. It indicates that a sequence needs to be different to any medoid during 34 months in total to be considered as noise.
+
+```{r}
+delta08 <- mean(diss) * 0.8 # Calculating the noise distance delta
+delta08
+```
+
+```{r noiseTypo, warning=FALSE, message=FALSE, time_it=TRUE}
+# Creating a typology with noise
+set.seed(1234)
+noiseClust08 <- seqclararange(mvad.seq, 
+                              kvals = 2:15,
+                              R = 50, # Number of subsamples
+                              sample.size = nrow(mvad.seq), 
+                              method = "noise",
+                              parallel = TRUE,
+                              dnoise = delta08, # noise sensitivity
+                              seqdist.args = list(method = "LCS"))
+```
+
+## Evaluating and plotting the typology {#secNoiseEval}
+
+Medoid-based fuzzy CQIs are computed alongside the clustering [@studerSequenceAnalysisLarge2024a]. Applied to noise clustering, their interpretation is made difficult because all the clusters are not created on the same rules, the noise cluster being not constructed to be homogeneous. In this context, we recommend using CQIs only to guide the number of group selection, but not to compare clusterings obtained with different algorithms. 
+
+CQIs can be displayed by typing the object name and the command `plot` produce a figure of the CQIs, see Figure \@ref(fig:plotNoiseClustCqi). 
+
+```{r noiseClustCqi, warning=FALSE, message=FALSE}
+
+# Showing CQIs
+noiseClust08
+
+```
+
+```{r plotNoiseClustCqi, warning=FALSE, message=FALSE, fig.cap="Fuzzy noise clustering CQIs, lambda = 0.8"}
+# Plotting CQIs
+plot(noiseClust08, 
+     legendpos = "topleft")
+```
+
+DB and XB indicate a seven-groups typology. Figure \@ref(fig:noiseClustSeqplot) provides a graphical representation of the typology using the `fuzzyseqplot` command. Additionnaly sequences are sorted according to their membership strength [@studerDivisivePropertyBasedFuzzy2018]. Regarding the `memb.treashold` argument, we used a small value to be able to display sequences labelled as noise, which tend to be associated with dispersed membership probabilities. 
+
+```{r include=FALSE}
+par(mar = c(2,2,2,2))
+```
+
+```{r noiseClustSeqplot, fig.cap="Fuzzy noise clustering in seven groups, lambda = 0.8, sorted by membership probability"}
+## Displaying the resulting clustering with membership threshold of 0.20
+par(mar = c(2,2,2,2))
+fuzzyseqplot(mvad.seq, 
+             group = noiseClust08$clustering$cluster7,  
+             main = c("Futher Ed.", "Employment", # naming the clusters
+                      "School - Higher Ed.", "Further Ed. - Higher Ed.",
+                      "Joblessness", "Training - Employment",
+                      "Further Ed. - Employment", "Noise Seq."), 
+             membership.threashold = 0.20,
+             type = "I", # We plot an index plot
+             sortv = "membership", 
+             cex.legend = 0.8)
+```
+
+The visual inspection of the group of sequences labelled as noise indicates that we cannot consider these sequences as a *regular* type, since it is heterogeneous and features observations strongly diverging from the other types in their sequencing aspect.
+
+## Converting the fuzzy typology to crisp {#secNoiseFuzzyToCrisp}
+
+To be used with methods handling categorical data, the fuzzy clustering can be transformed into a crisp one by assigning the observation to the cluster showing the highest membership probability. This can be done using the `as.crisp` command. See Figure \@ref(fig:crispNoiseClustSeqplot).
+
+```{r crispNoiseTypo, warning=FALSE, message=FALSE, fig.width=8, fig.height=5}
+crispNoiseClust08 <- as.crisp(noiseClust08)
+```
+
+```{r crispNoiseClustSeqplot, fig.cap="Crisp noise clustering in seven groups, lambda = 0.8"}
+par(mar = c(2,2,2,2))
+seqIplot(mvad.seq, 
+         group = crispNoiseClust08$clustering$cluster7,
+         main = c("Futher Ed.", "Employment", # naming the clusters
+                  "School - Higher Ed.", "Further Ed. - Higher Ed.",
+                  "Joblessness", "Training - Employment",
+                  "Further Ed. - Employment", "Noise Seq."), 
+        cex.legend = 0.8)
+
+```
+
+
+## Defining `dnoise` {#secDnoise}
+
+Defining `dnoise` is a critical step in performing noise clustering, as it controls the number of observations labelled as noise. 
+
+To discuss the `dnoise` argument, we now provide three examples of noise clustering with varying $\lambda$ and number of groups. For conciseness we only present the crisp version of the clusterings. 
+
+### Setting $\lambda$ {#secNoiseLambda}
+
+When using @daveCharacterizationDetectionNoise1991 formula to define `dnoise` the coefficient $\lambda$ acts as a tuning parameter. This allows the algorithm to be more or less sensitive to noise. Higher lambda leads to more conservative noise labelling.
+
+We propose setting $\lambda$ by visually investigating the clusterings obtained according to several values chosen around one. @daveCharacterizationDetectionNoise1991 suggested using smaller values. However, in our case ---applied to high-dimensional categorical data--- such values proved to be too restrictive. We provide two examples of noise clustering with different $\lambda$ to discuss its impact on the resulting typologies.
+
+```{r nise06, warning=FALSE, message=FALSE}
+# Calculating the noise distance delta
+delta06 <- mean(diss) * 0.6 
+delta06
+```
+
+The $\lambda$ parameter is now decreased to 0.6. The resulting $\delta$ being smaller, the algorithm will label more trajectories as noise.
+
+```{r, include=FALSE}
+par(mar = c(2,2,2,2))
+```
+
+
+```{r noiseTypo06, warning=FALSE, message=FALSE, time_it=TRUE}
+# Creating a typology with noise
+set.seed(1234)
+noiseClust06 <- seqclararange(mvad.seq, 
+                              kvals = 2:15,
+                              R = 50,
+                              sample.size = nrow(mvad.seq),
+                              method = "noise", 
+                              dnoise = delta06,
+                              seqdist.args = list(method = "LCS"), 
+                              parallel = TRUE)
+
+# Converting the fuzzy partition to crisp
+crispNoiseClust06 <- as.crisp(noiseClust06) 
+```
+
+```{r noiseClust06Seqplot, fig.cap= "Crisp noise clustering in seven groups, lambda = 0.6"}
+par(mar = c(2,2,2,2))
+# Plotting the crisp typology
+seqIplot(mvad.seq,
+         group = crispNoiseClust06$clustering$cluster7, 
+         main = c("Futher Ed.", "Employment", 
+                  "School - Higher Ed.", "Further Ed. - Higher Ed.",
+                  "Joblessness", "Training - Employment",
+                  "Further Ed. - Employment", "Noise Seq."),
+        cex.legend = 0.8)  
+```
+
+
+As expected, lowering $\lambda$ to 0.6 sharply increases the number of sequences identified as noise (see Figure \@ref(fig:noiseClust06Seqplot). This group being highly heterogeneous, it is not possible to consider it as a type. However the seven other types are more homogeneous than before. If getting such homogeneous types suits the research aim, such $\lambda$ value would be adequate.
+
+In the following example, $\lambda$ is increased to 1.
+
+```{r}
+delta1 <- mean(diss) * 1 # Calculating the noise distance delta
+delta1
+```
+
+```{r noiseTypo1, warning=FALSE, message=FALSE, fig.width=8, fig.height=5, time_it=TRUE}
+# Creating a typology with noise
+set.seed(1234)
+noiseClust <- seqclararange(mvad.seq, 
+                            kvals = 2:15,
+                            R = 50,
+                            sample.size = nrow(mvad.seq),
+                            method = "noise", 
+                            dnoise = delta1,
+                            seqdist.args = list(method = "LCS"), 
+                            parallel = TRUE)
+
+# Converting the fuzzy partition to crisp
+crispNoiseClust <- as.crisp(noiseClust)
+
+```
+
+```{r noiseClust1Seqplot, fig.cap= "Crisp noise clustering in seven groups, lambda = 1"}
+
+# Plotting the crisp typology
+par(mar = c(2,2,2,2))
+seqIplot(mvad.seq, 
+         group = crispNoiseClust$clustering$cluster7,
+         main = c("Futher Ed.", "Employment", 
+                  "School - Higher Ed.", "Further Ed. - Higher Ed.",
+                  "Joblessness", "Training - Employment",
+                  "Further Ed. - Employment", "Noise Seq."),
+         cex.legend = 0.8)
+```
+
+This new $\lambda$ decreases the algorithm’s sensitivity to noise to the point that only very few sequences are labelled as such (see Figure \@ref(fig:noiseClust1Seqplot)). Its extremely small size impedes its use in subsequent analyses.
+
+### `dnoise` and number of groups {#secNoiseNgroup}
+
+We now discuss the link between the number of groups in a typology and the sensitivity of `dnoise`. When increasing the number of groups, the distance between the observation and the medoids diminishes. In consequence fewer sequences are labelled as noise with the same `dnoise` value. Figure \@ref(fig:boxplotD2m) below presents the boxplots of the distance to the medoids of a crisp clustering without noise.
+
+```{r, echo= FALSE}
+set.seed(1234)
+crispClust <- suppressMessages(seqclararange(mvad.seq, # computing
+                            kvals = 2:15,
+                            R = 50,
+                            sample.size = nrow(mvad.seq),
+                            method = "crisp", 
+                            seqdist.args = list(method = "LCS"), 
+                            parallel = TRUE))
+
+d2m <- list()
+for(i in 1:length(crispClust$clustering)){
+  d2mC <- list()
+  for(j in 1:length(unique(crispClust$clustering[[i]]))){
+    d2mC[[j]] <- diss[crispClust$clustering[[i]] == j, crispClust$clara[[i]]$medoids[[j]]]
+  }  
+  d2m[[i]] <- unlist(d2mC)
+}
+
+d2m <- do.call(cbind,d2m)
+
+colnames(d2m) <- paste0("cluster ", c(2:15))
+```
+
+```{r boxplotD2m, echo = FALSE, fig.cap= "Distance to medoid by number of clusters"}
+boxplot(d2m, las = 2)
+```
+
+
+```{r crispNoiseTypo10, echo=FALSE, warning=FALSE, message=FALSE, fig.cap= "Crisp noise clustering in ten groups, lambda = 0.8 (delta = 68.39)"}
+par(mar = c(2,2,2,2))
+seqIplot(mvad.seq, 
+         group = crispNoiseClust08$clustering$cluster10,
+         cex.legend = 0.6,
+         main = c("Medium Futher Ed.", "Long Futher Ed.", # naming the clusters
+                  "Training - Employment", "Employment", 
+                  "School - Higher Ed.", "Further Ed. - Higher Ed.",
+                  "Short Training - Employment","Joblessness", 
+                  "Short Further Ed. - Employment", "School - Employment",
+                  "Noise Seq."))
+
+```
+
+In a ten-group typology, only 13 sequences are labelled as noise with `dnoise = 68.4` (see Figure \@ref(fig:crispNoiseTypo10). They were 53 in the seven-group typology using the same `dnoise`. To achieve the same level of noise sensitivity, a lower `dnoise` is needed for a more detailed typology.
+
+To avoid this behaviour and to predict `dnoise` values suitable for a greater number of groups, we propose the following strategy. First we compute a clustering without noise and calculate the distances to medoid in each cluster for every number of groups. Using these distances and a $\delta$ optimized for a given number of groups (here seven), we can calculate $\delta$'s adapted to any number of groups. Doing so, the same amount of noise will be detected for every number of groups. 
+
+```{r ngroupDnoiseCalc, echo= FALSE, warning=FALSE, message=FALSE}
+crispClust <- seqclararange(mvad.seq, # computing a crisp clustering
+                            kvals = 2:10,
+                            R = 50,
+                            sample.size = nrow(mvad.seq),
+                            method = "crisp", 
+                            seqdist.args = list(method = "LCS"), 
+                            parallel = TRUE)
+
+d2m <- list() # calculating distance to medoids summary 
+for(i in 1:length(crispClust$clustering)){
+  d2mC <- list()
+  for(j in 1:length(unique(crispClust$clustering[[i]]))){
+    d2mC[[j]] <- diss[crispClust$clustering[[i]] == j, crispClust$clara[[i]]$medoids[[j]]]
+  }  
+  d2m[[i]] <- unlist(d2mC)
+}
+
+d2m <- apply(do.call(cbind,d2m), 2, FUN = fivenum)
+
+delta10k <-  (delta08 / d2m[5,5]) * d2m[5,9] # deltas as share of the maximal distance to medoid
+ set.seed(1234)
+noiseClust10k  <- seqclararange(mvad.seq, 
+                              kvals = 10,
+                              R = 50,
+                              sample.size = nrow(mvad.seq),
+                              method = "noise", 
+                              dnoise = delta10k,
+                              seqdist.args = list(method = "LCS"), 
+                              parallel = TRUE)
+
+crispNoiseClust10k <-  as.crisp(noiseClust10k)
+```
+
+Applying this strategy to our example in seven groups leads to $\delta$ =  62.57 for a ten-group typology. With this new $\delta$ the number of observations labelled as noise in then groups is close to the number labelled as such in six groups with $\delta$ = 68.39 (see Figure \@ref(fig:ngroupDnoise)). 
+
+```{r ngroupDnoise, warning=FALSE, message=FALSE, fig.cap= "Crisp noise clustering in ten groups, delta = 62.57"}
+par(mar = c(2,2,2,2))
+seqIplot(mvad.seq, 
+         group = crispNoiseClust10k$clustering$cluster10,
+         cex.legend = 0.6, 
+         main = c("Medium Futher Ed.", "Long Futher Ed.", # naming the clusters
+                  "Training - Employment", "Employment", 
+                  "School - Higher Ed.", "Further Ed. - Higher Ed.",
+                  "Short Training - Employment","Joblessness", 
+                  "Short Further Ed. - Employment", "School - Employment",
+                  "Noise Seq."))
+```
+
+# Conclusion {#secConclusion}
+
+In this vignette we presented the `R` code to use two robust clustering methods: consensus and noise clustering. 
+
+On the one hand, consensus clustering can be used to fulfil two aims. First to create typologies that are little influenced by data peculiarities, and second, to benefit simultaneously from the advantages of several CAs. It is implemented in `WeightedCluster` in the `conClust` command. It should be used when the clustering structure is expected to be weak or when several CAs are suited to create a typology [FIXME workingpaper]. 
+
+On the other hand, *noise* clustering allows detecting unclassifiable sequences and increasing types homogeneity [@liaoSequenceAnalysisIts2022; @piccarretaIdentifyingQualifyingDeviant2023]. This approach might be beneficial when one is interested in rare or atypical trajectories or when the crisp clusters lack homogeneity. It is implemented in `WeightedCluster` in the `seqclararange` command.
+
+Additionally these two methods are available in both crisp and fuzzy versions. While crisp typologies are easily used in subsequent analyses, fuzzy ones allow a better characterization of cluster assignation uncertainty and detection of observations that lay in between types [@studerDivisivePropertyBasedFuzzy2018; @helskeSequencesVariablesRethinking2023]. 
+
+# References
