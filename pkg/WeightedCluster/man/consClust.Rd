@@ -102,7 +102,8 @@ pamWardConsClust <- consClust(diss,
 ## Showing the cluster quality measures. 
 pamWardConsClust
 
-## Plotting normalized values for easier identification of minimum and maximum values, with a transparent legend background.
+## Plotting normalized values for easier identification 
+## of minimum and maximum values, with a transparent legend background.
 plot(pamWardConsClust, norm="range")
 
 

@@ -25,25 +25,28 @@ See \code{seqclararange} for details
 }
 
 \examples{
-# load illustrative data
-data(mvad)
 
-# Creating a state sequence object
-mvad.seq <- seqdef(mvad[1:200, 17:86])
+\dontrun{
+	# load illustrative data
+	data(mvad)
 
-# Fuzzy clustering
+	# Creating a state sequence object
+	mvad.seq <- seqdef(mvad[1:200, 17:86])
 
-mvadFuzzy <- seqclararange(mvad.seq, R = 3, sample.size = 20, kvals = 2:3, 
-  method="fuzzy", seqdist.args = list(method = "HAM"), 
-	parallel=FALSE)
- 
-# Conversion to crisp
+	# Fuzzy clustering
 
-mvadCrisp <- as.crisp(mvadFuzzy)
+	mvadFuzzy <- seqclararange(mvad.seq, R = 3, sample.size = 20, kvals = 2:3, 
+	  method="fuzzy", seqdist.args = list(method = "HAM"), 
+		parallel=FALSE)
+	 
+	# Conversion to crisp
 
-# Plotting sequences in 3 groups
+	mvadCrisp <- as.crisp(mvadFuzzy)
 
-seqdplot(mvad.seq, 
-         group = mvadCrisp$clustering$cluster3, 
-         border = NA)
+	# Plotting sequences in 3 groups
+
+	seqdplot(mvad.seq, 
+			 group = mvadCrisp$clustering$cluster3, 
+			 border = NA)
+}
 }
