@@ -74,9 +74,9 @@ consClust(diss,
 }
 
 \references{
-Monti, S., Tamayo, P., Mesirov, J., Golub, T. (2003). Consensus Clustering: A Resampling-Based Method for Class Discovery and Visualization of Gene Expression Microarray Data. \emph{Machine Learning, 52, 1} \doi{doi:10.1023/A:1023949509487}
+Monti, S., Tamayo, P., Mesirov, J., Golub, T. (2003). Consensus Clustering: A Resampling-Based Method for Class Discovery and Visualization of Gene Expression Microarray Data. \emph{Machine Learning, 52, 1} \doi{10.1023/A:1023949509487}
   
-Unterlerchner, L., Studer, M. (2026). What are We Looking For? A Comparative Review of Clustering Algorithms and Cluster Quality Indices For Sequence Analysis. \emph{LIVES Working Papers FIXME} \doi{FIXME}
+Unterlerchner, L., Studer, M. (2026). What are We Looking For? A Comparative Review of Clustering Algorithms and Cluster Quality Indices For Sequence Analysis. \emph{LIVES Working Papers 108} \doi{10.12682/lives.2296-1658.2026.108}
 	
 }
 

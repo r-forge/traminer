@@ -11,7 +11,7 @@ as.crisp <- function(clara){
       else{
         labels <- colnames(fuzzClust$clustering[[i]])[1:fuzzClust$kvals[[i]]]
       }
-     crispClust[[i]] <- as.character(factor(crispClust[[i]], # trouver solution pour ce bug, il y a des cas où aucune bservation est classée dans noise
+     crispClust[[i]] <- as.character(factor(crispClust[[i]], # trouver solution pour ce bug, il y a des cas ou aucune observation est classee dans noise
                                      labels = labels))
   }
   crispClust <- as.data.frame(do.call(cbind, crispClust))
