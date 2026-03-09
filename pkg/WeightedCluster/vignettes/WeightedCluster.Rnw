@@ -41,7 +41,7 @@ In addition to the methods, we also discuss the building of typologies of sequen
   University of Geneva\\
   CH-1211 Geneva 4, Switzerland\\
   E-mail: \email{matthias.studer@unige.ch}\\
-  URL: \url{http://mephisto.unige.ch/weightedcluster/}
+  %URL: \url{https://mephisto.unige.ch/weightedcluster/}
 }
 
 \usepackage{amsmath}
@@ -120,7 +120,7 @@ opts_chunk$set(message=FALSE, prompt=TRUE, dev="pdf", echo=TRUE, comment=NA, sma
 \begin{center}
 To cite this document or the \pkg{WeightedCluster} library, please use:\\~\\
 \end{center}
-Studer, Matthias (2013). WeightedCluster Library Manual: A practical guide to creating typologies of trajectories in the social sciences with R. \textit{LIVES Working Papers}, 24. {DOI}: \url{http://dx.doi.org/10.12682/lives.2296-1658.2013.24}.
+Studer, Matthias (2013). WeightedCluster Library Manual: A practical guide to creating typologies of trajectories in the social sciences with R. \textit{LIVES Working Papers}, 24. {DOI}: \url{https://dx.doi.org/10.12682/lives.2296-1658.2013.24}.
 
 \section{Introduction}
 
@@ -168,7 +168,7 @@ To use the \pkg{WeightedCluster} library, it has to be installed and loaded. It 
 
 
 %% preliminary R commands
-%% install.packages("WeightedCluster", repos="http://R-Forge.R-project.org")
+%% install.packages("WeightedCluster", repos="https://R-Forge.R-project.org")
 <<WCload, eval=FALSE, fig.keep="none">>=
 install.packages("WeightedCluster")
 library(WeightedCluster)
