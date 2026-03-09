@@ -65,7 +65,7 @@ set.seed(1234)
 ```
 
 
-```{r seqdefmvd, warning=FALSE, message=FALSE}
+```{r seqdefmvd, message=FALSE}
 # Loading the package
 library(WeightedCluster)
 
@@ -81,7 +81,7 @@ mvad.seq <- seqdef(mvad[, 17:86], # The data containing information on trajector
 ```
 
 
-```{r figSeqMvad, warning=FALSE, message=FALSE, fig.cap='MVAD trajectories, sorted from start'}
+```{r figSeqMvad, message=FALSE, fig.cap='MVAD trajectories, sorted from start'}
 
 # Plotting the squences
 seqIplot(mvad.seq, 
@@ -92,7 +92,7 @@ seqIplot(mvad.seq,
 
 Second, to perform cluster analysis, we compute a dissimilarity matrix comparing the trajectories using the `seqdist` command. We use the `LCS` dissimilarity measure capturing both differences in timing and sequencing within the trajectories. Its versatility makes it the standard choice in SA. For more details and other methods, see @studerWhatMattersDifferences2016.
 
-```{r seqdist, warning=FALSE, message=FALSE, time_it=TRUE}
+```{r seqdist, message=FALSE, time_it=TRUE}
 
 # Compute LCS dissimilarities
 diss <- seqdist(mvad.seq, 
@@ -205,9 +205,12 @@ In this section we create a typology using the consensus clustering framework as
 
 In the following example, the typology is computed on a ensemble of 100 partitions obtained with PAM and Ward clustering algorithms (for details on these algorithms, see `FIXMEREF unterlerchnerStuder 2026`)
 
-Setting `parallel=TRUE`, a default parallel back-end is set up using the future framework [@bengtssonFutureUnifiedParallel2026]. When `parallel=FALSE`, any parallel back-end previously defined with the `plan` function will be used. The parallel protocol can then be adapted to specific environments, for instance, some High Performance Computing (HPC) servers rely on specific protocols (MPI,...). Setting `progressbar=TRUE` shows information (and estimated computation time) on the progress of the computations.
+Setting `parallel=TRUE`, a default parallel back-end is set up using the future framework [@bengtssonFutureUnifiedParallel2026]. When `parallel=FALSE`, any parallel back-end previously defined with the `plan` function will be used. The parallel protocol can then be adapted to specific environments, for instance, some High Performance Computing (HPC) servers rely on specific protocols (MPI,...). We use here these strategy, and any subsequent call will use these parallel backend. Setting `progressbar=TRUE` shows information (and estimated computation time) on the progress of the computations.
 
-```{r consClustTypo, warning=FALSE, message=FALSE, time_it=TRUE}
+```{r consClustTypo, message=FALSE, time_it=TRUE}
+# Setting up parallel computing
+library(future)
+plan(multisession)
 # Creating the typology
 set.seed(1234)
 pamWardConsClust <- consClust(diss,
@@ -217,9 +220,9 @@ pamWardConsClust <- consClust(diss,
                               cons.method = "SE", 
                               membership = "crisp",
                               k.fixed = TRUE,
-                              agg.method = c("cRand"),
+                              agg.method = "cRand",
                               keep.ensemble = TRUE,
-                              parallel = TRUE, 
+                              parallel = FALSE, 
                               progressbar = FALSE)
 ```
 
@@ -229,7 +232,7 @@ The function returns a `consClust` object, containing the obtained consensus clu
 
 To guide the user on the adequate number of groups to keep for the final typology, CQIs can be displayed by typing the name of the returned object `pamWardConsClust` 
 
-```{r consClustCqi, warning=FALSE, message=FALSE}
+```{r consClustCqi, message=FALSE}
 # Showing CQIs
 pamWardConsClust
 ```
@@ -241,12 +244,12 @@ High `cRand` values indicate a high level of stability in the partition ensemble
 
 CQIs can be plotted with the `plot` command, see Figure \@ref(fig:plotConsClustCqi). CH and CHsq showing high values, we normalized the CQIs using the argument `norm = zscore` to allow plotting all CQIs on the same figure with the argument `stats = "all"`.
 
-```{r plotConsClustCqi, warning=FALSE, message=FALSE, fig.cap="PAM and Ward consensus clustering CQIs (normalized)"}
+```{r plotConsClustCqi, message=FALSE, fig.cap="PAM and Ward consensus clustering CQIs (normalized)"}
 # Plotting CQIs
 par(cex = 0.75)
 plot(pamWardConsClust,
      legendpos = "topleft",
-     stats = "all",
+     stat = "all",
      norm = "zscore") # CQIs are standarize
 ```
 
@@ -257,7 +260,7 @@ par(mar = c(2,2,2,2))
 ```
 
 
-```{r consClustSeqplot, warning=FALSE, message=FALSE, fig.cap= "Crisp consensus Clustering in nine groups (PAM and Ward)"}
+```{r consClustSeqplot, message=FALSE, fig.cap= "Crisp consensus Clustering in nine groups (PAM and Ward)"}
 # Plotting the consensus typology in nine groups
 par(mar = c(2,2,2,2))
 seqIplot(mvad.seq,
@@ -274,7 +277,7 @@ seqIplot(mvad.seq,
 
 We now compute the same consensus clustering but in its fuzzy version. It is done by using the argument `membership = "fuzzy"`.
 
-```{r consClustTypoFuzzy, warning=FALSE, message=FALSE, time_it=TRUE}
+```{r consClustTypoFuzzy, message=FALSE, time_it=TRUE}
 # Creating the typology
 set.seed(1234)
 pamWardConsClustF <- consClust(diss,
@@ -286,13 +289,12 @@ pamWardConsClustF <- consClust(diss,
                               k.fixed = TRUE,
                               agg.method = "cRand",
                               keep.ensemble = TRUE,
-                              parallel = TRUE, 
                               progressbar = FALSE)
 ```
 
 The obtained typology can be plotted using the `fuzzyseqplot` function, see Figure \@ref(fig:plotConsFuzzy). In each panel sequences are sorted according to the membership probability. Each panel only displays sequences with a membership probability $\ge 0.4$. 
 
-```{r plotConsFuzzy, warning=FALSE, message=FALSE, fig.cap="Fuzzy consensus Clustering in nine groups (PAM and Ward), sorted by membership probability"}
+```{r plotConsFuzzy, message=FALSE, fig.cap="Fuzzy consensus Clustering in nine groups (PAM and Ward), sorted by membership probability"}
 par(mar = c(2,2,2,2))
 fuzzyseqplot(mvad.seq, # sequences to plot 
              group = pamWardConsClustF$clustering$cluster9, # grouping variable
@@ -301,7 +303,7 @@ fuzzyseqplot(mvad.seq, # sequences to plot
                        "School - Higher Ed.", "Further Ed. - Employment",
                        "Employment", "School - Employment",
                        "Futher Ed."), 
-             membership.threashold = 0.4,
+             membership.threshold = 0.4,
              sortv = "membership",
              type = "I", # We plot an index plot
              cex.legend = 0.8) 
@@ -336,7 +338,7 @@ delta08 <- mean(diss) * 0.8 # Calculating the noise distance delta
 delta08
 ```
 
-```{r noiseTypo, warning=FALSE, message=FALSE, time_it=TRUE}
+```{r noiseTypo, message=FALSE, time_it=TRUE}
 # Creating a typology with noise
 set.seed(1234)
 noiseClust08 <- seqclararange(mvad.seq, 
@@ -344,7 +346,6 @@ noiseClust08 <- seqclararange(mvad.seq,
                               R = 50, # Number of subsamples
                               sample.size = nrow(mvad.seq), 
                               method = "noise",
-                              parallel = TRUE,
                               dnoise = delta08, # noise sensitivity
                               seqdist.args = list(method = "LCS"))
 ```
@@ -355,14 +356,14 @@ Medoid-based fuzzy CQIs are computed alongside the clustering [@studerSequenceAn
 
 CQIs can be displayed by typing the object name and the command `plot` produce a figure of the CQIs, see Figure \@ref(fig:plotNoiseClustCqi). 
 
-```{r noiseClustCqi, warning=FALSE, message=FALSE}
+```{r noiseClustCqi, message=FALSE}
 
 # Showing CQIs
 noiseClust08
 
 ```
 
-```{r plotNoiseClustCqi, warning=FALSE, message=FALSE, fig.cap="Fuzzy noise clustering CQIs, lambda = 0.8"}
+```{r plotNoiseClustCqi, message=FALSE, fig.cap="Fuzzy noise clustering CQIs, lambda = 0.8"}
 # Plotting CQIs
 plot(noiseClust08, 
      legendpos = "topleft")
@@ -383,7 +384,7 @@ fuzzyseqplot(mvad.seq,
                       "School - Higher Ed.", "Further Ed. - Higher Ed.",
                       "Joblessness", "Training - Employment",
                       "Further Ed. - Employment", "Noise Seq."), 
-             membership.threashold = 0.20,
+             membership.threshold = 0.20,
              type = "I", # We plot an index plot
              sortv = "membership", 
              cex.legend = 0.8)
@@ -395,7 +396,7 @@ The visual inspection of the group of sequences labelled as noise indicates that
 
 To be used with methods handling categorical data, the fuzzy clustering can be transformed into a crisp one by assigning the observation to the cluster showing the highest membership probability. This can be done using the `as.crisp` command. See Figure \@ref(fig:crispNoiseClustSeqplot).
 
-```{r crispNoiseTypo, warning=FALSE, message=FALSE, fig.width=8, fig.height=5}
+```{r crispNoiseTypo, message=FALSE, fig.width=8, fig.height=5}
 crispNoiseClust08 <- as.crisp(noiseClust08)
 ```
 
@@ -424,7 +425,7 @@ When using @daveCharacterizationDetectionNoise1991 formula to define `dnoise` th
 
 We propose setting $\lambda$ by visually investigating the clusterings obtained according to several values chosen around one. @daveCharacterizationDetectionNoise1991 suggested using smaller values. However, in our case ---applied to high-dimensional categorical data--- such values proved to be too restrictive. We provide two examples of noise clustering with different $\lambda$ to discuss its impact on the resulting typologies.
 
-```{r nise06, warning=FALSE, message=FALSE}
+```{r nise06, message=FALSE}
 # Calculating the noise distance delta
 delta06 <- mean(diss) * 0.6 
 delta06
@@ -437,7 +438,7 @@ par(mar = c(2,2,2,2))
 ```
 
 
-```{r noiseTypo06, warning=FALSE, message=FALSE, time_it=TRUE}
+```{r noiseTypo06, message=FALSE, time_it=TRUE}
 # Creating a typology with noise
 set.seed(1234)
 noiseClust06 <- seqclararange(mvad.seq, 
@@ -446,8 +447,7 @@ noiseClust06 <- seqclararange(mvad.seq,
                               sample.size = nrow(mvad.seq),
                               method = "noise", 
                               dnoise = delta06,
-                              seqdist.args = list(method = "LCS"), 
-                              parallel = TRUE)
+                              seqdist.args = list(method = "LCS"))
 
 # Converting the fuzzy partition to crisp
 crispNoiseClust06 <- as.crisp(noiseClust06) 
@@ -475,7 +475,7 @@ delta1 <- mean(diss) * 1 # Calculating the noise distance delta
 delta1
 ```
 
-```{r noiseTypo1, warning=FALSE, message=FALSE, fig.width=8, fig.height=5, time_it=TRUE}
+```{r noiseTypo1, message=FALSE, fig.width=8, fig.height=5, time_it=TRUE}
 # Creating a typology with noise
 set.seed(1234)
 noiseClust <- seqclararange(mvad.seq, 
@@ -484,8 +484,7 @@ noiseClust <- seqclararange(mvad.seq,
                             sample.size = nrow(mvad.seq),
                             method = "noise", 
                             dnoise = delta1,
-                            seqdist.args = list(method = "LCS"), 
-                            parallel = TRUE)
+                            seqdist.args = list(method = "LCS"))
 
 # Converting the fuzzy partition to crisp
 crispNoiseClust <- as.crisp(noiseClust)
@@ -518,8 +517,7 @@ crispClust <- suppressMessages(seqclararange(mvad.seq, # computing
                             R = 50,
                             sample.size = nrow(mvad.seq),
                             method = "crisp", 
-                            seqdist.args = list(method = "LCS"), 
-                            parallel = TRUE))
+                            seqdist.args = list(method = "LCS")))
 
 d2m <- list()
 for(i in 1:length(crispClust$clustering)){
@@ -540,7 +538,7 @@ boxplot(d2m, las = 2)
 ```
 
 
-```{r crispNoiseTypo10, echo=FALSE, warning=FALSE, message=FALSE, fig.cap= "Crisp noise clustering in ten groups, lambda = 0.8 (delta = 68.39)"}
+```{r crispNoiseTypo10, echo=FALSE, message=FALSE, fig.cap= "Crisp noise clustering in ten groups, lambda = 0.8 (delta = 68.39)"}
 par(mar = c(2,2,2,2))
 seqIplot(mvad.seq, 
          group = crispNoiseClust08$clustering$cluster10,
@@ -558,14 +556,13 @@ In a ten-group typology, only 13 sequences are labelled as noise with `dnoise = 
 
 To avoid this behaviour and to predict `dnoise` values suitable for a greater number of groups, we propose the following strategy. First we compute a clustering without noise and calculate the distances to medoid in each cluster for every number of groups. Using these distances and a $\delta$ optimized for a given number of groups (here seven), we can calculate $\delta$'s adapted to any number of groups. Doing so, the same amount of noise will be detected for every number of groups. 
 
-```{r ngroupDnoiseCalc, echo= FALSE, warning=FALSE, message=FALSE}
+```{r ngroupDnoiseCalc, echo= FALSE, message=FALSE}
 crispClust <- seqclararange(mvad.seq, # computing a crisp clustering
                             kvals = 2:10,
                             R = 50,
                             sample.size = nrow(mvad.seq),
                             method = "crisp", 
-                            seqdist.args = list(method = "LCS"), 
-                            parallel = TRUE)
+                            seqdist.args = list(method = "LCS"))
 
 d2m <- list() # calculating distance to medoids summary 
 for(i in 1:length(crispClust$clustering)){
@@ -586,15 +583,14 @@ noiseClust10k  <- seqclararange(mvad.seq,
                               sample.size = nrow(mvad.seq),
                               method = "noise", 
                               dnoise = delta10k,
-                              seqdist.args = list(method = "LCS"), 
-                              parallel = TRUE)
+                              seqdist.args = list(method = "LCS"))
 
 crispNoiseClust10k <-  as.crisp(noiseClust10k)
 ```
 
 Applying this strategy to our example in seven groups leads to $\delta$ =  62.57 for a ten-group typology. With this new $\delta$ the number of observations labelled as noise in then groups is close to the number labelled as such in six groups with $\delta$ = 68.39 (see Figure \@ref(fig:ngroupDnoise)). 
 
-```{r ngroupDnoise, warning=FALSE, message=FALSE, fig.cap= "Crisp noise clustering in ten groups, delta = 62.57"}
+```{r ngroupDnoise, message=FALSE, fig.cap= "Crisp noise clustering in ten groups, delta = 62.57"}
 par(mar = c(2,2,2,2))
 seqIplot(mvad.seq, 
          group = crispNoiseClust10k$clustering$cluster10,
