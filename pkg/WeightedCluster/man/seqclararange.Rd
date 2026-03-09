@@ -84,8 +84,7 @@ biofam.seq <- seqdef(biofam[1:100, 10:25], alphabet=0:7, states=statelab)
 
 ## Clara clustering
 bfclara <- seqclararange(biofam.seq, R = 3, sample.size = 10, kvals = 2:3, 
-  seqdist.args = list(method = "HAM"), parallel=FALSE, 
-  stability=FALSE)
+  seqdist.args = list(method = "HAM"), stability=FALSE)
 
 
 

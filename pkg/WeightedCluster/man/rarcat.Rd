@@ -106,20 +106,14 @@ mvad.seq <- seqdef(mvad[, 17:86])
 ## Distance computation
 diss <- seqdist(mvad.seq, method="LCS")
 
-## Hierarchical clustering
-hc <- fastcluster::hclust(as.dist(diss), method="ward.D")
-
-## Computing cluster quality measures
-clustqual <- as.clustrange(hc, diss=diss, ncluster=6)
-
 ## A six clusters solution is chosen here
-mvad$clustering <- clustqual$clustering$cluster2
+mvad$clustering <- wcKMedoids(diss, k=2, cluster.only=TRUE)
 
 ## The formula should include the typology (dependent) and the covariates of interest
 ## As in the original analysis, hierarchical clustering with Ward method is implemented
 ## The number of clusters is fixed to 2 here, larger values should often be used.
 ## For illustration purposes, the number of bootstrap is smaller than what it ought to be
-rarcatout <- rarcat(clustering ~ Grammar + gcse5eq, mvad, diss, R = 30, 
+rarcatout <- rarcat(clustering ~ Grammar + gcse5eq, mvad, diss, R = 10, 
                     kmedoid=TRUE, fixed = TRUE, ncluster = 2)
 
 ## Assess the robustness of the original analysis
