@@ -109,23 +109,28 @@ consClust <- function(diss, base.clust = "pam", R =100,
     }
  
   }
-  p <- progressor(max(kvals))
+  p <- progressor(length(kvals))
   gc()
+  j <- 1
   it <- as.data.frame(expand.grid(1:R, kvals), col.names = c("R", "j"))
+  ##Internal function export
+  clueboot_export <- getFromNamespace("clueboot", "WeightedCluster")
+  fuzzy_davies_bouldin_internal_export <- getFromNamespace("fuzzy_davies_bouldin_internal", "WeightedCluster")
+  davies_bouldin_internal_export <- getFromNamespace("davies_bouldin_internal", "WeightedCluster")
+
   ff <- foreach(j = kvals, 
                 .options.future = list(seed = TRUE, 
                                        packages = c("clue", 
                                                     "fastcluster", 
                                                     "WeightedCluster"),
-                                       globals = structure(TRUE, 
-                                                add = c("base.clust", "k", "R",
-                                              "cons.method")))) %dofuture% {
+                                       globals = c("base.clust", "k", "R",
+                                              "cons.method", "clueboot_export", "diss", "agg.method"))) %dofuture% {
 		#source("cacheFunc.R") # FIXME remove line when integrated as function in weighted cluster 
-		xx <- clueboot(diss, base.clust = base.clust, 
+		xx <- clueboot_export(diss, base.clust = base.clust, 
 					   k = j, R = R,
 					   int.weights = TRUE) 
 		
-		agg.method <- agg.method
+		#agg.method <- agg.method
 		consAgg <- numeric(length(agg.method))
 		for(l in seq_along(agg.method) ){
 		  consAgg[l] <- mean(as.vector(cl_agreement(xx, method = agg.method[l])))

@@ -1,3 +1,14 @@
+              CHANGES IN WeightedCluster VERSION 2.2
+NEW FEATURES
+  o consClust() and friends (print, plot): Consensus Clustering for Sequence Analysis.
+  o seqclararange(): noise clustering.
+
+NEW VIGNETTES
+  o Robust Clustering Methods for Sequence Analysis: A Practical Guide to Consensus and Noise Clustering in R.
+  
+SMALL FIXES
+  o Updated URLs.
+
               CHANGES IN WeightedCluster VERSION 2.0
 NEW FEATURES
   o rarcat() and friends (print, plot, summary): Robustness Assessment of Regressions using Cluster Analysis Typologies (RARCAT).
