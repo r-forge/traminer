@@ -120,11 +120,10 @@ consClust <- function(diss, base.clust = "pam", R =100,
 
   ff <- foreach(j = kvals, 
                 .options.future = list(seed = TRUE, 
-                                       packages = c("clue", 
-                                                    "fastcluster", 
-                                                    "WeightedCluster"),
-                                       globals = c("base.clust", "k", "R",
-                                              "cons.method", "clueboot_export", "diss", "agg.method", "k.fixed"))) %dofuture% {
+                                       packages = c("clue", "fastcluster", "WeightedCluster"),
+                                       globals = c("base.clust", "k", "R", "cons.method", 
+													"clueboot_export", "diss", "agg.method", 
+													"k.fixed", "p", "membership"))) %dofuture% {
 		#source("cacheFunc.R") # FIXME remove line when integrated as function in weighted cluster 
 		xx <- clueboot_export(diss, base.clust = base.clust, 
 					   k = j, R = R,
