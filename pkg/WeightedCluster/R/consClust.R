@@ -124,7 +124,7 @@ consClust <- function(diss, base.clust = "pam", R =100,
                                                     "fastcluster", 
                                                     "WeightedCluster"),
                                        globals = c("base.clust", "k", "R",
-                                              "cons.method", "clueboot_export", "diss", "agg.method"))) %dofuture% {
+                                              "cons.method", "clueboot_export", "diss", "agg.method", "k.fixed"))) %dofuture% {
 		#source("cacheFunc.R") # FIXME remove line when integrated as function in weighted cluster 
 		xx <- clueboot_export(diss, base.clust = base.clust, 
 					   k = j, R = R,
