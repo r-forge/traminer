@@ -1,4 +1,5 @@
-as.crisp <- function(fuzzClust){
+as.crisp <- function(clara){
+ fuzzClust <- clara
   crispClust <- list()
   labels <- list()
   for(i in 1:length(fuzzClust$clustering)){

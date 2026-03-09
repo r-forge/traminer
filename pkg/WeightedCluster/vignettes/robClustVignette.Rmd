@@ -4,20 +4,7 @@ subtitle: "A Practical Guide to Consensus and Noise Clustering in R"
 author: 
   - "Leonhard Unterlerchner" 
   - "Matthias Studer"
-date: "`r Sys.Date()`"
-
-output: 
-  bookdown::html_vignette2:
-      number_sections: true
-      toc: true
-      fig_caption: yes
-  bookdown::pdf_document2: 
-       number_sections: true
-       toc: true
-       keep_tex: true
-       fig_caption: yes
-knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_format = "all") })
+output: rmarkdown::html_vignette
 bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{Robust Clustering Methods for Sequence Analysis}
@@ -49,7 +36,7 @@ knitr::opts_chunk$set(fig.width = 6, fig.height = 5, fig.dpi = if (knitr::is_lat
 knitr::opts_chunk$set(dev = "png") # format des figures
 knitr::opts_chunk$set(cache = FALSE# If FALSE cache is emptied when knitting  
                       , cache.lazy = FALSE) # knitr n'execute pas le code si il a déjà tourné une fois et est resté dans le cache, il faut vider le cache de temps à autre dans le menu déroulant "Knit" 
-library(magick)
+#library(magick)
 
 ```
 
@@ -224,13 +211,13 @@ Setting `parallel=TRUE`, a default parallel back-end is set up using the future 
 # Creating the typology
 set.seed(1234)
 pamWardConsClust <- consClust(diss,
-                              base.clust = list("pam", "ward.D"), 
+                              base.clust = c("pam", "ward.D"), 
                               R = 100, 
                               kvals = 2:15,
                               cons.method = "SE", 
                               membership = "crisp",
                               k.fixed = TRUE,
-                              agg.method = list("cRand"),
+                              agg.method = c("cRand"),
                               keep.ensemble = TRUE,
                               parallel = TRUE, 
                               progressbar = FALSE)
@@ -291,13 +278,13 @@ We now compute the same consensus clustering but in its fuzzy version. It is don
 # Creating the typology
 set.seed(1234)
 pamWardConsClustF <- consClust(diss,
-                              base.clust = list("pam", "ward.D"),
+                              base.clust = c("pam", "ward.D"),
                               R = 100, 
                               kvals = 2:15, 
                               cons.method = "SE", 
                               membership = "fuzzy", 
                               k.fixed = TRUE,
-                              agg.method = list("cRand"),
+                              agg.method = "cRand",
                               keep.ensemble = TRUE,
                               parallel = TRUE, 
                               progressbar = FALSE)

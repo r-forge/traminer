@@ -13,13 +13,13 @@ Compute consensus clustering for different number of clusters (Monti, 2003). The
 
 \usage{
 consClust(diss,
-          base.clust = list("pam"), 
+          base.clust = "pam", 
           R = 100, 
           kvals = 2:15,
           cons.method = "SE", 
           membership = "crisp",
           k.fixed = TRUE, 
-          agg.method = list("cRand"),
+          agg.method = "cRand",
           keep.ensemble = TRUE,
           parallel = FALSE,
           progressbar = TRUE)
@@ -28,7 +28,7 @@ consClust(diss,
 \arguments{
   \item{diss}{A dissimilarity matrix or a \code{dist} object.}
   
-  \item{base.clust}{List. Clustering algorithms used to compute the ensemble of partitions and hierarchies. May be a combination of \code{"pam", "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median"}.}
+  \item{base.clust}{Character. Clustering algorithms used to compute the ensemble of partitions and hierarchies. May be a combination of \code{"pam", "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median"}.}
   
   \item{R}{Numeric. The number of partitions or hierarchies to compute for consensus clustering.}
   
@@ -40,7 +40,7 @@ consClust(diss,
   
   \item{k.fixed}{Logical. If \code{TRUE} (default), the number of clusters obtained from the consensus cannot exceed the number of cluster in the partition ensemble.}
   
-  \item{agg.method}{List. The consensus agreement measures to compute, may be a comination of \code{"cRand"} (default), \code{"Rand", "euclidean", "manhattan", "NMI", "KP", "angle", "diag", "FM", "Jaccard", "puritiy", "PS"}. See \code{\link[clue]{cl_agreement}} for details on the methods.}
+  \item{agg.method}{Character. The consensus agreement measures to compute, may be a comination of \code{"cRand"} (default), \code{"Rand", "euclidean", "manhattan", "NMI", "KP", "angle", "diag", "FM", "Jaccard", "puritiy", "PS"}. See \code{\link[clue]{cl_agreement}} for details on the methods.}
   
   \item{keep.ensemble}{Logical. If \code{TRUE} (default) partitions and/or hierarchies are returned by the function. Setting \code{keep.ensemble = FALSE} saves memory.}
   
@@ -94,13 +94,10 @@ diss <- seqdist(mvad.seq, method="LCS")
 
 pamWardConsClust <- consClust(diss,
                               kvals = 2:6, 
-                              base.clust = list("pam", "ward.D"),
+                              base.clust = c("pam", "ward.D"),
                               R = 20,
                               k.fixed = TRUE,
-                              agg.method = list("cRand"),
-                              keep.ensemble = T,
-                              parallel = TRUE, 
-                              progressbar = TRUE)
+                              agg.method = "cRand")
 
 ## Showing the cluster quality measures. 
 pamWardConsClust

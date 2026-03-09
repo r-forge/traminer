@@ -11,7 +11,7 @@ clueboot <- function(diss,
                      R=100,
                      int.weights = TRUE,
                      method="dirichlet", 
-                     base.clust = c("pam")){
+                     base.clust = "pam"){
   cluster <- base.clust
   n <- nrow(diss)
   ret <- list()
@@ -39,27 +39,27 @@ clueboot <- function(diss,
     dif <- R - length(clustAlgo)
     
     for(i in 1:dif){
-      clustAlgo[[(R-dif) + i]] <- base.clust[[i]]    
+      clustAlgo[(R-dif) + i] <- base.clust[i]   
     }
   }
   else{
     
   }
   for(i in 1:R){	## Consider parallel?
-    if(clustAlgo[[i]] %in% c("pam", "single", "complete", "average", "mcquitty",
+    if(clustAlgo[i] %in% c("pam", "single", "complete", "average", "mcquitty",
                              "ward.D", "ward.D2", "centroid" , "median") ){ 
-      if(clustAlgo[[i]] == "pam" ){
+      if(clustAlgo[i] == "pam" ){
         ret[[i]] <- wcKMedoids(diss, k=k, weights=allweights[i, ], cluster.only=TRUE)
       }
       else{
-         hc <- fastcluster::hclust(diss, method=clustAlgo[[i]], members=allweights[i, ])
+         hc <- fastcluster::hclust(diss, method=clustAlgo[i], members=allweights[i, ])
          ret[[i]] <- cutree(hc, k=k) 
       }
       
     }
     else{
       cat(paste0('[>] ', 
-                 clustAlgo[[i]], 
+                 clustAlgo[i], 
                  " is not a supported clustering algorithm"),
           sep = "\n")
     }
@@ -74,15 +74,15 @@ clueboot <- function(diss,
 
 #-------------------------------------------------------------------------------
 
-consClust <- function(diss, base.clust = c("pam"), R =100, 
+consClust <- function(diss, base.clust = "pam", R =100, 
                       kvals = 2:15, cons.method = "SE",  
                       membership = "crisp", k.fixed = TRUE, 
-                      agg.method = c("cRand"), keep.ensemble = TRUE, 
+                      agg.method = "cRand", keep.ensemble = TRUE, 
                       parallel = FALSE, progressbar = TRUE){
   tStart <- Sys.time()
   
   cat(paste0("[>] Performing consensus clustering on ", 
-             R, " partitions, using: ", paste0(unlist(base.clust), collapse = ", ")),
+             R, " partitions, using: ", paste0(base.clust, collapse = ", ")),
       sep = "\n")
   
   if(parallel){
@@ -126,11 +126,11 @@ consClust <- function(diss, base.clust = c("pam"), R =100,
 					   int.weights = TRUE) 
 		
 		agg.method <- agg.method
-		consAgg <- list()
-		for(l in 1:length(agg.method) ){
-		  consAgg[[l]] <- mean(as.vector(cl_agreement(xx, method = agg.method[[l]])))
+		consAgg <- numeric(length(agg.method))
+		for(l in seq_along(agg.method) ){
+		  consAgg[l] <- mean(as.vector(cl_agreement(xx, method = agg.method[l])))
 		}
-		consAgg <- lapply(consAgg, unlist)
+		#consAgg <- lapply(consAgg, unlist)
 		names(consAgg) <- paste0("cons_",agg.method)
 		if(k.fixed){ 
 		  cons <- cl_consensus(xx, method = cons.method, control = list(k = j)) 
@@ -211,7 +211,7 @@ plot.consClust <- function(x, col = NULL, ...){
   else{
     cols <- col
   }
-  WeightedCluster:::plot.clustrange(x, col = cols, ...)
+  plot.clustrange(x, col = cols, ...)
   
 }
 

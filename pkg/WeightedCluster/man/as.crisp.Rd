@@ -10,11 +10,11 @@ The function converts fuzzy clusterings into crisp ones.
 }
 
 \usage{
-as.crisp(seqclararangeObject)
+as.crisp(clara)
 }
 
 \arguments{
-  \item{seqclararangeObject}{The results of \code{seqclararange}}
+  \item{clara}{The results of \code{seqclararange}}
 }
 
 \details{
