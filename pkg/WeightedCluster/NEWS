@@ -1,7 +1,7 @@
               CHANGES IN WeightedCluster VERSION 2.2
 NEW FEATURES
   o consClust() and friends (print, plot): Consensus Clustering for Sequence Analysis.
-  o seqclararange(): noise clustering.
+  o seqclararange(): added noise clustering for large databases.
 
 NEW VIGNETTES
   o Robust Clustering Methods for Sequence Analysis: A Practical Guide to Consensus and Noise Clustering in R.

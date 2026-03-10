@@ -9,6 +9,6 @@ Depends: R (>= 3.0.0), TraMineR (>= 2.0-6), cluster
 Imports: utils, RColorBrewer, foreach, progressr, future, doFuture, nnet, fastcluster, vegclust, lme4, margins, clue, viridis
 Suggests: RUnit, knitr, isotone, vegan, lattice, rmarkdown, Cairo, progress, DirichletReg, betareg, fpc
 VignetteBuilder: knitr
-Description: Clusters state sequences and weighted data. It provides an optimized weighted PAM algorithm as well as functions for aggregating replicated cases, computing cluster quality measures for a range of clustering solutions, sequence analysis typology validation using parametric bootstraps and plotting (fuzzy) clusters of state sequences. It further provides a fuzzy and crisp CLARA algorithm to cluster large database with sequence analysis, and a methodological framework for Robustness Assessment of Regressions using Cluster Analysis Typologies.
+Description: Clusters state sequences and weighted data. It provides an optimized weighted PAM algorithm as well as functions for aggregating replicated cases, computing cluster quality measures for a range of clustering solutions, sequence analysis typology validation using parametric bootstraps and plotting (fuzzy) clusters of state sequences. It further provides a fuzzy, crisp and noise CLARA algorithm to cluster large database with sequence analysis, and a methodological framework for Robustness Assessment of Regressions using Cluster Analysis Typologies.
 License: GPL (>= 2)
 URL: https://r-forge.r-project.org/R/?group_id=743
