@@ -35,24 +35,24 @@ is.seqelist <- function(eseq, s) {
   	NextMethod("[")
 	}
 }
-Math.seqelist <- function(...){
-  stop("Invalid operation on event sequences")
-}
-Ops.seqelist  <- function(...){
-  stop("Invalid operation on event sequences")
-}
-Summary.seqelist<-function(...) {
-  stop("Invalid operation on event sequences")
-}
-Math.eseq <- function(...)  {
-  stop("Invalid operation on event sequences")
-}
-Ops.eseq  <- function(...)  {
-  stop("Invalid operation on event sequences")
-}
-Summary.eseq<-function(...) {
-  stop("Invalid operation on event sequences")
-}
+#Math.seqelist <- function(...){
+#  stop("Invalid operation on event sequences")
+#}
+#Ops.seqelist  <- function(...){
+#  stop("Invalid operation on event sequences")
+#}
+#Summary.seqelist<-function(...) {
+#  stop("Invalid operation on event sequences")
+#}
+#Math.eseq <- function(...)  {
+#  stop("Invalid operation on event sequences")
+#}
+#Ops.eseq  <- function(...)  {
+#  stop("Invalid operation on event sequences")
+#}
+#Summary.eseq<-function(...) {
+#  stop("Invalid operation on event sequences")
+#}
 
 levels.eseq<-function(x,...){
   if(!is.eseq(x))stop("x should be a eseq object. See help on seqecreate.")
@@ -64,26 +64,33 @@ levels.seqelist<-function(x,...){
   if(length(x)>0) return(.Call(C_tmrsequencegetdictionary,x[[1]]))
 }
 ## ========================================
-## Return a string representation of a sequence
+## str uses string representation of sequences
 ## ========================================
 
 str.seqelist<-function(object,...){
 #message("Event sequence analysis module is still experimental")
   if(is.seqelist(object)){
-      object<-cat(as.character(object),"\n")
-  }else if (is.eseq(object)){
-    object<-cat(as.character(object),"\n")
+      #object<-cat(as.character(object),"\n")
+      object<-as.character(object)
+  #}else if (is.eseq(object)){
+  #  object<-cat(as.character(object),"\n")
   }else{
-    stop("object should be a seqelist. See help on seqecreate.")
+    stop("object should be a seqelist. See seqecreate.")
   }
   NextMethod("str")
 }
 str.eseq<-function(object,...){
 #  seqestr(eseq)
-  if(!is.eseq(object))stop("object should be a eseq object. See help on seqecreate.")
+  if(!is.eseq(object))
+    stop("object should be a eseq object. See help on seqecreate.")
   object <- .Call(C_tmrsequencestring, object)
   NextMethod("str")
 }
+
+## ========================================
+## Return a string representation of a sequence
+## ========================================
+
 
 as.character.eseq<-function(x, ...){
 #  seqestr(eseq)
@@ -134,4 +141,28 @@ plot.seqelist <- function(x, type = "pc", ...) {
   if (type == "pc") {
     seqpcplot(x, ...)
   }
+}
+
+## ========================================
+## summary of event sequences
+## ========================================
+
+summary.seqelist <- function(object, ...) {
+  es.cha <- as.character(object)
+  es.list <- strsplit(es.cha,split="-")
+  ntrans <- ceiling(sapply(es.list,length)/2)
+  dur <- seqelength(object)
+  alph <- levels(object)
+  nalph <- length(alph)
+  summ <- c(nseq = length(es.list), nalph=nalph, min.ntrans=min(ntrans), max.ntrans=max(ntrans),
+            min.dur=min(dur), max.dur=max(dur))
+  ret <- list(summ=summ, summ.ntrans=summary(ntrans), summ.dur = summary(dur), ntrans=ntrans, dur=dur)
+  class(ret) <- c(class(ret),"eseqsum")
+  ret
+}
+
+print.eseqsum <- function(x, ...){
+  x <- x[1:3]
+  class(x) <- "list"
+  print(x)
 }

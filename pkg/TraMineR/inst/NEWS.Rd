@@ -1,12 +1,28 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-14 [2025-12-14] }{
+\section{Changes in version 2.3-14 [2026-03-26] }{
     
+    \subsection{New functions}{
+        \itemize{
+            \item
+            \code{summary.seqelist()}: summary method for event sequence objects.
+        }
+    }
+
+    \subsection{Bug fixes}{
+        \itemize{
+            \item
+            \code{str.seqelist()}: inappropriate use of \code{cat} inside the method.
+        }
+    }
+
+
     \subsection{Misc.}{
         \itemize{
             \item
-            No changes.
+            Suppressed unused not working methods \code{Math}, \code{Ops}, and \code{Summary} 
+            of \code{seqelist} objects.
         }
     }
 }

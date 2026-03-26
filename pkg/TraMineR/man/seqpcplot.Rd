@@ -2,8 +2,8 @@
 \name{seqpcplot}
 \alias{seqpcplot}
 \alias{seqpcfilter}
-\alias{plot.eseq}
-\alias{plot.seqelist}
+%\alias{plot.eseq}
+%\alias{plot.seqelist} %now in seqe.Rd
 \title{Parallel coordinate plot for sequence data}
 \description{
   A decorated parallel coordinate plot to render the order of the

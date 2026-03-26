@@ -47,8 +47,6 @@ Two additional weights variables are inserted for illustrative purpose ONLY (sin
 
 }
 \usage{data(biofam)
-
-data(bfspell)
 }
 \format{A data frame with 2000 rows, 16 state variables, 1 id variable and 7 covariates and 2 weights variables.}
 \source{Swiss Household Panel \url{https://forscenter.ch/projects/swiss-household-panel/}}
@@ -57,6 +55,10 @@ data(bfspell)
   Classification de parcours de vie à l'aide de l'optimal matching.
   In \emph{XIVe Rencontre de la Société francophone de classification
   (SFC 2007), Paris, 5 - 7 septembre 2007}, pp. 157--160.
+}
+
+\seealso{
+\code{\link{bfspell}}
 }
 
 \examples{
