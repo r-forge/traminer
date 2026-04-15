@@ -57,7 +57,7 @@ is.seqelist(eseq, s)
   \item{...}{further arguments to other functions or methods.}
   \item{s}{Deprecated. Use \code{eseq} instead.}
 }
-\value{The \code{summary} method applies to \code{seqelist} objects and returns number of sequences, size of the alphabet, and summary values of sequence durations (\code{dur}) and number of transitions (\code{ntrans}) per sequence. It returns also transparently the vectors \code{$dur} of sequence durations and \code{$ntrans} of number of transitions.
+\value{The \code{summary} method applies to \code{seqelist} objects and returns number of sequences, size of the alphabet, and summary values of sequence durations (\code{dur}) and number of transitions (\code{ntrans}) per sequence. It also returns transparently the vectors \code{$dur} of sequence durations and \code{$ntrans} of number of transitions.
 }
 \seealso{\code{\link{seqpcplot}}, \code{\link{as.character.seqelist}}, and \code{\link{as.character.eseq}}, the latter two for character string representations of event sequence objects}
 \examples{

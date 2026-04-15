@@ -1,9 +1,11 @@
 ## =========
-Version 2.3-14 [2026-03-26]
+Version 2.3-14 [2026-04-09]
 
 New functions
 
-  - summary.seqelist() summary method for event sequence object.
+  - summary.seqelist() summary method for event sequence object, which 
+    returns sequence duration and number of transitions as attributes 
+    of the returned object.
 
 Bug fixes
 

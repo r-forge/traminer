@@ -149,8 +149,8 @@ plot.seqelist <- function(x, type = "pc", ...) {
 
 summary.seqelist <- function(object, ...) {
   es.cha <- as.character(object)
-  es.list <- strsplit(es.cha,split="-")
-  ntrans <- ceiling(sapply(es.list,length)/2)
+  es.list <- strsplit(es.cha,split="-[[:digit:]]*-*", fixed=FALSE)
+  ntrans <- ceiling(sapply(es.list,length)) #/2
   dur <- seqelength(object)
   alph <- levels(object)
   nalph <- length(alph)
