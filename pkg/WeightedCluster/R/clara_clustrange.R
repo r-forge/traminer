@@ -138,6 +138,9 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
       # alpha <- alphabeta[1, ]
       # beta <- alphabeta[2, ]
       sil <- ((alphabeta[2, ] - alphabeta[1, ]) / pmax(alphabeta[2, ], alphabeta[1, ]))
+	  distmed <- as.dist(diss2[medoids, ])
+      minsep <- min(distmed)
+      maxsep <- max(distmed)
       if (method == "fuzzy") {
         ## Allocate to clusters using FCM formulae
 		zerodistcond <- diss2==0
@@ -177,17 +180,22 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
         ## Compute criterion (FCMdd Formulae)
         ## mean_diss <- sum(rowSums((memb^m)*diss2)*ac$aggWeights)
         mean_diss <- sum(rowSums((memb^m) * diss3) * ac$probs)
-
-        db <- fuzzy_davies_bouldin_internal_export(diss2, memb[, -ncol(memb), drop = FALSE], medoids, weights = ac$aggWeights)$db
-
+		rel_noise_freq <- ac$probs * memb[, ncol(memb)]/sum(memb[, ncol(memb)])
+		min_real_dist <- apply(diss2, 1, min)
+		db_noise_penatly <- sum(rel_noise_freq)* maxsep/sum(rel_noise_freq*min_real_dist)
+        db <- fuzzy_davies_bouldin_internal_export(diss2, memb[, -ncol(memb), drop = FALSE], medoids, weights = ac$aggWeights)$db + db_noise_penatly
+		
         alpha <- 1
         hightest.memb <- apply(memb[, -ncol(memb), drop = FALSE], 1, function(x) {
           y <- sort(x, decreasing = TRUE)[1:2]
           return((y[1] - y[2])**alpha)
         })
         pbm <- ((1 / length(medoids)) * (max(diss2[medoids, ]) / sum(rowSums((memb) * diss3) * ac$probs)))^2
-        ams <- sum(hightest.memb * sil * ac$probs) / sum(hightest.memb * ac$probs)
-        rm(hightest.memb)
+        #ams <- sum(hightest.memb * sil * ac$probs) / sum(hightest.memb * ac$probs)
+		max_radius <- max(colSums((memb[, -ncol(memb)] *diss2) * ac$probs))
+		tot <- ac$probs*((1-memb[, ncol(memb)]) *hightest.memb +memb[, ncol(memb)])
+		ams <- sum(ac$probs*((1-memb[, ncol(memb)]) *hightest.memb * sil +memb[, ncol(memb)]* ((min_real_dist - max_radius) / pmax(min_real_dist, max_radius))))/sum(tot)
+        rm(hightest.memb, rel_noise_freq, min_real_dist, max_radius, tot)
       } else {
         ## Allocate to clusters
         memb <- apply(diss2, 1, which.min)
@@ -199,9 +207,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
       }
 
 
-      distmed <- as.dist(diss2[medoids, ])
-      minsep <- min(distmed)
-      maxsep <- max(distmed)
+
       xb <- mean_diss / minsep
       ## Memory cleanup
       rm(alphabeta, sil, diss2)
