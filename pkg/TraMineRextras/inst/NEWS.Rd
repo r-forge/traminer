@@ -1,12 +1,16 @@
 \name{NEWS}
 \title{NEWS file of the TraMineRextras package}
 
-\section{Changes in version 0.7.9 [2025-02-24] }{
+\section{Changes in version 0.7.9 [2026-06-06] }{
 
     \subsection{Changes in existing functions}{
         \itemize{
             \item
             \code{seqCompare()} and \code{dissCompare()} gains logical argument \code{inc.df} to control whether the degrees of freedom of the LRT returned should be included in the table. In addition, In case of multiple samples, i.e., when \code{s} is not zero but smaller than the number of cases of the most frequent category, the returned LRT is now the sum of the individual LRTs (previously was the average) and its associated chi-square p-value is obtained with the corresponding degrees of freedom.
+            \item
+            \code{seqCompare()} and \code{dissCompare()}: suppressed report of computation time. Use \code{system.time()} instead.
+            \item
+            \code{seqpolyads()}: argument \code{core} can now be \code{"auto"}.
         }
     }
 }

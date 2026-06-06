@@ -1,4 +1,4 @@
-                CHANGES IN TraMineRextras VERSION 0.7.9 [2025-02-24]
+                CHANGES IN TraMineRextras VERSION 0.7.9 [2026-06-06]
                 
 Misc.:
     o   seqCompare() and dissCompare() gains logical argument 
@@ -10,6 +10,9 @@ Misc.:
         LRTs (previously was the average) and its associated 
         chi-square p-value is obtained with the corresponding 
         degrees of freedom.
+    o   seqCompare() and dissCompare(): suppressed report of 
+        computation time. Use system.time() instead.
+    o   seqpolyads(): argument core can now be "auto".
 .
     
 

@@ -22,8 +22,8 @@ dissCompare <- function(diss,
   #require("gtools")
   #require("TraMineR")
 
-  gc(FALSE)
-  ptime.begin <- proc.time()
+  #gc(FALSE)
+  #ptime.begin <- proc.time()
 
   diss <- as.matrix(diss)
     
@@ -272,12 +272,12 @@ dissCompare <- function(diss,
 
   #### Display elaspsed time ####
 
-  ptime.end <- proc.time()
-  time.begin <- as.POSIXct(sum(ptime.begin[1:2]), origin = "1960-01-01")
-  time.end <- as.POSIXct(sum(ptime.end[1:2]), origin = "1960-01-01")
-  time.elapsed <- format(round(difftime(time.end, time.begin), 3))
+  #ptime.end <- proc.time()
+  #time.begin <- as.POSIXct(sum(ptime.begin[1:2]), origin = "1960-01-01")
+  #time.end <- as.POSIXct(sum(ptime.end[1:2]), origin = "1960-01-01")
+  #time.elapsed <- format(round(difftime(time.end, time.begin), 3))
 
-  message("elapsed time:", time.elapsed)
+  #message("elapsed time:", time.elapsed)
 
   return(Results)
 }
