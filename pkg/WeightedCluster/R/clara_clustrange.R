@@ -183,7 +183,8 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
 		rel_noise_freq <- ac$probs * memb[, ncol(memb)]/sum(memb[, ncol(memb)])
 		min_real_dist <- apply(diss2, 1, min)
 		db_noise_penatly <- sum(rel_noise_freq)* maxsep/sum(rel_noise_freq*min_real_dist)
-        db <- fuzzy_davies_bouldin_internal_export(diss2, memb[, -ncol(memb), drop = FALSE], medoids, weights = ac$aggWeights)$db + db_noise_penatly
+		nclust <- length(medoids)
+        db <- (nclust*fuzzy_davies_bouldin_internal_export(diss2, memb[, -ncol(memb), drop = FALSE], medoids, weights = ac$aggWeights)$db + db_noise_penatly)/(nclust+1)
 		
         alpha <- 1
         hightest.memb <- apply(memb[, -ncol(memb), drop = FALSE], 1, function(x) {
@@ -192,7 +193,7 @@ seqclararange <- function(seqdata, R = 100, sample.size = 40 + 2 * max(kvals), k
         })
         pbm <- ((1 / length(medoids)) * (max(diss2[medoids, ]) / sum(rowSums((memb) * diss3) * ac$probs)))^2
         #ams <- sum(hightest.memb * sil * ac$probs) / sum(hightest.memb * ac$probs)
-		max_radius <- max(colSums((memb[, -ncol(memb)] *diss2) * ac$probs))
+		max_radius <- maxsep # max(colSums((memb[, -ncol(memb)] *diss2) * ac$probs))
 		tot <- ac$probs*((1-memb[, ncol(memb)]) *hightest.memb +memb[, ncol(memb)])
 		ams <- sum(ac$probs*((1-memb[, ncol(memb)]) *hightest.memb * sil +memb[, ncol(memb)]* ((min_real_dist - max_radius) / pmax(min_real_dist, max_radius))))/sum(tot)
         rm(hightest.memb, rel_noise_freq, min_real_dist, max_radius, tot)

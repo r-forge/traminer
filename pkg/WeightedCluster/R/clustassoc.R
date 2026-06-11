@@ -2,7 +2,8 @@ clustassoc <- function(clustrange, diss, covar,  weights = NULL){
 	if(any(dim(diss)!=length(covar))){
 		stop(" [!] diss should be a dissimilarity matrix or a dist object and covar should be a variable with one value per observation.")
 	}
-	nullMM <- dissmfacw(diss~covar, R=1, data=NULL, weights=weights)
+	gowermat <- gower_matrix(diss, squared=FALSE, weights=weights)
+	nullMM <- dissmfacw(gowermat~covar, R=1, data=NULL, weights=weights, gower=TRUE)
 	if(is.numeric(covar)){
 		nullMod <- lm(covar~1, weights=weights)
 	}else{
@@ -15,7 +16,7 @@ clustassoc <- function(clustrange, diss, covar,  weights = NULL){
 	
 	for(i in 1:ncol(clustrange$clustering)){
 		clustf <- factor(clustrange$clustering[, i])
-		mm <- dissmfacw(diss~clustf+covar, R=1, data=NULL, weights=weights)
+		mm <- dissmfacw(gowermat~clustf+covar, R=1, data=NULL, weights=weights, gower=TRUE)
 		stat$Remaining[i] <- mm$mfac[2,3]
 		stat$Unaccounted[i] <- mm$mfac[2,3]/(mm$mfac[3,3]-mm$mfac[1,3])
 		#stat$assoc[i] <- assocstats(table(clustf, covar))$cramer
