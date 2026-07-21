@@ -18,7 +18,7 @@ print.stslist.statd <- function(x, digits=2, ...) {
 	VS <- t(as.matrix(x$ValidStates))
 	rownames(VS) <- paste("N",ident2,sep="")
 	cat("\n", ident1,"[Valid states]\n")
-	print(VS, digits=digits)
+	print(round(VS, digits=digits))
 	
 	H <- t(as.matrix(x$Entropy))	
 	rownames(H) <- paste("H",ident2,sep="")
@@ -28,4 +28,4 @@ print.stslist.statd <- function(x, digits=2, ...) {
 
 "[.stslist.statd" <- function(...) {
 	stop(" [!] Operation not allowed", call.=FALSE)
-} 
+}

@@ -1,12 +1,19 @@
 \name{NEWS}
 \title{NEWS file for the TraMineR package}
 
-\section{Changes in version 2.3-14 [2026-04-09] }{
+\section{Changes in version 2.3-14 [2026-07-21] }{
     
     \subsection{New functions}{
         \itemize{
             \item
             \code{summary.seqelist()}: summary method for event sequence objects, which returns sequence duration and number of transitions as attributes of the returned object.
+        }
+    }
+
+    \subsection{Changes in existing functions}{
+        \itemize{
+            \item
+            \code{print.stslist.statd()} (print method for objects returned by \code{seqstatd}): \code{digits} is now used for rounding the number of valid states instead as a print argument.
         }
     }
 
